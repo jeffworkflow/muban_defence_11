@@ -10,8 +10,7 @@ is_order = 1,
 tip = [[|cffffff00【要求地图等级>%need_map_level%|cffffff00】|r
 
 |cffffe799【获得方式】：|r
-|cff00ffff挖宝积分超过 2W  自动获得，已拥有积分：|r%wabao_cnt% 或者
-|cff00ffff神龙碎片超过 150 自动获得，已拥有碎片：|r%skin_cnt%
+|cff00ffff挖宝积分超过 2W  自动获得，已拥有积分：|r%wabao_cnt%
 
 |cffFFE799【神兵属性】：|r
 |cff00ff00+300 杀怪加攻击|r

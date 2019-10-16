@@ -388,7 +388,7 @@ art = [[dgqb.blp]],
 tip = [[
 
 |cffffe799【获得方式】：|r
-|cff00ffff进入|cffffff00修罗模式/斗破苍穹/无上之境/乱斗/挖宝/比武-今日排行榜前十名（按F6查看）|cff00ffff即可获得|r
+|cff00ffff进入|cffffff00挖宝/比武-今日排行榜前十名（按F6查看）|cff00ffff即可获得|r
 |cffcccccc（非永久存档称号，掉出排行榜将失去称号）|r
 
 |cffFFE799【称号属性】：|r
@@ -399,6 +399,7 @@ tip = [[
 |cff00ff00+168%  全伤加深|r
 
 |cffff0000【点击可更换称号外观，所有称号属性可叠加】|r]],
+-- 修罗模式/斗破苍穹/无上之境/乱斗/
 --目标类型
 target_type = ac.skill.TARGET_TYPE_NONE,
 ['杀怪加全属性'] = 368,

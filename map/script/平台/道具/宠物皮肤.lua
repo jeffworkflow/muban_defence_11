@@ -50,7 +50,6 @@ art = [[ReplaceableTextures\CommandButtons\BTNAzureDragon.blp]],
 tip = [[|cffffff00【要求地图等级>%need_map_level%|cffffff00】|r
 
 |cffffe799【获得方式】：|r
-|cff00ffff神龙碎片超过 50 自动获得，已拥有碎片：|r%skin_cnt% 或者
 |cff00ffff挖宝积分超过 1W 自动获得，已拥有积分：|r%wabao_cnt%
 
 |cffFFE799【宠物属性】：|r
@@ -274,8 +273,7 @@ art = [[meiying.blp]],
 tip = [[|cffffff00【要求地图等级>%need_map_level%|cffffff00】|r
 
 |cffffe799【获得方式】：|r
-|cff00ffff挖宝积分超过 4.5W 自动获得，已拥有积分：|r%wabao_cnt% 或者
-|cff00ffff神龙碎片超过 400  自动获得，已拥有碎片：|r%skin_cnt%
+|cff00ffff挖宝积分超过 4.5W 自动获得，已拥有积分：|r%wabao_cnt%
 
 |cffFFE799【属性】：|r
 |cff00ff00+148  杀怪加全属性|r
@@ -320,8 +318,7 @@ art = [[zsyhly.blp]],
 tip = [[|cffffff00【要求地图等级>%need_map_level%|cffffff00】|r
 
 |cffffe799【获得方式】：|r
-|cff00ffff挖宝积分超过 7W 自动获得，已拥有积分：|r%wabao_cnt% 或者
-|cff00ffff神龙碎片超过 500  自动获得，已拥有碎片：|r%skin_cnt%
+|cff00ffff挖宝积分超过 7W 自动获得，已拥有积分：|r%wabao_cnt%
 
 |cffFFE799【宠物属性】：|r
 |cff00ff00+188  杀怪加全属性|r
@@ -611,7 +608,8 @@ effect = [[FH.mdx]],
 } 
 
 --统一加方法
-for i,name in ipairs({'耐瑟龙','冰龙','精灵龙','奇美拉','魅影','紫霜幽幻龙鹰','天马行空','玉兔','七彩凤凰','骨龙','小悟空','齐天大圣A','齐天大圣B'}) do
+for i,name in ipairs({'魅影','紫霜幽幻龙鹰','天马行空','玉兔','七彩凤凰','骨龙','小悟空','齐天大圣A','齐天大圣B'}) do
+    -- '耐瑟龙','冰龙','奇美拉','精灵龙',
     local mt = ac.skill[name]
 
     function mt:on_cast_start()
@@ -655,8 +653,9 @@ mt{
     ]],
 }
 mt.skills = {
-    '耐瑟龙','冰龙','精灵龙','奇美拉','魅影','紫霜幽幻龙鹰','天马行空','骨龙','小悟空','齐天大圣','宠物皮肤-下一页'
+    '魅影','紫霜幽幻龙鹰','天马行空','骨龙','小悟空',
 }
+-- '耐瑟龙','冰龙','精灵龙','奇美拉','宠物皮肤-下一页','齐天大圣',
 function mt:on_add()
     local hero = self.owner 
     local player = hero:get_owner()
