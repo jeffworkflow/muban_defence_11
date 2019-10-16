@@ -1,0 +1,119 @@
+IncludeFile "UI\FrameDef\Glue\StandardTemplates.fdf",
+IncludeFile "UI\FrameDef\Glue\BattleNetTemplates.fdf",
+
+Frame "TEXTBUTTON" "ChooBlankButtonTemplatetA" {
+    ControlStyle "AUTOTRACK",
+}
+
+//背景模板
+Frame "BACKDROP" "panel" {
+	BackdropBackground  "Transparent.tga",
+	BackdropBlendAll,
+}
+//按钮模板
+Frame "GLUETEXTBUTTON" "button" {
+  SetAllPoints,
+}
+//字
+Frame "TEXT" "text" {
+    LayerStyle "IGNORETRACKEVENTS",
+    FrameFont "resource\fonts\fonts.ttf", 10, "", 
+}
+
+
+Frame "SPRITE" "model" {
+    BackgroundArt "HeroShadowHunter2.mdx",
+    //SetAllPoints,
+}
+
+Frame "TEXT" "old_text" {
+    LayerStyle "IGNORETRACKEVENTS",
+    FrameFont "MasterFont", 1, "", 
+}
+
+
+Frame "BACKDROP" "mtp_text_backdrop" {
+    UseActiveContext,
+    BackdropTileBackground,
+    BackdropBackground  "UI\widgets\BattleNet\bnet-tooltip-background.blp",
+    BackdropCornerFlags "UL|UR|BL|BR|T|L|B|R",
+    BackdropCornerSize  0.01,
+    BackdropBackgroundInsets 0.001f 0.001f 0.001f 0.001f,
+    BackdropEdgeFile  "UI\Widgets\BattleNet\bnet-inputbox-border.blp",
+}
+
+Frame "TEXT" "mtp_text_tip" {
+    Width 0.208,
+    LayerStyle "IGNORETRACKEVENTS",
+    FrameFont "resource\fonts\fonts.ttf", 0.0111, "", 
+}
+
+Frame "TEXT" "mtp_text_title" {
+    LayerStyle "IGNORETRACKEVENTS",
+    FrameFont "resource\fonts\fonts.ttf", 0.0141, "", 
+}
+
+//货币父节点 用来控制隐藏
+Frame "BACKDROP" "currency_backdrop" {
+	BackdropBackground  "Transparent.tga",
+	BackdropBlendAll,
+}
+
+//金币
+Frame "BACKDROP" "mtp_gold_icon" {
+	BackdropBackground  "UI\Widgets\ToolTips\Human\ToolTipGoldIcon.blp",
+	BackdropBlendAll,
+}
+
+Frame "TEXT" "mtp_gold_text" {
+    Height 0.0104,
+    LayerStyle "IGNORETRACKEVENTS",
+    FrameFont "resource\fonts\fonts.ttf", 0.0111, "", 
+}
+
+//木头
+Frame "BACKDROP" "mtp_wood_icon" {
+	BackdropBackground  "UI\Widgets\ToolTips\Human\ToolTipLumberIcon.blp",
+    BackdropBlendAll,
+}
+
+Frame "TEXT" "mtp_wood_text" {
+    Height 0.0104,
+    LayerStyle "IGNORETRACKEVENTS",
+    FrameFont "resource\fonts\fonts.ttf", 0.0111, "", 
+}
+
+//杀敌数
+Frame "BACKDROP" "mtp_kill_icon" {
+	BackdropBackground  "UI\Widgets\ToolTips\Human\ToolTipLumberIcon.blp",
+    BackdropBlendAll,
+}
+
+Frame "TEXT" "mtp_kill_text" {
+    Height 0.0104,
+    LayerStyle "IGNORETRACKEVENTS",
+    FrameFont "resource\fonts\fonts.ttf", 0.0111, "", 
+}
+//火灵
+Frame "BACKDROP" "mtp_fire_icon" {
+	BackdropBackground  "UI\Widgets\ToolTips\Human\ToolTipLumberIcon.blp",
+    BackdropBlendAll,
+}
+
+Frame "TEXT" "mtp_fire_text" {
+    Height 0.0104,
+    LayerStyle "IGNORETRACKEVENTS",
+    FrameFont "resource\fonts\fonts.ttf", 0.0111, "", 
+}
+//积分
+Frame "BACKDROP" "mtp_jifen_icon" {
+	BackdropBackground  "UI\Widgets\ToolTips\Human\ToolTipLumberIcon.blp",
+    BackdropBlendAll,
+}
+
+Frame "TEXT" "mtp_jifen_text" {
+    Height 0.0104,
+    LayerStyle "IGNORETRACKEVENTS",
+    FrameFont "resource\fonts\fonts.ttf", 0.0111, "", 
+}
+
