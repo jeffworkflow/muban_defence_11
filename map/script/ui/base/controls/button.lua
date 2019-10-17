@@ -51,23 +51,32 @@ class.button = extends(class.panel){
         japi.FrameSetEnable(ui.id,false)
 
         if has_ani then 
+
             function ui:on_button_mouse_enter()
-                self._ = {
-                    x = self.x,
-                    y = self.y,
-                    w = self.w,
-                    h = self.h 
-                }
-                self:set_position(self.x,self.y - self.h * 0.2)
-                self:set_control_size(self.w * 1.2, self.h * 1.2)
+                if not self._is_ani then 
+                    self._is_ani = true 
+      
+                    local w, h = self.w, self.h 
+                    self._scale = 1.2
+                    self:set_relative_size(self.relative_size or 1)
+                    self:set_position(self.x - (self.w - w) / 2 ,self.y - (self.h - h) / 2)
+                end
             end 
     
             function ui:on_button_mouse_leave()
-                self:set_position(self._.x,self._.y)
-                self:set_control_size(self._.w,self._.h)
+                if self._is_ani then 
+                    
+                    local w, h = self.w, self.h
+                    self._scale = 1
+                    self:set_relative_size(self.relative_size or 1)
+                    self:set_position(self.x - (self.w - w) / 2 ,self.y - (self.h - h) / 2)
+                    self._is_ani = false
+                end 
+                
             end 
     
             function ui:on_button_mousedown()
+                
                 self:on_button_mouse_leave()
             end 
             function ui:on_button_mouseup()
@@ -216,6 +225,7 @@ class.button = extends(class.panel){
             self._panel:set_control_size(width,height)
         end
     end,
+
 
     set_alpha = function (self,alpha)
         self.alpha = alpha

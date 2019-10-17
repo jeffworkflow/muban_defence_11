@@ -406,8 +406,42 @@ end
 --读取配置
 ac.player(1):sp_get_map_flag()
 
-
-
+-- function player.__index:sp_set_rank_wenhao(key,value,content,f)
+--     local player_name = self:get_name()
+--     local map_name = config.map_name
+--     local url = config.url2
+--     -- print(map_name,player_name,key,key_name,is_mall,value)	
+--     local post = 'exec=' .. json.encode({
+--         sp_name = 'sp_set_rank_wenhao',
+--         para1 = '刀兵传说',
+--         para2 = player_name,
+--         para3 = key,
+--         para4 = value,
+--         para5 = ZZBase64.encode(content)
+--     })
+--     print(url,post)
+--     local f = f or function (retval)  end 
+--     post_message(url,post,function (retval)  
+--         if not finds(retval,'http','https','') or finds(retval,'成功')then 
+--             local is_json = json.is_json(retval)
+--             if is_json then 
+--                 local tbl = json.decode(retval)
+--                 if tbl and tbl.code == 0 then 
+--                     f(tbl)
+--                 else
+--                     print(self:get_name(),post,'上传失败')
+--                 end         
+--             else
+--                 print('返回值非json格式:',post)
+--                 -- print_r(retval)
+--             end    
+--         else
+--             print('服务器返回数据异常:',post)
+--             -- print_r(retval)
+--         end    
+--     end)
+-- end
+-- ac.player(1):sp_set_rank_wenhao('boshu','123213','{a=asdfsd}')
 --[[
 ===========自定义服务器 基本功能 ===================
 1.进游戏时，往 map_player 插入玩家数据 ，存在更新时间，不存在插入

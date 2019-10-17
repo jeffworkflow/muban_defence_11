@@ -4,7 +4,7 @@ require 'ui.base.controls.panel'
 local font = [[
     Frame "TEXT" "text%d" {
         LayerStyle "IGNORETRACKEVENTS",
-        FrameFont "resource\fonts\fonts.ttf", %f, "", 
+        FrameFont "resource\fonts\FZHTJW.TTF", %f, "", 
     }
 ]]
 
@@ -33,6 +33,7 @@ class.text = extends(class.panel){
     align_map = {
         --自动换行
         auto_newline     = -1,
+        auto_size        = -2,
 
         topleft         = 0,
         top             = 1,
@@ -54,7 +55,7 @@ class.text = extends(class.panel){
         font_size = font_size or 16
         local ui = class.ui_base.create('text',x,y,width,height)
 
-        ui.align = align or 0
+        ui.align = class.text.align_map[align] or 0
         ui.font_size = font_size
         ui.__index = class.text
 
@@ -83,7 +84,7 @@ class.text = extends(class.panel){
         --ui._type = string.format('%s%d',ui._type,font_size)
 
 
-        ui.id = japi.CreateFrameByTagName( ui._base, ui._name, panel.id, ui._type,align or 0)
+        ui.id = japi.CreateFrameByTagName( ui._base, ui._name, panel.id, ui._type,math.max(0,ui.align))
         if ui.id == nil or ui.id == 0 then 
             panel:destroy()
             class.ui_base.destroy(ui)
@@ -115,10 +116,50 @@ class.text = extends(class.panel){
         class.ui_base.destroy(self)
     end,
 
+    show = function (self)
+        self._panel:show()
+        class.ui_base.show(self)
+    end,
+
+    hide = function (self)
+        self._panel:hide()
+        class.ui_base.hide(self)
+    end,
+
+    get_width = function (self)
+        return japi.FrameGetTextWidth(self.id) / 0.8 * 1920
+    end,
+
+    get_height = function (self)
+        return japi.FrameGetTextHeight(self.id) / 0.6 * 1080
+    end,
+
     set_text = function (self,text)
-        if text ~= self:get_text() then 
-            japi.FrameSetText(self.id,text)
-        end    
+        japi.FrameSetText(self.id,text)
+
+        if self.align == -2 then 
+            local id = self._panel.id 
+
+            local width = self:get_width()
+            local height = self:get_height()
+
+            if width > 0 and height > 0 then 
+                self:set_control_size(width,height)
+                if self.parent then 
+                    self.parent:set_control_size(width,height)
+                end 
+            end 
+        elseif self.normal_image ~= 'Transparent.tga' then
+            --game.wait(100, function ()
+            --    if self.id then 
+            --        local width = self:get_width()
+            --        local height = self:get_height()
+            --        if width > 0 and height > 0 then 
+            --            self:set_control_size(width,height)
+            --        end 
+            --    end 
+            --end)
+        end 
     end,
 
     get_text = function (self)
@@ -131,12 +172,21 @@ class.text = extends(class.panel){
     end,
 
     set_size = function (self,size,path)
-        local real_size = size * self.font_size * (self.relative_size or 1)
+ 
+        local real_size = size * self.font_size * (self.relative_size or 1) * (self.default_size or 1)
         self.size = size 
+
         path = path or 'C:\\Windows\\Fonts\\simhei.ttf'
+
+        if self._real_size == real_size and self.path == path then 
+            return 
+        end 
+
+        self._real_size = real_size 
+        self.font_path = path 
         --path = path or 'resource\\Fonts\\FZHTJW.ttf'
+  
         japi.FrameSetTextFont(self.id,path,real_size / 1000)
-        self:set_spacing(0.05)
     end,
 
     set_color = function (self,...)
@@ -174,7 +224,8 @@ class.text = extends(class.panel){
         
         self.w = width 
         self.h = height
-        if self.align == -1 or self.align == 'auto_newline' then 
+      
+        if self.align == -1 then 
             class.panel.set_control_size(self,width,height)
         end
         self._panel:set_control_size(width,height)

@@ -75,7 +75,7 @@ class.model = extends(class.panel){
     end,
 
 
-    --同单位一样的 按照索引播放指定动画
+    --同单位一样的 按照索引播放指定动画  
     set_animation_by_index = function (self,index)
         japi.FrameSetAnimationByIndex(self.id,index)
     end,
@@ -89,7 +89,6 @@ class.model = extends(class.panel){
 
     set_color = function (self,color)
         self.color = color 
-        print('设置模型',self.id,color)
         japi.FrameSetModelColor(self.id,color)
     end,
 

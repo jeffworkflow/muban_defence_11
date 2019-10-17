@@ -1,4 +1,5 @@
 
+
 local ui = {}
 
 
@@ -63,8 +64,7 @@ ui.send_message = function (info)
         print("字符串太长了",msg,debug.traceback())
         return
     end 
-    japi.DzSyncData("ui",msg)
-    -- japi.SendCustomMessage(msg)
+    japi.SendCustomMessage(msg)
 end
 
 ui.on_custom_ui_event = function (message)
@@ -80,7 +80,7 @@ ui.on_custom_ui_event = function (message)
         if event_table ~= nil then
             local func = event_table[func_name]
             if func ~= nil then
-                ui.player = player
+                ui.player = ac.player(GetPlayerId(player) + 1)
                 if params == nil then
                     func()
                 else
@@ -92,19 +92,13 @@ ui.on_custom_ui_event = function (message)
 
 end
 
-ui.get_mouse_pos = function ()
-    local x = japi.GetMouseVectorX() / 1024
-    local y = (-(japi.GetMouseVectorY() - 768)) / 768 
-    x = x * 1920
-    y = y * 1080
-    return x,y
-end
+ui.get_mouse_pos = game.get_mouse_pos
 
-ui.set_mouse_pos = function (x,y)
-    x = x / 1920 * 1024
-    y = 768 - y / 1080 * 768
-    japi.SetMousePos(x,y)
-end 
+ui.set_mouse_pos = game.set_mouse_pos
+
+ui.world_to_screen = game.world_to_screen
+
+ui.screen_to_world = game.screen_to_world
 
 --将lua表编码成字符串
 ui.encode = function (tbl)
@@ -166,7 +160,7 @@ ui.encode = function (tbl)
     dump(tbl)
     return table.concat(buf)
 end
-ac.encode = ui.encode
+
 --将字符串 加载为lua表
 ui.decode = function (buf)
     local f, err = load('return '..buf)
@@ -181,7 +175,6 @@ ui.decode = function (buf)
     end
     return res
 end
-ac.decode = ui.decode
 
 ui.copy_table = function (old)
     local new = {}

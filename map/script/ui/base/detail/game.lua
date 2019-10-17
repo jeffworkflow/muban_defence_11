@@ -1,5 +1,6 @@
 local hook = require 'jass.hook'
 local japi = require 'jass.japi'
+local message = require 'jass.message'
 local error_handle = require('jass.runtime').error_handle
 local dbg = require 'jass.debug'
 
@@ -9,6 +10,7 @@ local right_is_down = false
 local is_active = true
 local width,height = 0,0
 local pointer
+
 
 
 local game_event = {}
@@ -22,9 +24,11 @@ local event_boolexpr = {}
 --回调的事件表
 local callback_table = nil
 
+--绑定世界坐标的控件
+local world_controls = {}
 
 --事件回调
-game_event_callback = function (name,...)
+local function game_event_callback(name,...)
 
     local hash_table = {}
     for index,event_table in ipairs(game_event) do
@@ -35,10 +39,12 @@ game_event_callback = function (name,...)
     end
 end
 
-game = {}
+
 game.register_event = function(module)
     table.insert(game_event, module)
 end
+
+
 game.get_mouse_pos = function ()
     local x = japi.GetMouseVectorX() / 1024
     local y = (-(japi.GetMouseVectorY() - 768)) / 768 
@@ -54,6 +60,27 @@ game.set_mouse_pos = function (x,y)
 end 
 
 
+--最后一个参数默认不用填
+game.world_to_screen = function (x, y, z)
+    local screen_x, screen_y, scale = message.world_to_screen(x, y, z)
+    if  screen_x and screen_y then 
+        return screen_x * 1920 / 0.8, screen_y * 1080 / 0.6, scale
+    end 
+end
+
+game.screen_to_world = function (x, y)
+    local screen_x, screen_y = x / 1920 * 0.8, y / 1080 * 0.6
+    return message.screen_to_world(x, y)
+end
+
+
+game.bind_world = function (control, enable)
+    if enable then 
+        world_controls[control] = true
+    else 
+        world_controls[control] = nil
+    end 
+end 
 
 function get_handle_type (handle)
     if handle == nil or handle == 0 then 
@@ -79,15 +106,15 @@ end
 ht = InitHashtable()
 
 --创建一个异步运行的计时器 用来检测拖拽时间
-local timer_handle = CreateTimer()
-TimerStart(timer_handle,0,false,function ()
+
+game.wait(0,function ()
     base.on_init()
 end)
 
 
 --创建一个同步的计时器 来检测 窗口是否被激活
 --如果不为激活 则响应鼠标弹起事件
-TimerStart(CreateTimer(),0.03,true,function ()
+game.loop(0.03,function ()
     local object = japi.GetTargetObject()
     if object ~= nil then 
         if object ~= pointer  then 
@@ -132,7 +159,7 @@ local function register_event(event_id,callback)
     event[event_id] = callback
 end
 
-
+local clock = os.clock()
 
 --创建一个按钮 用来当做拖拽时的影子
 local texture = nil
@@ -151,7 +178,7 @@ base = {
             if button.is_drag == true then 
                 
                 width,height = button.w,button.h
-                TimerStart(timer_handle,0.15,false,function ()
+                game.wait(0.15,function ()
                     if left_is_down == true then 
                         if texture ~= nil then 
                             base.on_mouse_up()
@@ -363,8 +390,46 @@ base = {
 
     
     on_update = function ()
+        local c = os.clock()
+        local delta = c - clock 
+        clock = c 
+
         base.on_mouse_move()
-        game_event_callback('on_update')
+        game_event_callback('on_update', delta)
+
+        for control in pairs(world_controls) do 
+            local unit = control.world_unit 
+            
+            local x, y, z 
+
+            if unit then 
+                if unit.removed then
+                    control:destroy()
+                    goto continue
+                else 
+                    if (not unit:is_alive()) or unit:has_restriction '隐藏' then 
+                        control:hide()
+                        goto continue
+                    else 
+                        x, y, z = unit:get_point():get()
+                        z = z + message.unit_overhead(unit.handle)
+                    end 
+                end 
+            else 
+                x, y, z = control.x, control.y, control.z
+            end 
+            local screen_x, screen_y, scale = game.world_to_screen(x, y, z)
+            
+            if screen_x == nil or screen_x < 0 or screen_y < 32 or screen_x > 1920 or screen_y > 820 then 
+                control:hide()
+            else 
+                control:show()
+                control:set_position(screen_x - control.w / 2, screen_y - control.h / 2)
+                control:set_relative_size(scale, true)
+            end 
+
+            ::continue::
+        end 
     end,
 
 

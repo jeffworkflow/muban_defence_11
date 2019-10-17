@@ -281,7 +281,9 @@ class.ui_base = {
         if self.id == nil or self.id == 0 then 
             return 
         end
-        
+        if self.bind_world then 
+            self:unbind_world()
+        end 
         --从父控件表中移除该控件
         if self.parent and self.parent.children then 
             for i,child in ipairs(self.parent.children) do 
@@ -369,6 +371,7 @@ class.ui_base = {
             if type(self.align) == 'string' then
                 align = self.align_map[self.align] or 0
             end
+
             align = math.max(align,0)
             japi.FrameSetPoint(self.id,align,self._panel.id,align,0,0)
             return
@@ -386,6 +389,14 @@ class.ui_base = {
         end
     end,
 
+    get_width = function (self)
+        return japi.FrameGetWidth(self.id) / 0.8 * 1920
+    end,
+
+    get_height = function (self)
+        return japi.FrameGetHeight(self.id) / 0.6 * 1080
+    end,
+
     --设置控件大小
     set_control_size = function (self,width,height)
         if self.id == nil or self.id == 0 then 
@@ -401,20 +412,27 @@ class.ui_base = {
         self:is_in_scroll_panel()
     end,
 
+
     --一次性设置所有控件相对原本的大小
-    set_relative_size = function (self,size)
-        local old_size = self.relative_size or 1 
-        local real_size = 1 / old_size * size 
+    set_relative_size = function (self, size, not_scale_font)
+        local scale = self._scale or 1
+        local default = self.default_size or 1
+        local old_size = (self.relative_size or 1) * default
+
+        local real_size = 1 / old_size * size * scale
         self.relative_size = size 
-        if self.set_size then 
+        self.default_size = scale
+
+        if self.set_size and not_scale_font ~= true then 
             self:set_size(self.size or 1)
         end 
         if self._control == nil then 
             self:set_control_size(self.w * real_size,self.h * real_size)
         end
         for index,child in ipairs(self.children) do
-            if child._control == nil then 
-                child:set_relative_size(size)
+            if child._control == nil then
+                child._scale = scale 
+                child:set_relative_size(size, not_scale_font)
                 child:set_position(child.x * real_size,child.y * real_size)
             end
         end
@@ -605,6 +623,36 @@ class.ui_base = {
        
 
         return false 
+    end,
+
+    --绑定在单位头顶 血条位置
+    bind_unit_overhead = function (self, unit)
+
+        self.world_unit = unit
+        self.bind_world = true 
+        game.bind_world(self, true)
+    end,
+
+    --绑定世界坐标
+    set_world_position = function (self, x, y, z)
+        if self.parent then 
+            print('必须是底层控件才可以绑定到世界坐标', debug.traceback())
+            return 
+        end 
+
+        self.world_x = x or 0
+        self.world_y = y or 0
+        self.world_z = z or 0
+
+        self.bind_world = true 
+
+        game.bind_world(self, true)
+    end,
+
+    unbind_world = function (self)
+        self.bind_world = false 
+        self.world_unit = nil
+        game.bind_world(self, false)
     end,
 }
 
