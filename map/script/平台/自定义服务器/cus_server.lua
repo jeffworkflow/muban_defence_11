@@ -46,6 +46,7 @@ function player.__index:GetServerValue(KEY,f)
                     ui.send_message(info)
                 end)   
             end
+            f(true)
         else 
             f(false)
             print('数据读取失败')
