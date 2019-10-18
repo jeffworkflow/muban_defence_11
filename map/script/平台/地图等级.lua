@@ -223,26 +223,26 @@ function mt:on_add()
         local skl = hero:add_skill('神仙水','隐藏')
         skl:set_level(1)
     end    
-    if self.map_level >=40 then 
-        local skl = hero:add_skill('永久超级赞助','隐藏')
-        skl:set_level(1)
-    end  
-    if self.map_level >=38 then   
-        local skl = hero:add_skill('孤风青龙领域2','隐藏')
-        skl:set_level(1)
-    end  
-    if self.map_level >=45 then   
-        local skl = hero:add_skill('远影苍龙领域2','隐藏')
-        skl:set_level(1)
-    end 
-    if self.map_level >=50 then   
-        local skl = hero:add_skill('真龙天子2','隐藏')
-        skl:set_level(1)
-    end 
-    if self.map_level >=55 then   
-        local skl = hero:add_skill('齐天大圣B2','隐藏')
-        skl:set_level(1)
-    end 
+    -- if self.map_level >=40 then 
+    --     local skl = hero:add_skill('永久超级赞助','隐藏')
+    --     skl:set_level(1)
+    -- end  
+    -- if self.map_level >=38 then   
+    --     local skl = hero:add_skill('孤风青龙领域2','隐藏')
+    --     skl:set_level(1)
+    -- end  
+    -- if self.map_level >=45 then   
+    --     local skl = hero:add_skill('远影苍龙领域2','隐藏')
+    --     skl:set_level(1)
+    -- end 
+    -- if self.map_level >=50 then   
+    --     local skl = hero:add_skill('真龙天子2','隐藏')
+    --     skl:set_level(1)
+    -- end 
+    -- if self.map_level >=55 then   
+    --     local skl = hero:add_skill('齐天大圣B2','隐藏')
+    --     skl:set_level(1)
+    -- end 
     
 end    
 

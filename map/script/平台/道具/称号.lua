@@ -290,7 +290,7 @@ tip = [[
 |cff00ff00+488   攻击减甲|r
 |cff00ff00+488%  全伤加深|r
 |cff00ffff+50%   每秒回血|r
-|cff00ffff+10%  闪避|r
+|cff00ffff+10%   闪避|r
 |cffff0000+15%   会心几率|r
 |cffff0000+150%  会心伤害|r
 

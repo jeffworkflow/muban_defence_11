@@ -202,6 +202,7 @@ local mt = ac.skill['至尊宝皮肤B']
 mt{
 is_skill = 1,
 is_order = 1,
+title ='至尊宝',
 --等级
 level = 0,
 --图标

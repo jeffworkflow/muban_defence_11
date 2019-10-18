@@ -432,7 +432,7 @@ is_skill = 1,
 --等级
 level = 0,
 strong_hero = 1, --作用在人身上
-title ='齐天大圣B（新版）',
+title ='齐天大圣',
 --图标
 art = [[cwqtds.blp]],
 --说明
@@ -449,9 +449,7 @@ tip = [[
 |cff00ffff+50%  会心伤害|r
 |cffff0000+40 每秒加护甲|r
 |cffff0000杀敌数额外+1|r
-|cffff0000练功房怪物数量+3|r
-
-|cffdf19d0【唯一被动】每秒减少宠物周围敌人血量的5%（对BOSS无效）
+|cffff0000练功房怪物数量+5|r
 
 |cffffff00齐天大圣+真龙天子激活：攻击减甲+288，全伤加深+288%
 
@@ -470,10 +468,10 @@ effect = [[qtds.mdx]],
 }
 function mt:on_add()
     --唯一被动
-    self.owner:add_skill('火焰1','隐藏')
+    -- self.owner:add_skill('火焰1','隐藏')
     --练功房数量
     local p = self.owner:get_owner()
-    p.more_unit = (p.more_unit or 0) + 3
+    p.more_unit = (p.more_unit or 0) + 5
 end    
 
 
@@ -653,9 +651,9 @@ mt{
     ]],
 }
 mt.skills = {
-    '魅影','紫霜幽幻龙鹰','天马行空','骨龙','小悟空',
+    '冰龙','魅影','紫霜幽幻龙鹰','天马行空','骨龙','小悟空','齐天大圣B',
 }
--- '耐瑟龙','冰龙','精灵龙','奇美拉','宠物皮肤-下一页','齐天大圣',
+-- '耐瑟龙','精灵龙','奇美拉','宠物皮肤-下一页',
 function mt:on_add()
     local hero = self.owner 
     local player = hero:get_owner()
