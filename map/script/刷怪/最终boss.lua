@@ -28,7 +28,7 @@ ac.game:event '游戏-最终boss' (function(trg)
         ac.final_boss_death = true
         if ac.g_game_degree_attr >= 11 then 
             -- print(unit:get_point())
-            ac.func_give_suipian(unit:get_point()) --散落碎片
+            -- ac.func_give_suipian(unit:get_point()) --散落碎片
             --无尽开始
             ac.game:event_notify('游戏-无尽开始')
         else    
@@ -36,7 +36,7 @@ ac.game:event '游戏-最终boss' (function(trg)
             ac.game:event_notify('游戏-结束',true)
             --创建神龙
             local x,y = boss:get_point():get()
-            local shop4 = ac.shop.create('神龙',x,y,270)
+            -- local shop4 = ac.shop.create('神龙',x,y,270)
         end    
     end) ; 
     

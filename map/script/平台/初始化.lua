@@ -191,7 +191,22 @@ ac.wait(10,function()
         {'qcfh','七彩凤凰'},
         {'lsywly','罗刹夜舞领域'},
 
+        {'xwly','血雾领域'},
+        {'bwllc','霸王莲龙锤'},
+        {'mdxy','梦蝶仙翼'},
+        {'my','魅影'},
+        {'zsyhly','紫霜幽幻龙鹰'},
+        {'tmxk','天马行空'},
 
+        {'pa','Pa'},
+        {'xln','手无寸铁的小龙女'},
+        {'gy','关羽'},
+
+        {'jhxx','江湖小虾'},
+        {'mrzx','明日之星'},
+        {'wlgs','武林高手'},
+        {'jsqc','绝世奇才'},
+        {'wzsj','威震三界'},
     }
     for i,data in ipairs(ac.mall) do 
         table.insert(temp_mall,data)
@@ -413,11 +428,11 @@ for i=1,10 do
                 then 
                     local key = ac.server.name2key(name)
                     -- player:SetServerValue(key,1) 自定义服务器
-                    if finds(name,'Pa','小龙女','关羽') then 
-                       player:Map_SaveServerValue(key,1) --网易服务器
-                    else 
+                    -- if finds(name,'Pa','小龙女','关羽') then 
+                    --    player:Map_SaveServerValue(key,1) --网易服务器
+                    -- else 
                        player.cus_server[name] = 1
-                    end      
+                    -- end      
                     -- player:sendMsg('激活成功：'..key)
                 end   
             end   
@@ -460,7 +475,8 @@ local function wabao2award()
                         then 
                             local key = ac.server.name2key(name)
                             -- player:SetServerValue(key,1) 自定义服务器
-                            player:Map_SaveServerValue(key,1) --网易服务器
+                            -- player:Map_SaveServerValue(key,1) --网易服务器
+                            player.cus_server[name] = 1
                             -- player:sendMsg('激活成功：'..key)
                         end    
                     end    
@@ -613,7 +629,9 @@ local function wldh2award()
                     then 
                         local key = ac.server.name2key(name)
                         -- player:SetServerValue(key,1) 自定义服务器
-                        player:Map_SaveServerValue(key,1) --网易服务器
+                        -- player:Map_SaveServerValue(key,1) --网易服务器
+                        
+                        player.cus_server[name] = 1
                         -- player:sendMsg('激活成功：'..key)
                     end    
                 end   

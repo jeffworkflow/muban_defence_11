@@ -64,6 +64,25 @@ local item = {
     
     
 }
+
+if record_11 then 
+    item = {
+        {'BBDLB','百变英雄礼包'},
+        {'SJBCLB','赛季补偿礼包'},
+    
+        --key,key_name,地图等级要求
+        {'WXHP','五星好评礼包',3},
+        {'XHB','夏侯霸',5},
+        {'YJ','虞姬',10},
+        {'TJXM','太极熊猫',15},
+        {'DRJ','狄仁杰',25},
+        {'YND','伊利丹',32},
+
+        {'level','地图等级'},
+        {'exp','地图经验'},
+    }
+    -- print(item[1][1],item[1][2],ac.player(1):Map_HasMallItem(item[1][1]))
+end    
 ac.mall = item 
 
 --@设计 从网易读取并保存到map_test 只有商城、地图等级。
@@ -260,11 +279,6 @@ local cus_key = {
     {'wlgs','武林高手'},
     {'jsqc','绝世奇才'},
     {'wzsj','威震三界'},
-    -- {'jhxx','江湖小虾'},
-    -- {'mrzx','明日之星'},
-    -- {'wlgs','武林高手'},
-    -- {'jsqc','绝世奇才'},
-    -- {'wzsj','威震三界'},
     
 
     {'wljf','比武积分'},

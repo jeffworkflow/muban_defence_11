@@ -31,7 +31,7 @@ class.player_info_panel = extends(class.panel){
         -- panel.close_button = panel:add_button('image\\操作栏\\cross.blp',panel.w - 32-5,5,32,32,true)
         panel.titles = {
             '地图等级',
-            '评论数',
+            -- '评论数',
             '宠物等级',
             '挖宝积分',
             '勇士徽章',
@@ -60,17 +60,17 @@ class.player_info_panel = extends(class.panel){
     
         }
         panel.page = 1 
-        local next_button = panel:add_button('image\\right.blp',773,371,64,64)
-        function next_button:on_button_clicked()
-            if panel.page == 1  then 
-                panel.page = 2
-                self:set_normal_image('image\\left.blp')
-            else
-                panel.page = 1
-                self:set_normal_image('image\\right.blp')
-            end    
-            panel:fresh()
-        end 
+        -- local next_button = panel:add_button('image\\right.blp',773,371,64,64)
+        -- function next_button:on_button_clicked()
+        --     if panel.page == 1  then 
+        --         panel.page = 2
+        --         self:set_normal_image('image\\left.blp')
+        --     else
+        --         panel.page = 1
+        --         self:set_normal_image('image\\right.blp')
+        --     end    
+        --     panel:fresh()
+        -- end 
         --属性列数
         local col ={
             --x,y,w,h,字体大小，对齐方式
