@@ -41,6 +41,7 @@ native  GetStoredBoolean				takes gamecache cache, string missionKey, string key
 native  GetStoredString					takes gamecache cache, string missionKey, string key returns string
 native  RestoreUnit						takes gamecache cache, string missionKey, string key, player forWhichPlayer, real x, real y, real facing returns unit
 ]])
+ac.flag_use_mall = true --默认使用商城数据
 
 local has_record = not not japi.InitGameCache
 log.debug('积分环境', has_record)
@@ -80,6 +81,7 @@ end
 --判断玩家是否有商城道具(用来做判断皮肤，人物，地图内特权VIP)等等
 function ac.player.__index:Map_HasMallItem(key)
     if has_record then
+		-- return true --本地测试
 		return japi.HaveStoredInteger(self:record(), "状态", key) 
 	end
 	print('warning: has_record为空')
@@ -159,7 +161,7 @@ function ac.player.__index:Map_SaveServerValue(name, value)
     if not self.cus_server then 
         self.cus_server ={}
     end    
-    local key_name = ac.server.key2name(name)
+	local key_name = ac.server.key2name(name)
     self.cus_server[key_name] = tonumber(value)
 end
 
@@ -228,26 +230,50 @@ function ac.clear_all_server(...)
     end
 end
 
---获取地图等级
-function ac.player.__index:Map_GetMapLevel()
-    local value = self:Map_GetServerValue 'level'
-	log.debug(('获取RPG等级:[%s] --> [%s]'):format(self:get_name(), value))
-	return value
-end
+--获取玩家地图等级
+if global_test then 
+    -- function ac.player.__index:Map_GetMapLevel()
+    --     if ac.flag_use_mall then 
+    --         return (self.map_level or 40) + (self['局内地图等级'] or 0)
+    --     else     
+    --         return 1
+    --     end    
+	-- end
+	
+    function ac.player.__index:Map_GetMapLevel()
+        local handle = self.handle
+        local level =self.cus_server and self.cus_server['地图等级'] or 1 
+        level = level + (self['局内地图等级'] or 0)
+        if not ac.flag_use_mall then 
+            level = 1
+        end       
+        return level
+    end
+else
+    function ac.player.__index:Map_GetMapLevel()
+        local handle = self.handle
+        local level =self.cus_server and self.cus_server['地图等级'] or 1 
+        level = level + (self['局内地图等级'] or 0)
+        if not ac.flag_use_mall then 
+            level = 1
+        end       
+        return level
+    end
+end 
 
 function ac.game:score_game_end()
 	write_score("$", "GameEnd", 0)
 end
 
 --自己模拟地图等级
-local time =10
+local time =120
 ac.loop(time * 1000,function()
     for i = 1,10 do
         local p = ac.player[i]
 		if p:is_player() then
 			p:AddServerValue('exp',time) --自定义服务器
 			-- p:Map_AddServerValue('exp',60) 
-			local exp = p.cus_server2['exp'] or 0 
+			local exp = p.cus_server2 and p.cus_server2['地图经验'] or 0 
             p:Map_SaveServerValue('level',math.floor(math.sqrt(exp/3600)+1)) --当前地图等级=开方（经验值/3600）+1
         end
     end
@@ -264,8 +290,8 @@ ac.wait(100,function()
 						p:sendMsg('读取地图等级失败!')
 					end	
 				end)
-				ac.wait(500,function()
-					local exp = p.cus_server2 and p.cus_server2['exp'] or 0 
+				ac.wait(1000,function()
+					local exp = p.cus_server2 and p.cus_server2['地图经验'] or 0 
 					print(exp)
 					p:Map_SaveServerValue('level',math.floor(math.sqrt(exp/3600)+1)) --当前地图等级=开方（经验值/3600）+1
 				end)

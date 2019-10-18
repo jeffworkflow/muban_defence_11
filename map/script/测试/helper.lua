@@ -270,6 +270,13 @@ function helper:dtdj(lv)
 	end    
 end
 
+--地图等级相关
+function helper:get_map_lv()
+	local p = self and self:get_owner() or ac.player(ac.player.self.id)
+	print(p:Map_GetMapLevel())
+
+
+end	
 function helper:reload_mall(flag)
 	local p = self and self:get_owner() or ac.player(ac.player.self.id) 
 	local peon = p.peon

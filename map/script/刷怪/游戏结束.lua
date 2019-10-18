@@ -53,7 +53,7 @@ ac.game:event '游戏-结束' (function(trg,flag)
 		ac.player.self:sendMsg("【游戏胜利】|cff00ff00请尽快挑战神龙 |cffff00005分钟后游戏结束|r")
 		ac.timer_ex
         {
-            time = 300,
+            time = 30,
             title = "游戏结束倒计时",
             func = function ()
                 EndGame(true)
