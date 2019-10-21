@@ -11,7 +11,8 @@ class.wjphb_panel = extends(class.panel){
 
         --左边菜单 
         panel.menu_titles = {
-            '深渊乱斗无尽','无限乱斗无尽','无上之境无尽','斗破苍穹无尽','修罗模式无尽','比武','挖宝',
+            -- '深渊乱斗无尽','无限乱斗无尽','无上之境无尽','斗破苍穹无尽','修罗模式无尽',
+            '比武','挖宝',
         }
         local menu_press_status = 'image\\排行榜\\menu.tga'
         local menu_line = 'image\\排行榜\\menu_line.tga'
@@ -335,20 +336,20 @@ game.register_event(game_event)
 
 
 local rank = {
-    {'wjxlms','修罗模式无尽'},
-    {'wjdpcq','斗破苍穹无尽'},
-    {'wjwszj','无上之境无尽'},
-    {'wjwxld','无限乱斗无尽'},
-    {'wjsyld','深渊乱斗无尽'},
+    -- {'wjxlms','修罗模式无尽'},
+    -- {'wjdpcq','斗破苍穹无尽'},
+    -- {'wjwszj','无上之境无尽'},
+    -- {'wjwxld','无限乱斗无尽'},
+    -- {'wjsyld','深渊乱斗无尽'},
     {'cntwb','挖宝'},
     {'cntwl','比武'},
 
 
-    {'today_wjxlms','今日修罗模式无尽'},
-    {'today_wjdpcq','今日斗破苍穹无尽'},
-    {'today_wjwszj','今日无上之境无尽'},
-    {'today_wjwxld','今日无限乱斗无尽'},
-    {'today_wjsyld','今日深渊乱斗无尽'},
+    -- {'today_wjxlms','今日修罗模式无尽'},
+    -- {'today_wjdpcq','今日斗破苍穹无尽'},
+    -- {'today_wjwszj','今日无上之境无尽'},
+    -- {'today_wjwxld','今日无限乱斗无尽'},
+    -- {'today_wjsyld','今日深渊乱斗无尽'},
     {'today_cntwb','今日挖宝'},
     {'today_cntwl','今日比武'},
 }

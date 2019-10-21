@@ -210,12 +210,12 @@ function ac.player.__index:clear_server(...)
             -- player:SetServerValue(key,0) 自定义服务器
             
             -- player:Map_SaveServerValue(key,0) --网易服务器
-            player:Map_SaveServerValue(key) --网易服务器
+            player:Map_SaveServerValue(key,0) --网易服务器
         end    
     else
         for i,key in ipairs(...) do
             -- print(key,value)
-            player:Map_SaveServerValue(key[1]) --网易服务器
+            player:Map_SaveServerValue(key[1],0) --网易服务器
         end   
     end    
 end    
