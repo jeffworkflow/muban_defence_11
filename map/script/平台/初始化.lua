@@ -75,6 +75,7 @@ for i=1,10 do
             -- print('存档数据:',key,key_name,val)
         end
         ac.wait(1100,function()
+            print('获取地图等级：',player:Map_GetMapLevel())
             player:event_notify '读取存档数据'
             player:event_notify '读取存档数据后'
         end)
@@ -643,48 +644,62 @@ wldh2award()
 
 --开始进行地图等级集中过滤
 ac.server.need_map_level = {}
+for i,data in ipairs(ac.cus_server_key) do
+    if data[3] then 
+        -- print(data[2],data[3])
+        ac.server.need_map_level[data[2]] = data[3]
+    end    
+end
+for name,data in pairs(star2award) do
+    ac.server.need_map_level[name] = data[3]
+end
+for name,data in pairs(wabao2award_data) do
+    ac.server.need_map_level[name] = data[2]
+end
+for name,data in pairs(shenlong2award_data) do
+    ac.server.need_map_level[name] = data[2]
+end
+for name,data in pairs(ttxd2award1) do
+    ac.server.need_map_level[name] = data[2]
+end
+
+for name,data in pairs(wldh2award_data) do
+    ac.server.need_map_level[name] = data[2]
+end
+--全部初始化
 local function init_need_map_level()
-    for i,data in ipairs(ac.cus_server_key) do
-        if data[3] then 
-            -- print(data[2],data[3])
-            ac.server.need_map_level[data[2]] = data[3]
-        end    
-    end
-
-    for name,data in pairs(star2award) do
-        ac.server.need_map_level[name] = data[3]
-    end
-    for name,data in pairs(wabao2award_data) do
-        ac.server.need_map_level[name] = data[2]
-    end
-    for name,data in pairs(shenlong2award_data) do
-        ac.server.need_map_level[name] = data[2]
-    end
-    for name,data in pairs(ttxd2award1) do
-        ac.server.need_map_level[name] = data[2]
-    end
-
-    for name,data in pairs(wldh2award_data) do
-        ac.server.need_map_level[name] = data[2]
-    end
-
     for i=1,10 do 
         local p = ac.player(i)
         if p:is_player() then 
-            for name,val in pairs(p.cus_server) do 
-                local real_val = (p:Map_GetMapLevel() >= (ac.server.need_map_level[name] or 0))and val or 0 
-                if name ~= '全属性' then 
-                    -- print('地图等级',p:Map_GetMapLevel(),ac.server.need_map_level[name],val)
-                    -- print('经过地图等级之后的数据：',name,val,real_val)
-                    p.cus_server[name] = real_val
-                end    
-            end    
+            p:restrict_map_level()
         end   
     end
 end;
 ac.init_need_map_level =init_need_map_level
 
-ac.wait(1300,function()
-    ac.init_need_map_level()
-end)
+function ac.player.__index:restrict_map_level() 
+    local p = self
+    for name,val in pairs(p.cus_server) do 
+        local real_val = (p:Map_GetMapLevel() >= (ac.server.need_map_level[name] or 0))and val or 0 
+        if name ~= '全属性' then 
+            -- print('地图等级',p:Map_GetMapLevel(),name,val,real_val)
+            -- print('经过地图等级之后的数据：',name,val,real_val)
+            p.cus_server[name] = real_val
+        end    
+    end 
+end  
+--读取存档后 重新根据地图等级进行限制
+for i=1,10 do 
+    local p = ac.player(i)
+    if p:is_player() then 
+        p:event '读取存档数据后' (function()
+            p:restrict_map_level()
+        end)
+    end   
+end
+
+
+-- ac.wait(1300,function()
+--     ac.init_need_map_level()
+-- end)
 

@@ -140,8 +140,9 @@ function ac.player.__index:Map_GetServerValue(name)
 	if not score[name][self.id] then
 		score[name][self.id] = read_score(get_key(self), name)
 	end
+	local value = tonumber(score[name][self.id]) or 0
 	log.debug(('获取RPG积分:[%s][%s] --> [%s]'):format(self:get_name(), name, score[name][self.id]))
-	return tonumber(score[name][self.id]) or 0
+	return value
 end
 
 function ac.player.__index:Map_SaveServerValue(name, value)
@@ -231,35 +232,15 @@ function ac.clear_all_server(...)
 end
 
 --获取玩家地图等级
-if global_test then 
-    -- function ac.player.__index:Map_GetMapLevel()
-    --     if ac.flag_use_mall then 
-    --         return (self.map_level or 40) + (self['局内地图等级'] or 0)
-    --     else     
-    --         return 1
-    --     end    
-	-- end
-	
-    function ac.player.__index:Map_GetMapLevel()
-        local handle = self.handle
-        local level =self.cus_server and self.cus_server['地图等级'] or 1 
-        level = level + (self['局内地图等级'] or 0)
-        if not ac.flag_use_mall then 
-            level = 1
-        end       
-        return level
-    end
-else
-    function ac.player.__index:Map_GetMapLevel()
-        local handle = self.handle
-        local level =self.cus_server and self.cus_server['地图等级'] or 1 
-        level = level + (self['局内地图等级'] or 0)
-        if not ac.flag_use_mall then 
-            level = 1
-        end       
-        return level
-    end
-end 
+function ac.player.__index:Map_GetMapLevel()
+	local handle = self.handle
+	local level =self.cus_server and self.cus_server['地图等级'] or 1 
+	level = level + (self['局内地图等级'] or 0)
+	if not ac.flag_use_mall then 
+		level = 1
+	end       
+	return level
+end
 
 function ac.game:score_game_end()
 	write_score("$", "GameEnd", 0)
@@ -279,7 +260,7 @@ ac.loop(time * 1000,function()
     end
 end)
 --开局就从服务器读取经验
-ac.wait(100,function()
+ac.wait(0,function()
     for i = 1,10 do
         local p = ac.player[i]
 		if p:is_player() then
@@ -287,14 +268,13 @@ ac.wait(100,function()
 			p:GetServerValue('exp',function(flag)
 				ac.wait(0,function()
 					if not flag then 
-						p:sendMsg('读取地图等级失败!')
+						p:sendMsg('|cffff0000读取地图等级失败，请重启魔兽后再试或进群反馈（941405246）|r')
+						p:sendMsg('|cffff0000读取地图等级失败，请重启魔兽后再试或进群反馈（941405246）|r')
+						p:sendMsg('|cffff0000读取地图等级失败，请重启魔兽后再试或进群反馈（941405246）|r')
 					end	
 				end)
-				ac.wait(1000,function()
-					local exp = p.cus_server2 and p.cus_server2['地图经验'] or 0 
-					print(exp)
-					p:Map_SaveServerValue('level',math.floor(math.sqrt(exp/3600)+1)) --当前地图等级=开方（经验值/3600）+1
-				end)
+				-- ac.wait(500,function()
+				-- end)
 			end) 
         end
     end

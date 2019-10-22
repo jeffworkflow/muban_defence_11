@@ -34,7 +34,7 @@ function player.__index:GetServerValue(KEY,f)
             local tbl = json.decode(retval)
             for k, v in ipairs(tbl) do
                 -- --发起同步请求
-                ac.wait(10,function()
+                ac.wait(0,function()
                     local info = {
                         type = 'cus_server',
                         func_name = 'on_get',
@@ -151,6 +151,11 @@ local event = {
         -- print('自定义服务器读取完后同步的数据',key,name,val)
         if key =='jifen' then 
             player.jifen = tonumber(val)
+        end   
+        if key =='exp' then 
+            local exp = tonumber(val)
+            print(player,'获取地图经验',exp)
+            player:Map_SaveServerValue('level',math.floor(math.sqrt(exp/3600)+1)) --当前地图等级=开方（经验值/3600）+1
         end    
     end,
     --从自定义服务器读取数据
@@ -167,9 +172,10 @@ local event = {
             -- print('同步后的数据：',player:get_name(),name,player.cus_server2[name])
             if key =='jifen' then 
                 player.jifen =  tonumber(val)
-            end    
+            end  
         end    
         -- player:event_notify('读取存档数据')
+        -- player:event_notify('读取存档数据后')
 
     end,
 }
