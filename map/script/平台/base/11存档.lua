@@ -81,8 +81,8 @@ end
 --判断玩家是否有商城道具(用来做判断皮肤，人物，地图内特权VIP)等等
 function ac.player.__index:Map_HasMallItem(key)
     if has_record then
-		return true --本地测试
-		-- return japi.HaveStoredInteger(self:record(), "状态", key) 
+		-- return true --本地测试
+		return japi.HaveStoredInteger(self:record(), "状态", key) 
 	end
 	print('warning: has_record为空')
     --测试时，默认都为空

@@ -214,7 +214,7 @@ ac.wait(20,function()
             local player = get_first_player()
             local list = {
                 { name = "普通模式" },
-                -- { name = "修罗模式(无尽)" },
+                { name = "修罗模式(无尽)" },
                 -- { name = "斗破苍穹(无尽)" },
                 -- { name = "无上之境(无尽)" },
                 -- { name = "无限乱斗(快速)" },
@@ -270,9 +270,9 @@ ac.wait(20,function()
                     -- print(index)
                     ac.flag_choose_dialog = false
                     if index == 2 then 
-                    --     ac.g_game_degree = 11
-                    --     ac.g_game_degree_attr = 11  
-                    --     ac.g_game_degree_name = "修罗模式"
+                        ac.g_game_degree = 11
+                        ac.g_game_degree_attr = 11  
+                        ac.g_game_degree_name = "修罗模式"
                     -- elseif index == 3 then 
                     --     ac.g_game_degree = 12
                     --     ac.g_game_degree_attr = 12  
@@ -289,7 +289,7 @@ ac.wait(20,function()
                     --     ac.g_game_degree = 15
                     --     ac.g_game_degree_attr = 15  
                     --     ac.g_game_degree_name = "深渊乱斗"  
-                    -- elseif index == 7 then 
+                    else
                         ac.g_game_degree = 16
                         ac.g_game_degree_attr = 2  
                         ac.g_game_degree_name = "武林大会"  
