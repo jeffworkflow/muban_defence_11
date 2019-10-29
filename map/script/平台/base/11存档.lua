@@ -81,8 +81,8 @@ end
 --判断玩家是否有商城道具(用来做判断皮肤，人物，地图内特权VIP)等等
 function ac.player.__index:Map_HasMallItem(key)
     if has_record then
-		-- return true --本地测试
-		return japi.HaveStoredInteger(self:record(), "状态", key) 
+		return true --本地测试
+		-- return japi.HaveStoredInteger(self:record(), "状态", key) 
 	end
 	print('warning: has_record为空')
     --测试时，默认都为空
@@ -234,7 +234,7 @@ end
 --获取玩家地图等级
 function ac.player.__index:Map_GetMapLevel()
 	local handle = self.handle
-	local level =self.cus_server and self.cus_server['地图等级'] or 1 
+	local level =self.cus_server and self.cus_server['地图等级'] > 0 and self.cus_server['地图等级'] or 1 
 	level = level + (self['局内地图等级'] or 0)
 	if not ac.flag_use_mall then 
 		level = 1

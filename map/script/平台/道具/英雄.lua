@@ -137,68 +137,68 @@ tip = [[
 ]],
 }
 
+-- local mt = ac.skill['至尊宝']
+-- mt{
+-- is_skill = 1,
+-- --等级
+-- level = 1,
+-- is_spellbook = 1,
+-- is_order = 2,
+-- --图标
+-- art = [[zhizunbao.blp]],
+-- --说明
+-- tip = [[
+
+-- 查看 至尊宝皮肤
+--  ]],
+-- }
+-- mt.skills = {
+--     '至尊宝皮肤A','至尊宝皮肤B',
+-- }
+-- -- mt.on_add = ac.skill['巅峰神域'].on_add
+-- function mt:on_add()
+--     local hero = self.owner 
+--     local player = hero:get_owner()
+--     -- print('打开魔法书')
+--     for index,skill in ipairs(self.skill_book) do 
+--         local has_mall = player.mall[self.name] or (player.cus_server and player.cus_server[self.name])
+--         -- print(skill.name,'所需地图等级',ac.server.need_map_level[skill.name]) and player:Map_GetMapLevel() >= (ac.server.need_map_level[skill.name]  or 0) 
+--         if has_mall and has_mall > 0 then 
+--             skill:set_level(1)
+--         end
+--     end 
+
+-- end    
+
+-- local mt = ac.skill['至尊宝皮肤A']
+-- mt{
+-- is_skill = 1,
+-- is_order = 1,
+-- --等级
+-- level = 0,
+-- --图标
+-- art = [[zhizunbao.blp]],
+-- --说明
+-- tip = [[
+
+-- |cffffe799【获得方式】：|r
+-- |cffff0000商城购买|r
+
+-- |cffFFE799【天赋属性】：|r
+-- |cffffff00【杀怪加全属性】+288*Lv
+-- 【攻击减甲】+100
+-- 【物理伤害加深】+150%
+-- 【全伤加深】+50%
+
+-- |cff00bdec【被动效果】攻击10%几率造成范围技能伤害
+-- 【伤害公式】（全属性*20+10000）*Lv
+
+-- |cffff0000【点击可更换英雄外观，天赋属性开局选取后无法更换】|r
+-- ]],
+-- effect = 'zhizunbao.mdx'
+-- }
+
 local mt = ac.skill['至尊宝']
-mt{
-is_skill = 1,
---等级
-level = 1,
-is_spellbook = 1,
-is_order = 2,
---图标
-art = [[zhizunbao.blp]],
---说明
-tip = [[
-
-查看 至尊宝皮肤
- ]],
-}
-mt.skills = {
-    '至尊宝皮肤A','至尊宝皮肤B',
-}
--- mt.on_add = ac.skill['巅峰神域'].on_add
-function mt:on_add()
-    local hero = self.owner 
-    local player = hero:get_owner()
-    -- print('打开魔法书')
-    for index,skill in ipairs(self.skill_book) do 
-        local has_mall = player.mall[self.name] or (player.cus_server and player.cus_server[self.name])
-        -- print(skill.name,'所需地图等级',ac.server.need_map_level[skill.name]) and player:Map_GetMapLevel() >= (ac.server.need_map_level[skill.name]  or 0) 
-        if has_mall and has_mall > 0 then 
-            skill:set_level(1)
-        end
-    end 
-
-end    
-
-local mt = ac.skill['至尊宝皮肤A']
-mt{
-is_skill = 1,
-is_order = 1,
---等级
-level = 0,
---图标
-art = [[zhizunbao.blp]],
---说明
-tip = [[
-
-|cffffe799【获得方式】：|r
-|cffff0000商城购买|r
-
-|cffFFE799【天赋属性】：|r
-|cffffff00【杀怪加全属性】+288*Lv
-【攻击减甲】+100
-【物理伤害加深】+150%
-【全伤加深】+50%
-
-|cff00bdec【被动效果】攻击10%几率造成范围技能伤害
-【伤害公式】（全属性*20+10000）*Lv
-
-|cffff0000【点击可更换英雄外观，天赋属性开局选取后无法更换】|r
-]],
-effect = 'zhizunbao.mdx'
-}
-
-local mt = ac.skill['至尊宝皮肤B']
 mt{
 is_skill = 1,
 is_order = 1,
@@ -715,9 +715,9 @@ tip = [[
 --特效
 effect = [[HeroSpecblue.mdx]]
 }
-
+--,'至尊宝皮肤B'
 for i,name in ipairs({
-    '赵子龙','Pa','虞姬','手无寸铁的小龙女','太极熊猫','关羽','狄仁杰','伊利丹','至尊宝皮肤A','至尊宝皮肤B','鬼厉','剑仙','关公','加百列',
+    '赵子龙','Pa','虞姬','手无寸铁的小龙女','太极熊猫','关羽','狄仁杰','伊利丹','至尊宝','鬼厉','剑仙','关公','加百列',
     '王昭君','雅典娜','不朽剑圣','魔化的小龙女','黄金圣斗士','萧若兰','复仇天神',
 }) do
     local mt = ac.skill[name]

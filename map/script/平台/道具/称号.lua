@@ -312,7 +312,7 @@ effect = [[zhenlongtianzi.mdx]],
 ['攻击减甲'] = function(self) 
     local val = 488 
     local p = self.owner:get_owner()
-    if (p.mall and p.mall['齐天大圣A'] or 0) >=1 or (p.mall and p.mall['齐天大圣B'] or 0) >=1  then 
+    if (p.mall and p.mall['齐天大圣'] or 0) >=1  then 
         val = val + 288
     end    
     return val
@@ -320,7 +320,7 @@ end,
 ['全伤加深'] = function(self) 
     local val = 488 
     local p = self.owner:get_owner()
-    if (p.mall and p.mall['齐天大圣A'] or 0) >=1 or (p.mall and p.mall['齐天大圣B'] or 0) >=1  then 
+    if (p.mall and p.mall['齐天大圣'] or 0) >=1  then 
         val = val + 288
     end    
     return val
