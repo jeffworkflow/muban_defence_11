@@ -164,10 +164,14 @@ local event = {
         if not player.cus_server2 then 
             player.cus_server2 = {}
         end    
+        if not player.mall then 
+            player.mall = {}
+        end    
         local data = ui.decode(tab_str) 
-        for key,val in sortpairs(data) do 
+        for key,val in pairs(data) do 
             local name = ac.server.key2name(key)
             player.cus_server2[name] = tonumber(val)
+            player.mall[name] = tonumber(val)
 
             -- print('同步后的数据：',player:get_name(),name,player.cus_server2[name])
             if key =='jifen' then 

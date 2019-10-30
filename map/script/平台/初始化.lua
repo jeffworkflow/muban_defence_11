@@ -29,7 +29,7 @@ end
 -- end    
 
 --初始化2 读取自定义服务器的数据 并同步 p.cus_server2[jifen] = 0 | 读取有延迟
-ac.wait(1*1000,function()
+ac.wait(10,function()
     for i=1,10 do
         local player = ac.player[i]
         if player:is_player() then
@@ -76,6 +76,7 @@ for i=1,10 do
         end
         ac.wait(1100,function()
             print('获取地图等级：',player:Map_GetMapLevel())
+            -- print('获取剑仙：',player.mall and player.mall['剑仙'])
             player:event_notify '读取存档数据'
             player:event_notify '读取存档数据后'
         end)

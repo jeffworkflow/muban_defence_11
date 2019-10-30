@@ -443,6 +443,14 @@ function ac.server.key2name(key)
             break
         end
     end  
+    --取自定义key,value)
+    for i,v in ipairs(ac.mall) do 
+        if v[1] == key then 
+            res = v[2]
+            is_mall = 1
+            break
+        end
+    end  
     is_mall = is_mall or 0   
     return  res,is_mall
 end  
@@ -463,6 +471,14 @@ function ac.server.name2key(name)
         if v[2] == name then 
             res = v[1]
             is_mall = v[4]
+            break
+        end
+    end  
+    --取自定义key,value
+    for i,v in ipairs(ac.mall) do 
+        if v[2] == name then 
+            res = v[1]
+            is_mall = 1
             break
         end
     end  
