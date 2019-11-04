@@ -16,32 +16,38 @@ mt{
 	passive = true,
 	--伤害
 	damage = function(self)
-  return ((self.owner:get('力量')+self.owner:get('智力')+self.owner:get('敏捷'))*40+10000)* self.level
+  return ((self.owner:get('力量')+self.owner:get('智力')+self.owner:get('敏捷'))*600+10000)* self.level
 end,
 	--属性加成
- ['杀怪加全属性'] = {588,1176,1764,2352,2940},
- ['减少周围护甲'] = 3500,
- ['物理伤害加深'] = 400,
- ['免伤'] = 35,
- ['全伤加深'] = 100,
+ ['杀怪加全属性'] = 8888,
+ ['攻击减甲'] = 8888,
+ ['攻击间隔'] = -1,
+ ['暴击几率'] = 50,
+ ['技暴几率'] = 50,
+ ['会心几率'] = 50,
+ ['全伤加深'] = 8888,
+ ['力量%'] = 500,
+ ['敏捷%'] = 500,
+ ['智力%'] = 500,
 
 	--介绍
-	tip = [[|cffffff00【杀怪加全属性】+588*Lv
-【减少周围护甲】+3500
-【物理伤害加深】+400%
-【免伤】+35%
-【全伤加深】+100%
+	tip = [[|cffffff00【全属性】+500%
+【杀怪加全属性】+8888
+【攻击减甲】+8888
+【攻击间隔】-1
+【全伤加深】+8888%
+【所有暴击的几率】+50%
 
-|cff00bdec【被动效果】攻击10%几率造成范围技能伤害
-【伤害公式】（全属性*40+10000）*Lv
+|cff00bdec【被动效果1】攻击10%几率造成超大范围技能伤害（伤害公式：全属性*600*Lv）
+【被动效果2】唯一被动-不灭：死亡后原地1秒重生
 
 |cff00ff00【凌波微步】按D向鼠标方向飘逸500码距离|r]],
 	--技能图标
-	art = [[guili.blp]],
+	art = [[tianzun.blp]],
 	--特效
 	effect = [[Abilities\Spells\Orc\Shockwave\ShockwaveMissile.mdl]],
 	effect1 = [[ShockwaveMissile.mdx]],
-	cool=2
+	cool=1
 }
 function mt:on_add()
     local skill = self
@@ -55,7 +61,7 @@ function mt:on_add()
 			model =  data.model,
 			speed = 5000,
 			angle = data.angle,
-			hit_area = 200,
+			hit_area = 250,
 			distance = data.distance,
 			high = 120,
 			size = data.size
@@ -99,24 +105,24 @@ function mt:on_add()
 						start = hero:get_point(),
 						model = skill.effect,
 						distance = 5000,
-						size = 1,
+						size = 1.5,
 					}
 					mvr_damage(data)
 				else 
-					ac.wait(0.25*1000,function()
+					ac.wait(0.2*1000,function()
 						local data = {
 							angle = angle,
 							start = hero:get_point(),
 							model = skill.effect1,
 							distance = 5000,
-							size = 1,
+							size = 1.5,
 						}
 						mvr_damage(data)
 					end)
 				end	
 			end	
 
-			ac.wait(1000,function()
+			ac.wait(0.8*1000,function()
 				--创建特效
 				local start_angle = math.random(360)
 				for i=1,8 do 
@@ -128,17 +134,17 @@ function mt:on_add()
 							start = new_point,
 							model = skill.effect,
 							distance = 5000,
-							size = 1,
+							size = 1.5,
 						}
 						mvr_damage(data)
 					else 
-						ac.wait(0.25*1000,function()
+						ac.wait(0.2*1000,function()
 							local data = {
 								angle = new_point/damage.target:get_point(),
 								start = new_point,
 								model = skill.effect1,
 								distance = 5000,
-								size = 1,
+								size = 1.5,
 							}
 							mvr_damage(data)
 						end)
