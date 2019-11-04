@@ -347,6 +347,8 @@ local cus_key = {
 --11存档信息
 if record_11 then 
     item = {
+        {'vip','满赞'},
+        {'tz','天尊'},
         {'20000956','金币礼包'},
         {'20000955','木材礼包'},
         {'20000939','永久赞助'},
@@ -414,27 +416,11 @@ end
 
 ac.cus_server_key = cus_key
 ac.mall = item 
-ac.server_key = {}
-local function init_server_key()
-    for i,v in ipairs(item) do
-        v[4] = 1 --表示商城道具
-        table.insert(ac.server_key,v)
-    end
-end;
-init_server_key()
 
 --通过key取 name 和 是否商城道具
 function ac.server.key2name(key)
     local res
     local is_mall
-    --取网易key,value
-    for i,v in ipairs(ac.server_key) do
-        if v[1] == key then 
-            res = v[2]
-            is_mall = v[4]
-            break
-        end    
-    end 
     --取自定义key,value
     for i,v in ipairs(ac.cus_server_key) do 
         if v[1] == key then 
@@ -457,15 +443,7 @@ end
 --通过 name 取 key
 function ac.server.name2key(name) 
     local res
-    local is_mall
-    --取网易key,value
-    for i,v in ipairs(ac.server_key) do
-        if v[2] == name then 
-            res = v[1]
-            is_mall = v[4]
-            break
-        end    
-    end 
+    local is_mall 
     --取自定义key,value
     for i,v in ipairs(ac.cus_server_key) do 
         if v[2] == name then 

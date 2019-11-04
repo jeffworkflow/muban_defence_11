@@ -132,14 +132,16 @@ function player.__index:Map_SaveServerValue(key,value)
 end
 
 
-function player.__index:Map_AddServerValue(key,value,f)
+function player.__index:Map_AddServerValue(key,value)
     if not self.cus_server then 
         self.cus_server ={}
     end    
     --保存
     local key_name = ac.server.key2name(key)
-    -- print(key_name,self.cus_server[key_name])
-    self.cus_server[key_name] = (self.cus_server[key_name] or 0 ) + tonumber(value)
+    if not self.cus_server[key_name] or self.cus_server[key_name] == 0 then 
+        self.cus_server[key_name] = self:Map_GetServerValue(key)
+    end    
+    self.cus_server[key_name] = (self.cus_server[key_name] or 0 ) + tonumber(value) 
     self:Map_SaveServerValue(key,self.cus_server[key_name])
 end
 

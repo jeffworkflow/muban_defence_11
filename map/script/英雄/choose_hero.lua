@@ -81,6 +81,8 @@ local function showHeroState(p, u)
 		'|cffff4444★★★★|r|cffeeeeee☆☆|r',
 		'|cffff2222★★★★★|r|cffeeeeee☆|r',
 		'|cffff0000★★★★★★|r|cffeeeeee|r',
+		'|cffff0000★★★★★★★|r|cffeeeeee|r',
+		'|cffff0000★★★★★★★★|r|cffeeeeee|r',
 	}
 	local difficulty_tip = '|cffffcc11【生存】 ' .. difficulty_level[hero_data.survival_lv or 1]..'\n'
 	difficulty_tip = difficulty_tip ..'|cffffcc11【攻击】 ' .. difficulty_level[hero_data.attack_lv or 1]..'\n'
@@ -147,6 +149,7 @@ local function start()
 			ix = ix + 1 
 			--创建特效
 			if name ~='' then 
+				-- print(name,ac.player.self,ac.player.self.mall and ac.player.self.mall['天尊'])
 				local name, hero_data = name,hero.hero_list[name].data
 				ac.effect(where,[[xrdh.mdx]],270,1,'origin'):remove()
 				local hero = player[16]:createHero(name, where,270)
@@ -168,7 +171,14 @@ local function start()
 
 				hero:add_effect('origin',[[modeldekan\ui\DEKAN_Tag_Ally.mdl]])
 				hero_types[name] = hero
-			end
+				if name == '天尊'  then 
+					local has_mall = (ac.player.self.mall and ac.player.self.mall['天尊'] or 0)
+					if has_mall == 0 then 
+						japi.SetUnitModel(hero.handle,[[]])
+    				    -- hero:add_restriction '隐藏' 会掉线
+					end	
+				end	
+			end	
 		end)
 	end
 	-- ac.game.hero_lists = flygroup
@@ -222,6 +232,7 @@ local function start()
 			-- print(hero_name,p.mall[hero_name])
 			local has_mall = ( p.mall and  p.mall[hero_name] )or (p.cus_server and p.cus_server[hero_name])
 			-- print(hero_name,ac.server.need_map_level[hero_name])
+			print(has_mall,p.mall[hero_name])
 			if (has_mall and has_mall > 0)
 			--    and p:Map_GetMapLevel() >= (ac.server.need_map_level[hero_name] or 0)) 
 			   or finds(hero_name,'剑圣','吉安娜','大地','希尔瓦娜斯','炼金术士','阿尔塞斯')

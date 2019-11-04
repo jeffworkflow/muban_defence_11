@@ -14,7 +14,7 @@ for i=1,10 do
         p.mall_flag = {}
     end  
     local cheating = [[
-        后山一把刀 卡卡发动机  蜗牛互娱 特朗普领航
+        后山一把刀 卡卡发动机  蜗牛互娱 特朗普领航 风潮1804
     ]]
     -- 作弊
     if finds(cheating,p:get_name()) then 
@@ -29,11 +29,12 @@ end
 -- end    
 
 --初始化2 读取自定义服务器的数据 并同步 p.cus_server2[jifen] = 0 | 读取有延迟
-ac.wait(10,function()
+ac.wait(500,function()
     for i=1,10 do
         local player = ac.player[i]
         if player:is_player() then
             if player:is_self() then 
+                print(player,'开始读取数据')
                 player:sp_get_map_test()
             end    
         end
@@ -61,27 +62,29 @@ end)
 
 
 --初始化2 读取网易服务器的数据 p.cus_server[jifen] = 0 | 读取有延迟
-for i=1,10 do
-    local player = ac.player[i]
-    if player:is_player() then
-       for index,data in ipairs(ac.cus_server_key) do
-            local key = data[1]
-            local key_name = data[2]
-            local val = player:Map_GetServerValue(key)
-            if not player.cus_server then 
-                player.cus_server = {}
+ac.wait(1100,function()
+    for i=1,10 do
+        local player = ac.player[i]
+        if player:is_player() then
+        for index,data in ipairs(ac.cus_server_key) do
+                local key = data[1]
+                local key_name = data[2]
+                local val = player:Map_GetServerValue(key)
+                if not player.cus_server then 
+                    player.cus_server = {}
+                end
+                player.cus_server[key_name] = val
+                -- print('存档数据:',key,key_name,val)
             end
-            player.cus_server[key_name] = val
-            -- print('存档数据:',key,key_name,val)
+            ac.wait(900,function()
+                print(player,' 2获取满赞：',player.mall and player.mall['满赞'])
+                print(player,' 2获取地图等级：',player:Map_GetMapLevel())
+                player:event_notify '读取存档数据'
+                player:event_notify '读取存档数据后'
+            end)
         end
-        ac.wait(1100,function()
-            print('获取地图等级：',player:Map_GetMapLevel())
-            -- print('获取剑仙：',player.mall and player.mall['剑仙'])
-            player:event_notify '读取存档数据'
-            player:event_notify '读取存档数据后'
-        end)
     end
-end
+end)
 
 --初始化3 商城数据 → 业务端
 for i=1,10 do
@@ -667,16 +670,6 @@ end
 for name,data in pairs(wldh2award_data) do
     ac.server.need_map_level[name] = data[2]
 end
---全部初始化
-local function init_need_map_level()
-    for i=1,10 do 
-        local p = ac.player(i)
-        if p:is_player() then 
-            p:restrict_map_level()
-        end   
-    end
-end;
-ac.init_need_map_level =init_need_map_level
 
 function ac.player.__index:restrict_map_level() 
     local p = self
@@ -688,7 +681,17 @@ function ac.player.__index:restrict_map_level()
             p.cus_server[name] = real_val
         end    
     end 
-end  
+end 
+--全部初始化
+local function init_need_map_level()
+    for i=1,10 do 
+        local p = ac.player(i)
+        if p:is_player() then 
+            p:restrict_map_level()
+        end   
+    end
+end;
+ac.init_need_map_level =init_need_map_level 
 --读取存档后 重新根据地图等级进行限制
 for i=1,10 do 
     local p = ac.player(i)

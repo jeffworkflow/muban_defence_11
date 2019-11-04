@@ -31,22 +31,25 @@ function player.__index:GetServerValue(KEY,f)
     post_message(url,post,function (retval)  
 
         if not finds(retval,'http','https','') or not finds(retval,'error_code')then 
-            local tbl = json.decode(retval)
-            for k, v in ipairs(tbl) do
-                -- --发起同步请求
-                ac.wait(0,function()
-                    local info = {
-                        type = 'cus_server',
-                        func_name = 'on_get',
-                        params = {
-                            [1] = KEY,
-                            [2] = tonumber(v.value),
+            local is_json = json.is_json(retval)
+            if is_json then 
+                local tbl = json.decode(retval)
+                for k, v in ipairs(tbl) do
+                    -- --发起同步请求
+                    ac.wait(0,function()
+                        local info = {
+                            type = 'cus_server',
+                            func_name = 'on_get',
+                            params = {
+                                [1] = KEY,
+                                [2] = tonumber(v.value),
+                            }
                         }
-                    }
-                    ui.send_message(info)
-                end)   
-            end
-            f(true)
+                        ui.send_message(info)
+                    end)   
+                end
+                f(true)
+            end    
         else 
             f(false)
             print('数据读取失败')
@@ -60,7 +63,7 @@ function player.__index:sp_get_map_test(f)
     -- if not ac.flag_map or ac.flag_map < 1 then 
     --     return 
     -- end
-    if not self:is_self() then 
+    if not self:is_self() or self.flag_read_server then 
         return 
     end    
     local player_name = self:get_name()
@@ -79,12 +82,12 @@ function player.__index:sp_get_map_test(f)
             local is_json = json.is_json(retval)
             if is_json then 
                 local tbl = json.decode(retval)
-                if tbl.code == 0 then 
-                    local temp_tab = {}
-                    -- print_r(tbl)
+                local temp_tab = {}
+                -- print_r(tbl)
+                if tbl.data[1] then 
                     for i,data in ipairs(tbl.data[1]) do 
                         temp_tab[data.key] = data.value
-                       
+                    
                         --处理排行榜数据
                         if finds(data.key ,'today_wjsyld','today_wjwxld','today_cntwl','today_wjwszj','today_wjdpcq','today_wjxlms','today_cntwb') then
                             local new_key = data.key..'rank'
@@ -93,43 +96,39 @@ function player.__index:sp_get_map_test(f)
                         end    
 
                     end    
-                    local tab_str = ui.encode(temp_tab)
-                    -- print('数据长度',#tab_str) 
-                    ac.wait(10,function()
-                        --发起同步请求
-                        local info = {
-                            type = 'cus_server',
-                            func_name = 'read_key_from_server',
-                            params = {
-                                [1] = tab_str,
-                            }
+                end    
+                local tab_str = ui.encode(temp_tab)
+                -- print('数据长度',#tab_str) 
+                ac.wait(10,function()
+                    --发起同步请求
+                    local info = {
+                        type = 'cus_server',
+                        func_name = 'read_key_from_server',
+                        params = {
+                            [1] = tab_str,
                         }
-                        ui.send_message(info)
-                        f(v)
-                    end) 
-                    -- f(tbl.data[1])
-                else
-                    print('读取数据失败')
-                    print_r(tbl)
-                end  
+                    }
+                    ui.send_message(info)
+                    f(v)
+                end) 
             end 
         else
             print('服务器返回数据异常:',post)
             if retval and #retval<1000 then 
                 print(retval)
             end   
-            if  finds(retval,'执行失败') then
-            else    
-                self.try_server_cnt = (self.try_server_cnt or 0 ) + 1
-                if self.try_server_cnt <= 3 then 
-                    ac.wait(10,function()
-                        self:sendMsg('|cffff0000读取存档失败|r,5秒后尝试|cffff0000第'..self.try_server_cnt..'次|r重新读取。|r')
-                    end)
-                    ac.wait(5*1000,function(t)
-                        self:sp_get_map_test()
-                    end)
-                end    
+            -- if  finds(retval,'执行失败') then
+            -- else    
+            self.try_server_cnt = (self.try_server_cnt or 0 ) + 1
+            if self.try_server_cnt <= 10 then  
+                ac.wait(10,function()
+                    self:sendMsg('|cffff0000读取存档失败|r,3秒后尝试|cffff0000第'..self.try_server_cnt..'次|r重新读取。|r')
+                end)
+                ac.wait(3*1000,function(t)
+                    self:sp_get_map_test()
+                end)
             end    
+            -- end    
         end            
     end)
 end    
@@ -154,7 +153,7 @@ local event = {
         end   
         if key =='exp' then 
             local exp = tonumber(val)
-            print(player,'获取地图经验',exp)
+            print(player,'1获取地图经验',exp)
             player:Map_SaveServerValue('level',math.floor(math.sqrt(exp/3600)+1)) --当前地图等级=开方（经验值/3600）+1
         end    
     end,
@@ -169,6 +168,7 @@ local event = {
         end    
         local data = ui.decode(tab_str) 
         for key,val in pairs(data) do 
+            -- print(key,type(key))
             local name = ac.server.key2name(key)
             player.cus_server2[name] = tonumber(val)
             player.mall[name] = tonumber(val)
@@ -177,8 +177,27 @@ local event = {
             if key =='jifen' then 
                 player.jifen =  tonumber(val)
             end  
+            if key =='vip'  then 
+                for i,data in ipairs(ac.mall) do 
+                    if not data[3] and data[2] ~='天尊' then 
+                        player.mall[data[2]] = tonumber(val)
+                    end    
+                end    
+            end 
+            print('同步后的数据：',player,name,player.mall[name]) 
         end    
-        -- player:event_notify('读取存档数据')
+        
+        --进行初始化
+        for i,data in ipairs(ac.cus_server_key) do 
+            player.cus_server2[data[2]] = player.cus_server2[data[2]] or 0
+        end 
+        player.flag_read_server = true
+        if ac.clock() > 2000 then 
+            print('又发布了一次读档回调')
+            player:event_notify('读取存档数据')   
+        end    
+        player:sendMsg('|cff00ff00读取成功|r')
+        print(player,ac.clock(),' 1获取满赞：',player.mall and player.mall['满赞'],player.mall['天尊'],tab_str)
         -- player:event_notify('读取存档数据后')
 
     end,
@@ -247,6 +266,11 @@ function player.__index:AddServerValue(key,value,f)
     --保存
     local key_name = ac.server.key2name(key)
     -- print(key_name,self.cus_server2[key_name])
+    if not self.cus_server2[key_name] then 
+        print('读取存档不成功，中断保存！')
+        self:sendMsg('读取存档不成功，中断保存！',5)
+        return 
+    end    
     self.cus_server2[key_name] = (self.cus_server2[key_name] or 0 ) + tonumber(value)
     self:SetServerValue(key,self.cus_server2[key_name])
 end

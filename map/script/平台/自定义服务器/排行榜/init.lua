@@ -49,7 +49,9 @@ function player.__index:sp_get_rank(key,order_by,limit_cnt,f)
         if is_json then 
             local tbl = json.decode(retval)
             if tbl.code == 0 then 
-                f(tbl.data[1])
+                if  tbl.data[1] then 
+                    f(tbl.data[1])
+                end    
             else
                 print(key,'获取排名失败')
                 print_r(tbl)
@@ -80,7 +82,7 @@ function player.__index:sp_get_rank_season1(f)
         if not finds(retval,'http','https','') or finds(retval,'成功')then 
             local tbl = json.decode(retval)
             -- print(type(tbl.code),tbl.code,tbl.code == '0',tbl.code == 0)
-            if tbl and tbl.code == 0 then 
+            if tbl and tbl.data[1] then 
                 local temp_tab = {}
                 -- print_r(tbl)
                 for i,data in ipairs(tbl.data[1]) do 

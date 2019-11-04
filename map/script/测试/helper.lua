@@ -352,12 +352,14 @@ function helper:get_server(key)
 		for name,val in pairs(p.cus_server) do
 			local key = ac.server.name2key(name)
 			print('服务器存档:'..key,p:Map_GetServerValue(key))
-			-- print('服务器存档:',key,val)
+			print('自定义服务器存档:'..key,p.cus_server2[name])
+			print('游戏中存档:',key,val)
 		end
 	else		
 		local name = ac.server.key2name(key)	
 		print('服务器存档:'..key,p:Map_GetServerValue(key))
-		-- print('服务器存档:'..key,p.cus_server[name])
+		print('自定义服务器存档:'..key,p.cus_server2[name])
+		print('游戏中存档:'..key,p.cus_server[name])
 	end	
 end	
 

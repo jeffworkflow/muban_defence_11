@@ -230,7 +230,6 @@ function ac.clear_all_server(...)
         end   
     end
 end
-
 --获取玩家地图等级
 function ac.player.__index:Map_GetMapLevel()
 	local handle = self.handle
@@ -260,7 +259,7 @@ ac.loop(time * 1000,function()
     end
 end)
 --开局就从服务器读取经验
-ac.wait(0,function()
+ac.wait(900,function()
     for i = 1,10 do
         local p = ac.player[i]
 		if p:is_player() then
