@@ -439,20 +439,27 @@ function mt:item_init_skill()
 	-- end
 	-- 用 item.not_dis = true 替换
 	japi.EXSetAbilityDataReal(self:get_handle(), 1, 0x69, self.cool or 0)
-	self.is_skill_init = true
+	-- self.is_skill_init = true
 end
 function mt:get_item_lni_tip(str)
 	local item_tip = str or (self.lni_data and self.lni_data.tip ) or ''
-	-- print(item_tip)
 	item_tip = item_tip:gsub('%%([%S_]*)%%', function(k)
 		local value = self[k]
 		local tp = type(value)
+		local color_flag
 		if tp == 'function' then
-			return value(data)
-		elseif tp =='number' then 
-			value = ac.format_number_tip(value)
+			value =  value(self)
+			tp = type(value)
 		end
-		return '|cff'..color_code['金']..tostring(value)..'|r'
+		if tp =='number' then 
+			value = ac.format_number_tip(value)
+			color_flag = true 
+		end
+		if color_flag then 
+			return '|cff'..color_code['金']..tostring(value)..'|r'
+		else 
+			return tostring(value)
+		end		
 	end)
 
 	return item_tip
@@ -521,14 +528,15 @@ function mt:get_tip()
 	
 	
 	tip = store_title..gold..color_tip..item_type_tip..content_tip.. item_tip
-
+	-- print(item_tip,skill_tip)
 	if skill_tip and t_str ~= s_str then 
 	    if item_tip ~='' then  
 			local temp_tip = '|cff'..color_code['灰']..'技能：'..'|r'..'\n' 
 		end	
 		tip = tip..(temp_tip or '')..skill_tip..'\n'
 	end	
-	-- 物品最后一行换行
+	-- 物品最后一行换行 
+	-- items.lni_data = data
 	tip = tip .. ''
 	return tip
 	
@@ -1230,6 +1238,7 @@ function item.create(name,pos,seller)
 			items[k] = v
 		end
 	end
+	items.lni_data = data
 	-- print(items.type_id)
 	if not items.type_id then 
 		local type_id = ac.get_shop_item_handle(pos)
@@ -1277,9 +1286,9 @@ function item.create(name,pos,seller)
 
 	--设置tip
 	items:set_tip(items:get_tip())
-	if ac.skill[name].is_skill then
-		items.is_skill = true
-	end
+	-- if ac.skill[name].is_skill then
+	-- 	items.is_skill = true
+	-- end
 	
 	ac.game:event_notify('物品-创建', items)
 	return items

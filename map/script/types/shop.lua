@@ -105,14 +105,14 @@ function mt:print_item()
 end	
 --添加商品
 function mt:add_sell_item(name,i)
-	local data = ac.table.ItemData[name]
-	if not data then
-		data = ac.skill[name]
-		if not data.is_skill then
-			-- print('商店添加物品失败,不存在数据',name)
-			return
-		end
-	end
+	-- local data = ac.table.ItemData[name]
+	-- if not data then
+	-- 	data = ac.skill[name]
+	-- 	if not data.is_skill then
+	-- 		-- print('商店添加物品失败,不存在数据',name)
+	-- 		return
+	-- 	end
+	-- end
 
 	local item = ac.item.create(name,i,seller)
 	if not item then 

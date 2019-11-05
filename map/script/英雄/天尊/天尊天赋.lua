@@ -7,7 +7,7 @@ mt{
     --最大等级
    max_level = 5,
     --触发几率
-   chance = function(self) return 80*(1+self.owner:get('触发概率加成')/100) end,
+   chance = function(self) return 10*(1+self.owner:get('触发概率加成')/100) end,
     --伤害范围
    damage_area = 800,
 	--技能类型
@@ -51,7 +51,15 @@ end,
 }
 function mt:on_add()
     local skill = self
-    local hero = self.owner
+	local hero = self.owner
+	
+	--添加重生技能
+	local skl1 = hero:add_skill('重生','隐藏')
+	if skl1 then 
+		skl1.cnt = 99999999
+		skl1.time = 1
+	end	
+
 	local function  mvr_damage(data)
 		local mvr = ac.mover.line
 		{
@@ -76,6 +84,15 @@ function mt:on_add()
 					damage = skill.damage,
 					damage_type = skill.damage_type,
 				}
+				u:damage
+				{
+					source = hero,
+					skill = skill,
+					target = u,
+					damage = u:get('生命上限') * 0.005,
+					real_damage = true,
+				}
+				
 			end
 
 			function mvr:on_remove()
