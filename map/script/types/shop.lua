@@ -113,6 +113,9 @@ function mt:add_sell_item(name,i)
 	-- 		return
 	-- 	end
 	-- end
+	if not name or name =='' then 
+		return 
+	end	
 
 	local item = ac.item.create(name,i,seller)
 	if not item then 

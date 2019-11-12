@@ -79,6 +79,11 @@ function player.__index:sp_get_map_test(f)
     local f = f or function (retval)  end
     post_message(url,post,function (retval) 
         if not finds(retval,'http','https','') or finds(retval,'成功')then 
+            if retval and #retval<1000 then 
+                print(json.is_json(retval),#retval,retval)
+            else 
+                print('超出长度')    
+            end   
             local is_json = json.is_json(retval)
             if is_json then 
                 local tbl = json.decode(retval)
@@ -98,7 +103,7 @@ function player.__index:sp_get_map_test(f)
                     end    
                 end    
                 local tab_str = ui.encode(temp_tab)
-                -- print('数据长度',#tab_str) 
+                print('数据长度',#tab_str) 
                 ac.wait(10,function()
                     --发起同步请求
                     local info = {

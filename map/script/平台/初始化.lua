@@ -29,17 +29,17 @@ end
 -- end    
 
 --初始化2 读取自定义服务器的数据 并同步 p.cus_server2[jifen] = 0 | 读取有延迟
-ac.wait(500,function()
-    for i=1,10 do
-        local player = ac.player[i]
-        if player:is_player() then
+for i=1,10 do
+    local player = ac.player[i]
+    if player:is_player() then
+        ac.wait(100*i,function()
             if player:is_self() then 
                 print(player,'开始读取数据')
                 player:sp_get_map_test()
-            end    
-        end
+            end   
+        end) 
     end
-end)
+end
 --初始化2 读取自定义服务器 部分数据
 ac.game:event '游戏-开始' (function()
     for i=1,10 do

@@ -166,40 +166,35 @@ function ac.player.__index:Map_SaveServerValue(name, value)
     self.cus_server[key_name] = tonumber(value)
 end
 
-function player.__index:Map_AddServerValue(key,value)
-    if not self.cus_server then 
-        self.cus_server ={}
-    end    
-    --保存
-    local key_name = ac.server.key2name(key)
-    -- print(key_name,self.cus_server[key_name])
-    self.cus_server[key_name] = (self.cus_server[key_name] or 0 ) + tonumber(value)
-    self:Map_SaveServerValue(key,self.cus_server[key_name])
-end
--- function ac.player.__index:Map_AddServerValue(name, value)
--- 	value = tonumber(value)
--- 	local r = self:Map_GetServerValue(name) + value
--- 	score[name][self.id] = r
-
--- 	local type = '增加'
--- 	if value < 0 then
--- 		type = '减少'
--- 	end
-
--- 	log.debug((type..'RPG积分:[%s][%s] + [%s]'):format(self:get_name(), name, value))
--- 	if has_record then
--- 		write_score(get_key(self) .. "+", name, value)
--- 	else
--- 		write_score(get_key(self), name, value + self:Map_GetServerValue(name))
--- 	end
-
+-- function player.__index:Map_AddServerValue(key,value)
 --     if not self.cus_server then 
 --         self.cus_server ={}
 --     end    
 --     --保存
---     local key_name = ac.server.key2name(name)
---     self.cus_server[key_name] = r
+--     local key_name = ac.server.key2name(key)
+--     -- print(key_name,self.cus_server[key_name])
+--     self.cus_server[key_name] = (self.cus_server[key_name] or 0 ) + tonumber(value)
+--     self:Map_SaveServerValue(key,self.cus_server[key_name])
 -- end
+--防止回档
+function ac.player.__index:Map_AddServerValue(name, value)
+	value = tonumber(value)
+	local r = self:Map_GetServerValue(name) + value
+	score[name][self.id] = r
+
+	if not self.cus_server then 
+        self.cus_server ={}
+    end    
+    --保存
+    local key_name = ac.server.key2name(name)
+	self.cus_server[key_name] = (self.cus_server[key_name] or 0 ) + tonumber(value)
+	
+	if has_record then
+		write_score(get_key(self) .. "+", name, value)
+	else
+		write_score(get_key(self), name, r)
+	end
+end
 
 --玩家 清空服务器数据 (自定义服务器)
 function ac.player.__index:clear_server(...)
