@@ -10,7 +10,7 @@ register_japi[[
     native DzGetTriggerSyncPlayer takes nothing returns player
 ]]
 
-if japi.GetGameVersion() >= 7000 then 
+if japi.GetGameVersion() >= 7000 and japi.DzTriggerRegisterSyncData then 
 
     local SendCustomMessage = japi.SendCustomMessage
 
@@ -22,8 +22,8 @@ if japi.GetGameVersion() >= 7000 then
     TriggerAddAction(trg,function ()
         local message = japi.DzGetTriggerSyncData()
         local player = japi.DzGetTriggerSyncPlayer()
+        print('网易同步',GetPlayerId(player) + 1, message)
         ui.on_custom_ui_event(player,message)
-        -- print('网易同步',GetPlayerId(player) + 1, message)
     end)
 
 else 
@@ -32,9 +32,9 @@ else
     TriggerAddAction(trg,function ()
         local message = japi.GetTriggerMessage()
         local player = japi.GetMessagePlayer()
-    
+        print('自定义同步',GetPlayerId(player) + 1, message)
         ui.on_custom_ui_event(player,message)
-        -- print('自定义同步',GetPlayerId(player) + 1, message)
+      
     end)
 end 
 

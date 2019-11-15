@@ -411,7 +411,7 @@ if record_11 then
     -- print(item[1][1],item[1][2],ac.player(1):Map_HasMallItem(item[1][1]))
     table.insert(cus_key,{'exp','地图经验'})
     table.insert(cus_key,{'level','地图等级'})
-    print(ac.player(1):Map_GetServerValue('sjjh'))
+    -- print(ac.player(1):Map_GetServerValue('sjjh'))
 end 
 
 ac.cus_server_key = cus_key

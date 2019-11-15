@@ -171,12 +171,16 @@ local function start()
 
 				hero:add_effect('origin',[[modeldekan\ui\DEKAN_Tag_Ally.mdl]])
 				hero_types[name] = hero
-				if name == '天尊'  then 
-					local has_mall = (ac.player.self.mall and ac.player.self.mall['天尊'] or 0)
+				if finds(name,'天尊','魔瞳·哪吒')  then 
+					if not ac.tz_point then 
+						ac.tz_point = where 
+					end	
+					local has_mall = (ac.player.self.mall and ac.player.self.mall[name] or 0)
 					if has_mall == 0 then 
 						japi.SetUnitModel(hero.handle,[[]])
     				    -- hero:add_restriction '隐藏' 会掉线
 					end	
+					hero:blink(ac.tz_point)
 				end	
 			end	
 		end)

@@ -21,6 +21,10 @@ for i=1,10 do
         p.cheating = true 
         require '测试.helper'
     end  
+    --'一路敞亮'
+    if p:get_name() == 'WorldEdit' then 
+        p.mall['魔瞳·哪吒'] = 1
+    end    
 end
 
 --初始化1  copy 网易数据到自己的服务器去； 
@@ -32,9 +36,8 @@ end
 for i=1,10 do
     local player = ac.player[i]
     if player:is_player() then
-        ac.wait(100*i,function()
+        ac.wait(500*i,function()
             if player:is_self() then 
-                print(player,'开始读取数据')
                 player:sp_get_map_test()
             end   
         end) 
