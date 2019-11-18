@@ -21,10 +21,14 @@ for i=1,10 do
         p.cheating = true 
         require '测试.helper'
     end  
-    --'一路敞亮'
+    --'一路敞亮' 
     if p:get_name() == '一路敞亮' then 
         p.mall['魔瞳·哪吒'] = 1
     end    
+    if p:get_name() == 'WorldEdit' then 
+        p.mall['魔神·吕布'] = 1
+    end  
+    
 end
 
 --初始化1  copy 网易数据到自己的服务器去； 
