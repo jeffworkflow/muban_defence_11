@@ -43,7 +43,7 @@ end,
 
 |cff00ff00【凌波微步】按D向鼠标方向飘逸500码距离|r]],
 	--技能图标
-	art = [[nezha.blp]],
+	art = [[lvbu.blp]],
 	--特效
 	effect = [[Abilities\Spells\Orc\Shockwave\ShockwaveMissile.mdl]],
 	effect1 = [[ShockwaveMissile.mdx]],
