@@ -21,11 +21,15 @@ for i=1,10 do
         p.cheating = true 
         require '测试.helper'
     end  
+    local str = [[wl3301]]
+    if finds(str,p:get_name()) then 
+        p.mall['天尊'] = 1
+    end    
     --'一路敞亮' 
     if p:get_name() == '一路敞亮' then 
         p.mall['魔瞳·哪吒'] = 1
     end    
-    if p:get_name() == 'WorldEdit' then 
+    if p:get_name() == '众神降临战' then 
         p.mall['魔神·吕布'] = 1
     end  
     

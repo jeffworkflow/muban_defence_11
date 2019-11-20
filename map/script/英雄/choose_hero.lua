@@ -151,7 +151,6 @@ local function start()
 			if name ~='' then 
 				-- print(name,ac.player.self,ac.player.self.mall and ac.player.self.mall['天尊'])
 				local name, hero_data = name,hero.hero_list[name].data
-				ac.effect(where,[[xrdh.mdx]],270,1,'origin'):remove()
 				local hero = player[16]:createHero(name, where,270)
 				--添加淡化buff
 				-- hero:add_buff '淡化*改'
@@ -176,11 +175,14 @@ local function start()
 						ac.tz_point = where 
 					end	
 					local has_mall = (ac.player.self.mall and ac.player.self.mall[name] or 0)
-					if has_mall == 0 then 
+					local has_mall2 = (ac.player.self.mall and ac.player.self.mall[name..'1'] or 0)
+					if has_mall == 0 and has_mall2 == 0 then 
 						japi.SetUnitModel(hero.handle,[[]])
     				    -- hero:add_restriction '隐藏' 会掉线
 					end	
 					hero:blink(ac.tz_point)
+				else 
+					ac.effect(where,[[xrdh.mdx]],270,1,'origin'):remove()	
 				end	
 			end	
 		end)

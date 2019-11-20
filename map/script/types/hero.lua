@@ -364,7 +364,7 @@ local  HeroXP = tonumber(slk.misc.Misc.NeedHeroXP)  --固定值 200
 
 function mt:get_upgrade_xp(lv)
 	if lv > 1 then 
-		return self:get_upgrade_xp(lv-1)*last_formula + (lv+1)*lv_formula + regular_formula
+		return self:get_upgrade_xp(lv-1)*last_formula + (lv-1)*lv_formula + regular_formula
 	else 
 		return HeroXP	 
 	end	 
