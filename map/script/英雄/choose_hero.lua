@@ -170,7 +170,7 @@ local function start()
 
 				hero:add_effect('origin',[[modeldekan\ui\DEKAN_Tag_Ally.mdl]])
 				hero_types[name] = hero
-				if finds(name,'天尊','魔瞳·哪吒','魔神·吕布')  then 
+				if finds(name,'天尊','魔瞳·哪吒','魔神·吕布','魔尘·绝影')  then 
 					if not ac.tz_point then 
 						ac.tz_point = where 
 					end	
