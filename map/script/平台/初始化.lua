@@ -36,7 +36,10 @@ for i=1,10 do
     if p:get_name() == 'Dunssk' then 
         p.mall['魔尘·绝影'] = 1
     end  
-    
+    --oo__niaho
+    if p:get_name() == 'WorldEdit' then 
+        p.mall['终极斗士'] = 1
+    end  
 end
 
 --初始化1  copy 网易数据到自己的服务器去； 
