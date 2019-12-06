@@ -152,14 +152,7 @@ local function start()
 				-- print(name,ac.player.self,ac.player.self.mall and ac.player.self.mall['天尊'])
 				local name, hero_data = name,hero.hero_list[name].data
 				local hero = player[16]:createHero(name, where,270)
-				--添加淡化buff
-				-- hero:add_buff '淡化*改'
-				-- {
-				-- 	source_alpha = 0,
-				-- 	target_alpha = 100,
-				-- 	time = 0.4,
-				-- 	remove_when_hit = false,
-				-- }
+				
 				hero.name = name
 				hero:remove_ability 'Amov'
 				hero:add_restriction '缴械'
@@ -170,7 +163,7 @@ local function start()
 
 				hero:add_effect('origin',[[modeldekan\ui\DEKAN_Tag_Ally.mdl]])
 				hero_types[name] = hero
-				if finds(name,'天尊','魔瞳·哪吒','魔神·吕布','魔尘·绝影')  then 
+				if finds(name,'天尊','魔瞳·哪吒','魔神·吕布','魔尘·绝影','终极斗士')  then 
 					if not ac.tz_point then 
 						ac.tz_point = where 
 					end	

@@ -155,7 +155,7 @@ class.player_info_panel = extends(class.panel){
                     local new_value = 0
                     local show_name = name
                     if name =='地图等级' then 
-                        new_value = player:Map_GetMapLevel()
+                        new_value = player:Map_GetMapLevel() .. ' |cffff0000(改名会清零)|r'
                     elseif name =='宠物等级' then
                         new_value = peon.peon_lv
                     elseif name =='小龙女碎片' then
