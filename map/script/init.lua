@@ -35,7 +35,6 @@ require '测试'
 -- jass.SetSkyModel([[sky.mdx]])
 -- jass.CreateDestructable(base.string2id('B04E'), 0, 0, 0, 1, 0) 
 
-
 ac.wait(100,function ()
     local function light(type)
         local light = {

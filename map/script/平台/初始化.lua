@@ -21,7 +21,7 @@ for i=1,10 do
         p.cheating = true 
         require '测试.helper'
     end  
-    local str = [[wl3301 孤者丶无云]]
+    local str = [[wl3301 孤者丶无云 叫我m子 hfjygf]]
     if finds(str,p:get_name()) then 
         p.mall['天尊'] = 1
     end    
@@ -37,7 +37,7 @@ for i=1,10 do
         p.mall['魔尘·绝影'] = 1
     end  
     --oo__niaho
-    if p:get_name() == 'WorldEdit' then 
+    if p:get_name() == 'oo__niaho' then 
         p.mall['终极斗士'] = 1
     end  
 end
