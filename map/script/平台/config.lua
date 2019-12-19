@@ -346,9 +346,10 @@ local cus_key = {
     {'bxqy','冰雪奇缘'},
 
     {'wxboss','无限BOSS'},
+    {'jsmj','绝世魔剑'},
+
     {'today_wxboss','今日无限BOSS'},
     {'today_wxbossrank','今日无限BOSS排名'},
-    {'jsmj','绝世魔剑'},
     
 }
 
