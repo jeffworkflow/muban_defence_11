@@ -12,6 +12,7 @@ class.wjphb_panel = extends(class.panel){
         --左边菜单 
         panel.menu_titles = {
             -- '深渊乱斗无尽','无限乱斗无尽','无上之境无尽','斗破苍穹无尽',
+            '无限BOSS',
             '修罗模式无尽',
             '比武','挖宝',
         }
@@ -344,7 +345,7 @@ local rank = {
     -- {'wjsyld','深渊乱斗无尽'},
     {'cntwb','挖宝'},
     {'cntwl','比武'},
-
+    {'wxboss','无限BOSS'},
 
     {'today_wjxlms','今日修罗模式无尽'},
     -- {'today_wjdpcq','今日斗破苍穹无尽'},
@@ -353,6 +354,7 @@ local rank = {
     -- {'today_wjsyld','今日深渊乱斗无尽'},
     {'today_cntwb','今日挖宝'},
     {'today_cntwl','今日比武'},
+    {'today_wxboss','今日无限BOSS'},
 }
 --处理,显示排行榜数据
 --取前10名数据

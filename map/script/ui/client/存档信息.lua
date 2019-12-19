@@ -38,6 +38,7 @@ class.player_info_panel = extends(class.panel){
             '比武积分',
             '杀猴次数',
             '神奇的五分钟',
+            '无限BOSS难度',
             -- '深渊乱斗',
             -- '无限乱斗','无上之境','斗破苍穹',
             '修罗模式',
@@ -170,6 +171,10 @@ class.player_info_panel = extends(class.panel){
                     elseif name =='神奇的五分钟' then
                         name = '攻击减甲' 
                         new_value = string.format("%.f",player.cus_server[name] or 0)  
+                    elseif name =='无限BOSS难度' then
+                        name = '无限BOSS' 
+                        local _,bit = math.frexp((player.cus_server['无限BOSS'] or 0))
+                        new_value = string.format("%.f",bit)  
                     elseif name =='修罗(无尽-最高)' then
                         name = '修罗模式无尽' 
                         new_value = string.format("%.f",player.cus_server[name] or 0)  

@@ -1,3 +1,4 @@
+-- record_11 = true
 local player = require 'ac.player'
 local japi = require 'jass.japi'
 register_japi[[

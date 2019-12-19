@@ -254,7 +254,7 @@ ac.loop(time * 1000,function()
     end
 end)
 --开局就从服务器读取经验
-ac.wait(900,function()
+ac.wait(700,function()
     for i = 1,10 do
         local p = ac.player[i]
 		if p:is_player() then

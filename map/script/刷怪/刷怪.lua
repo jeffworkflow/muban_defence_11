@@ -206,6 +206,30 @@ p:disableDragSelect()
 
 --进入游戏后3秒开始刷怪
 ac.wait(1000,function()
+    local function t_create_dialog(p,title,lists,page,f)
+        local page =page or 1
+        local min_index = (page-1)*10+1
+        local max_index = (page-1)*10+10
+        local list={}
+        for i=min_index,max_index do 
+            if lists[i] then 
+                table.insert(list,lists[i])
+            end    
+        end   
+        if #list == 10 and max_index<#lists then
+            table.insert(list,{ name = "下一页" })
+        end    
+
+        create_dialog(p,title,list,function (index)  
+            --11的倍数
+            local next_page = page + 1
+            if index == 11 then 
+                t_create_dialog(p,title,lists,next_page,f)
+            else
+                f(index,page)
+            end    
+        end)    
+    end    
     --1选择难度 2选择英雄 3游戏开始
     --全部英雄选完才会进入游戏开始.主机在选难度，所以不会有事。
     ac.choose_degree = choose_degree
@@ -214,6 +238,7 @@ ac.wait(1000,function()
             local player = get_first_player()
             local list = {
                 { name = "普通模式" },
+                { name = "无限BOSS" },
                 { name = "修罗模式(无尽)" },
                 -- { name = "斗破苍穹(无尽)" },
                 -- { name = "无上之境(无尽)" },
@@ -233,6 +258,14 @@ ac.wait(1000,function()
                 { name = "荣耀王者" },
                 { name = "巅峰王者" },
             }
+            local list3 = {
+            }
+            local _,bit = math.frexp((ac.player(1).cus_server['无限BOSS'] or 0))
+            -- print(ac.player(1).cus_server['无限BOSS'],_,bit)
+            local max_degree = bit + 1
+            for i=1,max_degree do 
+                table.insert(list3,{name = '难'..i})
+            end    
             ac.g_game_degree_list = {} 
             for i = #list ,1 ,-1 do 
                 -- print(list[i].name)
@@ -263,13 +296,12 @@ ac.wait(1000,function()
                 local name = list2[i].name  
                 table.insert(ac.g_game_degree_list,name)
             end     
-            
             ac.player.self:sendMsg("正在选择 |cffffff00难度|r")
             if player then 
                 ac.flag_choose_dialog = create_dialog(player,"选择难度",list,function (index)  
                     -- print(index)
                     ac.flag_choose_dialog = false
-                    if index == 2 then 
+                    if index == 3 then 
                         ac.g_game_degree = 11
                         ac.g_game_degree_attr = 11  
                         ac.g_game_degree_name = "修罗模式"
@@ -294,7 +326,8 @@ ac.wait(1000,function()
                         ac.g_game_degree_attr = 2  
                         ac.g_game_degree_name = "武林大会"  
                     end    
-
+                    ac.g_game_degree_name_ex = list[index].name
+                    
                     ac.player.self:sendMsg("选择了 |cffffff00"..list[index].name.."|r")
                     if index == 1 then
                         --进入普通模式的选择
@@ -309,6 +342,20 @@ ac.wait(1000,function()
                                 ac.game:event_notify('游戏-开始')
                             end)
                             ac.player.self:sendMsg("选择了 |cffffff00"..list2[index].name.."|r")
+                            ac.game:event_notify('选择难度',ac.g_game_degree_name,ac.g_game_degree)
+                        end)
+                    elseif  index == 2 then
+                        t_create_dialog(player,"选择难度",list3,1,function (index,page)  
+                            ac.g_game_degree = index + (page-1) * 10
+                            ac.g_game_degree_attr = index + (page-1) * 10
+                            ac.g_game_degree_name = '无限BOSS-'..list3[ac.g_game_degree].name  
+                            --创建预设英雄
+                            ac.choose_hero()
+                            --游戏-开始
+                            ac.wait(30*1000,function()
+                                ac.game:event_notify('游戏-开始')
+                            end)
+                            ac.player.self:sendMsg("选择了 |cffffff00"..list3[ac.g_game_degree].name.."|r")
                             ac.game:event_notify('选择难度',ac.g_game_degree_name,ac.g_game_degree)
                         end)
                     elseif  index < #list  then 

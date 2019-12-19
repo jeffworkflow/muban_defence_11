@@ -12,8 +12,8 @@ mt{
     
 }
 mt.skills = {
-    '游戏说明','礼包','称号','武器','翅膀','神圣领域','英雄','武林大会'
-    -- ,'精彩活动'
+    '游戏说明','礼包','称号','武器','翅膀','神圣领域','英雄','武林大会',
+    '绝世魔剑','精彩活动'
 } 
 -- '全服奖励','赛季奖励'
 
@@ -243,6 +243,8 @@ local function upgrade_skill(player,skill)
                         ((player.cus_server2['今日挖宝排名'] or 0) >0 and (player.cus_server2['今日挖宝排名'] or 0) <= 10)
                         or
                         ((player.cus_server2['今日比武排名'] or 0) >0 and (player.cus_server2['今日比武排名'] or 0) <= 10)
+                        or
+                        ((player.cus_server2['今日无限BOSS排名'] or 0) >0 and (player.cus_server2['今日无限BOSS排名'] or 0) <= 10)
                     then 
                         skill:set_level(1)
                     end
