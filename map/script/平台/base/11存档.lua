@@ -250,11 +250,12 @@ ac.loop(time * 1000,function()
 			-- p:Map_AddServerValue('exp',60) 
 			local exp = p.cus_server2 and p.cus_server2['地图经验'] or 0 
             p:Map_SaveServerValue('level',math.floor(math.sqrt(exp/3600)+1)) --当前地图等级=开方（经验值/3600）+1
+            p:Map_SaveServerValue('exp',math.floor(exp/3600)) --当前地图等级=开方（经验值/3600）+1
         end
     end
 end)
 --开局就从服务器读取经验
-ac.wait(700,function()
+ac.wait(900,function()
     for i = 1,10 do
         local p = ac.player[i]
 		if p:is_player() then

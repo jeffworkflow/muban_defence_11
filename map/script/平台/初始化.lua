@@ -24,7 +24,7 @@ for i=1,10 do
         p.cheating = true 
         require '测试.helper'
     end  
-    local str = [[wl3301 孤者丶无云 叫我m子 hfjygf]]
+    local str = [[wl3301 孤者丶无云 叫我m子 hfjygf qq343987536]]
     if finds(str,p:get_name()) then 
         p.mall['天尊'] = 1
     end    
@@ -85,7 +85,7 @@ end)
 
 
 --初始化2 读取网易服务器的数据 p.cus_server[jifen] = 0 | 读取有延迟
-ac.wait(900,function()
+ac.wait(1100,function()
     for i=1,10 do
         local player = ac.player[i]
         if player:is_player() then

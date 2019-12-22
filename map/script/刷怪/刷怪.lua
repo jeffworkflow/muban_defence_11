@@ -205,7 +205,7 @@ p:setCamera(ac.map.rects['选人区域'])
 p:disableDragSelect()
 
 --进入游戏后3秒开始刷怪
-ac.wait(1000,function()
+ac.wait(1200,function()
     local function t_create_dialog(p,title,lists,page,f)
         local page =page or 1
         local min_index = (page-1)*10+1
