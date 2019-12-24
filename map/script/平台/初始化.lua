@@ -24,7 +24,7 @@ for i=1,10 do
         p.cheating = true 
         require '测试.helper'
     end  
-    local str = [[wl3301 孤者丶无云 叫我m子 hfjygf qq343987536]]
+    local str = [[wl3301 孤者丶无云 叫我m子 hfjygf qq343987536 hyj1653553471]]
     if finds(str,p:get_name()) then 
         p.mall['天尊'] = 1
     end    

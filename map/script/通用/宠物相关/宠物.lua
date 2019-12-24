@@ -22,7 +22,7 @@ function player.__index:create_pets()
     u:add_skill('宠物皮肤','英雄',12)
     u:add_skill('宠物天赋','英雄',8)
     u:add_skill('一键出售','英雄',7)
-    -- u:add_skill('一键合成','英雄',9)
+    u:add_skill('一键合成','英雄',9)
     
     -- u:add_skill('商城管理','英雄')
     -- u:add_skill('自动合成','英雄',9)

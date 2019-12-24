@@ -680,7 +680,7 @@ function player.create(id, jPlayer)
 	end
 	--11版本
 	if japi.GetGameVersion() < 7000 then 
-		log.debug('11平台')
+		-- log.debug('11平台')
 		p.name=japi.EXGetPlayerRealName(jPlayer)
 	end
 	player[id] = p
