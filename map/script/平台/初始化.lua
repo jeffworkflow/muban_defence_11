@@ -24,7 +24,7 @@ for i=1,10 do
         p.cheating = true 
         require '测试.helper'
     end  
-    local str = [[wl3301 孤者丶无云 叫我m子 hfjygf qq343987536 hyj1653553471]]
+    local str = [[wl3301 孤者丶无云 叫我m子 hfjygf qq343987536 hyj1653553471 爱吃槟榔的流]]
     if finds(str,p:get_name()) then 
         p.mall['天尊'] = 1
     end    
@@ -42,6 +42,10 @@ for i=1,10 do
     --oo__niaho
     if p:get_name() == 'oo__niaho' then 
         p.mall['终极斗士'] = 1
+    end  
+    --MM墨明棋
+    if p:get_name() == 'MM墨明棋' then 
+        p.mall['火灵儿'] = 1
     end  
 end
 
