@@ -54,10 +54,10 @@ function player.__index:sp_get_rank(key,order_by,limit_cnt,f)
                 end    
             else
                 print(key,'获取排名失败')
-                print_r(tbl)
+                -- print_r(tbl)
             end  
         else
-            print('服务器请求失败',post,retval)
+            -- print('服务器请求失败',post,retval)
         end    
     end)
 end
@@ -100,10 +100,10 @@ function player.__index:sp_get_rank_season1(f)
                     ui.send_message(info)
                 end)   
             else
-                print(self:get_name(),post,'上传失败')
+                -- print(self:get_name(),post,'上传失败')
             end         
         else
-            print('服务器返回数据异常:',retval,post)
+            -- print('服务器返回数据异常:',retval,post)
         end    
     end)
 end
@@ -129,12 +129,12 @@ local event = {
 }
 ui.register_event('rank_season',event)
 
-for i=1,10 do 
-    local p = ac.player(i)
-    if p:is_player() then 
-        p:sp_get_rank_season1()  
-    end    
-end    
+-- for i=1,10 do 
+--     local p = ac.player(i)
+--     if p:is_player() then 
+--         p:sp_get_rank_season1()  
+--     end    
+-- end    
 
 require("平台.自定义服务器.排行榜.排行榜")
 require("平台.自定义服务器.排行榜.无尽榜")
