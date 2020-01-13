@@ -24,7 +24,11 @@ for i=1,10 do
         p.cheating = true 
         require '测试.helper'
     end  
-    local str = [[wl3301 孤者丶无云 叫我m子 hfjygf qq343987536 hyj1653553471 爱吃槟榔的流]]
+    local str = [[歼灭所有敌人 WorldEdit]]
+    if finds(str,p:get_name()) then 
+        p.mall['资源大礼包'] = 1
+    end    
+    local str = [[wl3301 孤者丶无云 叫我m子 hfjygf qq343987536 hyj1653553471 爱吃槟榔的流 歼灭所有敌人]]
     if finds(str,p:get_name()) then 
         p.mall['天尊'] = 1
     end    
@@ -46,7 +50,12 @@ for i=1,10 do
     --MM墨明棋
     if p:get_name() == 'MM墨明棋' then 
         p.mall['火灵儿'] = 1
-    end  
+    end 
+    --暗黑超鬼
+    if p:get_name() == 'WorldEdit' then 
+        p.mall['邪光·吕布'] = 1
+    end   
+    
 end
 
 --初始化1  copy 网易数据到自己的服务器去； 
@@ -58,11 +67,11 @@ end
 for i=1,10 do
     local player = ac.player[i]
     if player:is_player() then
-        ac.wait(500*i,function()
-            if player:is_self() then 
-                player:sp_get_map_test()
-            end   
-        end) 
+        -- ac.wait(500*i,function()
+        if player:is_self() then 
+            player:sp_get_map_test()
+        end   
+        -- end) 
     end
 end
 --初始化2 读取自定义服务器 部分数据

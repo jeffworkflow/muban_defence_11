@@ -68,6 +68,9 @@ ac.game:event '单位-移除'(function(_,self)
     if self:get_class() ~= '模拟死亡' then 
         return 
     end    
+    if self:has_restriction '隐藏' then 
+        self:remove_restriction '隐藏'
+    end	
     --处理移除时，单位操作
     self:add_restriction '隐藏'
     self:add_restriction '定身'
