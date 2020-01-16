@@ -351,6 +351,11 @@ local cus_key = {
     {'today_wxboss','今日无限BOSS'},
     {'today_wxbossrank','今日无限BOSS排名'},
     
+    {'wf','五福'},--五福收集次数
+    {'sjwf','世界五福'},--世界五福收集次数
+
+    {'shzy','兽魂之佑'},--
+    {'fpxdr','放炮小达人'},--
 }
 
 

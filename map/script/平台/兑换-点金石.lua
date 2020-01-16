@@ -32,7 +32,7 @@ function mt:on_cast_start()
             local key = ac.server.name2key('挖宝积分')
             p:Map_AddServerValue(key,-self.need_wbjf)
             p:sendMsg('兑换成功')
-            hero:add_item('点金石',true)
+            hero:add_item('点金石')
             p.djs_cnt = (p.djs_cnt or 0) + 1
         else    
             p:sendMsg('本局已达兑换上限')

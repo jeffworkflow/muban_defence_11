@@ -27,12 +27,12 @@ end,
 【伤害公式】(智力*10+1w)*Lv*5|r
 
 ]],
+    art =[[sw.blp]],
     --特效
     effect = [[FrostNova.mdx]],
     --伤害类型
     damage_type = '法术',
     time = 1,
-    art =[[sw.blp]],
 
 }
 function mt:on_add()

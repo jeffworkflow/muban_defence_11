@@ -52,7 +52,7 @@ for i=1,10 do
         p.mall['火灵儿'] = 1
     end 
     --暗黑超鬼
-    if p:get_name() == 'WorldEdit' then 
+    if p:get_name() == '暗黑超鬼' then 
         p.mall['邪光·吕布'] = 1
     end   
     
