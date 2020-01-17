@@ -19,7 +19,7 @@ target_type = ac.skill.TARGET_TYPE_NONE,
 
 ac.game:event '玩家-注册英雄后'(function(_, _, hero)
     local p = hero:get_owner()
-	if p.mall and p.mall['资源大礼包']>0 then 
+	if p.mall and (p.mall['资源大礼包'] or 0)>0 then 
         hero:add_skill('资源大礼包','隐藏')
 	end   
 end)

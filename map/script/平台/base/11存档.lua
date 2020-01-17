@@ -249,8 +249,12 @@ ac.loop(time * 1000,function()
 			p:AddServerValue('exp',time) --自定义服务器
 			-- p:Map_AddServerValue('exp',60) 
 			local exp = p.cus_server2 and p.cus_server2['地图经验'] or 0 
-            p:Map_SaveServerValue('level',math.floor(math.sqrt(exp/3600)+1)) --当前地图等级=开方（经验值/3600）+1
-            p:Map_SaveServerValue('exp',math.floor(exp/3600)) --当前地图等级=开方（经验值/3600）+1
+			local new_level = math.floor(math.sqrt(exp/3600)+1)
+			local old_level = p.cus_server['地图等级'] or 1
+			if new_level >= old_level then 
+				p:Map_SaveServerValue('level',new_level) --当前地图等级=开方（经验值/3600）+1
+				p:Map_SaveServerValue('exp',math.floor(exp/3600)) --当前地图等级=开方（经验值/3600）+1
+			end
         end
     end
 end)

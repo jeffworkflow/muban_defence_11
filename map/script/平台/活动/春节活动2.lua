@@ -175,6 +175,8 @@ tip = [[
 |cffcccccc春节活动物品|r]],
 --品质
 color = '紫',
+--CD
+cool = 5,
 --物品类型
 item_type = '消耗品',
 --物品技能

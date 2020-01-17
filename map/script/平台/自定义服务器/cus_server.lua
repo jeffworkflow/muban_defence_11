@@ -195,7 +195,7 @@ local event = {
         end   
         if key =='exp' then 
             local exp = tonumber(val)
-            -- print(player,'1获取地图经验',exp)
+            -- print(player,name,'1获取地图经验',exp)
             player:Map_SaveServerValue('level',math.floor(math.sqrt(exp/3600)+1)) --当前地图等级=开方（经验值/3600）+1
         end    
     end,
@@ -231,6 +231,7 @@ local event = {
                         end    
                     end 
                 end    
+                -- print('同步后的数据：',player,key,name,player.cus_server2[name]) 
             end    
             -- print('同步后的数据：',player,key,name,player.cus_server2[name]) 
         end    
@@ -334,7 +335,9 @@ function player.__index:AddServerValue(key,value,re_read,f)
             self:sendMsg('读取存档不成功，中断保存！',5)
             return 
         end    
+        -- print(331,key_name,key,self.cus_server2[key_name],tonumber(value))
         self.cus_server2[key_name] = (self.cus_server2[key_name] or 0 ) + tonumber(value)
+        -- print(332,key_name,key,self.cus_server2[key_name],tonumber(value))
         self:SetServerValue(key,self.cus_server2[key_name])
     end
 end
