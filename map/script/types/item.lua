@@ -453,6 +453,8 @@ function mt:get_item_lni_tip(str)
 		end
 		if tp =='number' then 
 			value = ac.format_number_tip(value)
+			
+			value = self.is_small_num and ac.format_number(value) or ac.format_number_tip(value)
 			color_flag = true 
 		end
 		if color_flag then 

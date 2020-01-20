@@ -160,17 +160,7 @@ function player.__index:sp_get_map_test(f)
                     end    
                 end    
                 sync_t(temp_tab)
-            end 
-        else
-            self.try_server_cnt = (self.try_server_cnt or 0 ) + 1
-            if self.try_server_cnt <= 10 then  
-                ac.wait(10,function()
-                    self:sendMsg('|cffff0000读取存档失败|r,3秒后尝试|cffff0000第'..self.try_server_cnt..'次|r重新读取。|r')
-                end)
-                ac.wait(3*1000,function(t)
-                    self:sp_get_map_test()
-                end)
-            end    
+            end  
         end            
     end)
 end    
