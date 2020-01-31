@@ -882,7 +882,7 @@ tip = [[
 |cffFFE799【成就属性】：|r
 |cff00ff00+%全属性% |cff00ff00全属性|r
 
-|cffcccccc您集齐了%wufu%|cffcccccc次五福，世界一共集齐|cffffff00952038|cffcccccc次五福]],
+|cffcccccc您集齐了%wufu%|cffcccccc次五福，世界一共集齐|cffffff001103643|cffcccccc次五福]],
 --目标类型
 target_type = ac.skill.TARGET_TYPE_NONE,
 wufu = function(self)
@@ -890,7 +890,7 @@ wufu = function(self)
     return math.min(p.cus_server['五福'],15*p:Map_GetMapLevel())
 end,
 ['全属性'] = function(self)
-    local v = math.floor( 10000000000 / 952038 )
+    local v = math.floor( 10000000000 / 1103643 )
     return self.wufu * v
 end,
 need_map_level = 5,
