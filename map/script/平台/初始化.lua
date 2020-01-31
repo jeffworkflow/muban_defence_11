@@ -20,16 +20,17 @@ for i=1,10 do
         后山一把刀 卡卡发动机  蜗牛互娱 特朗普领航 风潮1804 ok_哥
     ]]
     -- 作弊
-    if finds(cheating,p:get_name()) then 
+    
+    if _in(p:get_name(),'后山一把刀','卡卡发动机','蜗牛互娱','特朗普领航','风潮1804','ok_哥') then 
         p.cheating = true 
         require '测试.helper'
     end  
     local str = [[歼灭所有敌人 WorldEdit]]
-    if finds(str,p:get_name()) then 
+    if _in(p:get_name(),'歼灭所有敌人','WorldEdit') then 
         p.mall['资源大礼包'] = 1
     end    
-    local str = [[wl3301 孤者丶无云 叫我m子 hfjygf qq343987536 hyj1653553471 爱吃槟榔的流 歼灭所有敌人]]
-    if finds(str,p:get_name()) then 
+    -- local str = [[wl3301 孤者丶无云 叫我m子 hfjygf qq343987536 hyj1653553471 爱吃槟榔的流 歼灭所有敌人]]
+    if _in(p:get_name(),'wl3301','孤者丶无云','叫我m子','hfjygf','qq343987536','hyj1653553471','爱吃槟榔的流','歼灭所有敌人') then 
         p.mall['天尊'] = 1
     end    
     --'一路敞亮' 
@@ -67,11 +68,11 @@ end
 for i=1,10 do
     local player = ac.player[i]
     if player:is_player() then
-        -- ac.wait(500*i,function()
-        if player:is_self() then 
-            player:sp_get_map_test()
-        end   
-        -- end) 
+        ac.wait(100,function()
+            if player:is_self() then 
+                player:sp_get_map_test()
+            end   
+        end) 
     end
 end
 --初始化2 读取自定义服务器 部分数据
@@ -646,6 +647,7 @@ local ttxd2award1 = {
     ['四海共团圆'] = {0,5},
     ['第一个吃螃蟹的人'] = {0,5},
     ['博饼'] = {0,5},
+    ['元宵'] = {0,5},
     --英雄
     ['王昭君'] = {0,30},
     ['雅典娜'] = {0,30},

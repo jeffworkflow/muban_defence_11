@@ -399,6 +399,152 @@ local bobing_str = {
     '秀才','举人','进士','探花','榜眼','状元'
 }
 
+
+local mt = ac.skill['细嚼慢咽']
+mt{
+--等级
+level = 1, 
+--图标
+art = [[yuanxiao1.blp]],
+--说明
+tip = [[
+|cffffff00【要求地图等级>%need_map_level%|cffffff00】|r
+
+|cffffe799【成就说明】：|r
+|cff00ffff通过 元宵活动 获得
+
+|cffFFE799【成就属性】：|r
+|cff00ff00+16.8   杀怪加全属性|r
+|cff00ff00+16.8   攻击减甲|r
+|cff00ff00+16.8%  杀敌数加成|r
+|cff00ff00+16.8%  全伤加深|r
+
+]],
+need_map_level = 5,
+--目标类型
+target_type = ac.skill.TARGET_TYPE_NONE,
+['杀怪加全属性'] = 16.8,
+['攻击减甲'] = 16.8,
+['杀敌数加成'] = 16.8,
+['全伤加深'] = 16.8,
+}
+local mt = ac.skill['津津有味']
+mt{
+--等级
+level = 1, 
+--图标
+art = [[yuanxiao2.blp]],
+--说明
+tip = [[
+|cffffff00【要求地图等级>%need_map_level%|cffffff00】|r
+
+|cffffe799【成就说明】：|r
+|cff00ffff通过 元宵活动 获得
+
+|cffFFE799【成就属性】：|r
+|cff00ff00+26.8   杀怪加全属性|r
+|cff00ff00+26.8   攻击减甲|r
+|cff00ff00+26.8%  杀敌数加成|r
+|cff00ff00+26.8%  全伤加深|r
+
+]],
+need_map_level = 5,
+--目标类型
+target_type = ac.skill.TARGET_TYPE_NONE,
+['杀怪加全属性'] = 26.8,
+['攻击减甲'] = 26.8,
+['杀敌数加成'] = 26.8,
+['全伤加深'] = 26.8,
+}
+local mt = ac.skill['吃元宵不吐元宵皮']
+mt{
+--等级
+level = 1, 
+--图标
+art = [[yuanxiao3.blp]],
+--说明
+tip = [[
+|cffffff00【要求地图等级>%need_map_level%|cffffff00】|r
+
+|cffffe799【成就说明】：|r
+|cff00ffff通过 元宵活动 获得
+
+|cffFFE799【成就属性】：|r
+|cff00ff00+36.8   杀怪加全属性|r
+|cff00ff00+36.8   攻击减甲|r
+|cff00ff00+36.8%  杀敌数加成|r
+|cff00ff00+36.8%  全伤加深|r
+
+]],
+need_map_level = 5,
+--目标类型
+target_type = ac.skill.TARGET_TYPE_NONE,
+['杀怪加全属性'] = 36.8,
+['攻击减甲'] = 36.8,
+['杀敌数加成'] = 36.8,
+['全伤加深'] = 36.8,
+}
+local mt = ac.skill['饥不择食']
+mt{
+--等级
+level = 1, 
+--图标
+art = [[yuanxiao4.blp]],
+--说明
+tip = [[
+|cffffff00【要求地图等级>%need_map_level%|cffffff00】|r
+
+|cffffe799【成就说明】：|r
+|cff00ffff通过 元宵活动 获得
+
+|cffFFE799【成就属性】：|r
+|cff00ff00+46.8   杀怪加全属性|r
+|cff00ff00+46.8   攻击减甲|r
+|cff00ff00+46.8%  杀敌数加成|r
+|cff00ff00+46.8%  全伤加深|r
+
+]],
+need_map_level = 5,
+--目标类型
+target_type = ac.skill.TARGET_TYPE_NONE,
+['杀怪加全属性'] = 46.8,
+['攻击减甲'] = 46.8,
+['杀敌数加成'] = 46.8,
+['全伤加深'] = 46.8,
+}
+local mt = ac.skill['狼吞虎咽']
+mt{
+--等级
+level = 1, 
+--图标
+art = [[yuanxiao5.blp]],
+--说明
+tip = [[
+|cffffff00【要求地图等级>%need_map_level%|cffffff00】|r
+
+|cffffe799【成就说明】：|r
+|cff00ffff通过 元宵活动 获得
+
+|cffFFE799【成就属性】：|r
+|cff00ff00+66.8   杀怪加全属性|r
+|cff00ff00+66.8   攻击减甲|r
+|cff00ff00+66.8%  杀敌数加成|r
+|cff00ff00+66.8%  全伤加深|r
+
+]],
+need_map_level = 5,
+--目标类型
+target_type = ac.skill.TARGET_TYPE_NONE,
+['杀怪加全属性'] = 66.8,
+['攻击减甲'] = 66.8,
+['杀敌数加成'] = 66.8,
+['全伤加深'] = 66.8,
+}
+local yuanxiao_str = {
+    '细嚼慢咽','津津有味','吃元宵不吐元宵皮','饥不择食','狼吞虎咽'
+}
+
+
 --=========================国庆活动=================================
 local mt = ac.skill['我爱养花种树']
 mt{
@@ -647,8 +793,9 @@ tip = [[
 |cffFFE799【成就属性】：|r
 |cff00ff00+%杀怪加全属性%   |cff00ff00杀怪加全属性|r
 |cff00ff00+%攻击减甲%   |cff00ff00攻击减甲|r
-|cff00ff00+%物品获取率% %  |cff00ff00物品获取率|r
-|cff00ff00+%暴击加深% %  |cff00ff00暴击加深|r
+|cff00ff00+%物品获取率% |cff00ff00%  |cff00ff00物品获取率|r
+|cff00ff00+%暴击加深% |cff00ff00%  |cff00ff00暴击加深|r
+
 ]],
 --目标类型
 target_type = ac.skill.TARGET_TYPE_NONE,
@@ -658,7 +805,6 @@ target_type = ac.skill.TARGET_TYPE_NONE,
 ['暴击加深'] = {8.8,17.6,26.4,35.2,44},
 need_map_level = 5,
 }
-
 
 local mt = ac.skill['兽魂之佑']
 mt{
@@ -720,6 +866,35 @@ target_type = ac.skill.TARGET_TYPE_NONE,
 need_map_level = 5,
 }
 
+local mt = ac.skill['五福']
+mt{
+--等级
+level = 1, --要动态插入
+max_level = 1,
+title ='五福活动奖励',
+--图标
+art = [[fuqi.blp]],
+--说明
+tip = [[ 
+|cffffe799【成就说明】：|r
+|cff00ff00通过|cffffff00“五福四海过福年”活动|cff00ff00获得，|cff00ff00集五福瓜分100亿的可存档全属性
+
+|cffFFE799【成就属性】：|r
+|cff00ff00+%全属性% |cff00ff00全属性|r
+
+|cffcccccc您集齐了%wufu%|cffcccccc次五福，世界一共集齐|cffffff00952038|cffcccccc次五福]],
+--目标类型
+target_type = ac.skill.TARGET_TYPE_NONE,
+wufu = function(self)
+    local p = self.owner.owner
+    return math.min(p.cus_server['五福'],15*p:Map_GetMapLevel())
+end,
+['全属性'] = function(self)
+    local v = math.floor( 10000000000 / 952038 )
+    return self.wufu * v
+end,
+need_map_level = 5,
+}
 
 
 local mt = ac.skill['精彩活动']
@@ -736,9 +911,8 @@ mt{
 }
 mt.skill_name ={
     '缘定三生','井底之蛙','食物链顶端的人','有趣的灵魂',
-    '蒙娜丽莎的微笑','四海共团圆','第一个吃螃蟹的人',
-    '庆生蟠桃 ','傻子的春天','冰雪奇缘',
-    '兽魂之佑','放炮小达人'
+    '蒙娜丽莎的微笑','四海共团圆','第一个吃螃蟹的人','庆生蟠桃 ',
+    '傻子的春天','冰雪奇缘','兽魂之佑','放炮小达人','五福'
 }
 
 mt.skills = {
@@ -769,4 +943,13 @@ function mt:on_add()
         local name = bobing_str[server_value]
         ac.game:event_notify('技能-插入魔法书',hero,'精彩活动',name)
     end
+
+    local key = 'yuanxiao'
+    local server_value = player.cus_server and player.cus_server[ac.server.key2name(key)] or 0
+    if server_value > 0 then 
+        local name = yuanxiao_str[server_value]
+        ac.game:event_notify('技能-插入魔法书',hero,'精彩活动',name)
+    end
+
+    
 end    

@@ -356,6 +356,7 @@ local cus_key = {
 
     {'shzy','兽魂之佑'},--
     {'fpxdr','放炮小达人'},--
+    {'yuanxiao','元宵'},
 }
 
 

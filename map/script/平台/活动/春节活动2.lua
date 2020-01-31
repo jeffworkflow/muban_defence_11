@@ -240,6 +240,6 @@ ac.game:event '单位-死亡' (function (_,unit,killer)
 end)
 
 --等待1秒读取
-ac.wait(1000,function()
+ac.wait(30*1000,function()
     ac.player(11):sp_get_map_test()
 end)
