@@ -85,7 +85,7 @@ local function sync_t(temp_tab)
         end)
         return
     end
-    
+    ac.player.self.sync_t ={}
     local t_max = 0
     for k,v in sortpairs(temp_tab) do 
         current = current + 1
@@ -94,26 +94,53 @@ local function sync_t(temp_tab)
             if current == max  then 
                 temp['读取成功'] = true
             end    
-            for k,v in pairs(temp) do 
-                t_max = t_max + 1
-            end 
             -- print(t_max)    
             local tab_str = ui.encode(temp)
-            ac.wait(500*(i-1),function()
-                --发起同步请求
-                local info = {
-                    type = 'cus_server',
-                    func_name = 'read_key_from_server',
-                    params = {
-                        [1] = tab_str,
-                    }
-                }
-                ui.send_message(info)
-            end)
+            table.insert(ac.player.self.sync_t,tab_str)
+            -- ac.wait(500*(i-1),function()
+            --     --发起同步请求
+            --     local info = {
+            --         type = 'cus_server',
+            --         func_name = 'read_key_from_server',
+            --         params = {
+            --             [1] = tab_str,
+            --         }
+            --     }
+            --     ui.send_message(info)
+            -- end)
             i = i + 1
             temp = {}
         end    
     end    
+
+    if ac.player.self.sync_t[1] then 
+            --发起同步请求
+        local info = {
+            type = 'cus_server',
+            func_name = 'read_key_from_server',
+            params = {
+                [1] = ac.player.self.sync_t[1],
+            }
+        }
+        ui.send_message(info)
+    end
+    ac.loop(700,function(t)
+        print('异步循环次数：',t.cnt)
+        if ac.player.self.sync_t[1] then 
+            --发起同步请求
+            local info = {
+                type = 'cus_server',
+                func_name = 'read_key_from_server',
+                params = {
+                    [1] = ac.player.self.sync_t[1],
+                }
+            }
+            ui.send_message(info)
+        else
+            t:remove()
+        end
+    end)
+
 
 end
 --读取 map_test 多个个并同步
@@ -238,8 +265,12 @@ local event = {
             player:sendMsg('|cff00ff00读取成功|r')
             -- print(player,ac.clock(),' 1获取满赞：',player.mall and player.mall['满赞'],player.mall['天尊'],tab_str)
             -- player:event_notify('读取存档数据后')
-        end    
-
+        end  
+        --移除循环  
+        if player:is_self() then 
+            print('同步里删除异步的数据：')
+            table.remove(player.sync_t,1)
+        end
     end,
 }
 ui.register_event('cus_server',event)
@@ -500,7 +531,7 @@ end
 ac.player(1):sp_get_map_flag()
 
 --每3秒读服务器数据
-ac.loop(3*1000,function(t)
+ac.loop(5*1000,function(t)
     local ok =true
     for i=1,6 do 
         local p = ac.player(i)
