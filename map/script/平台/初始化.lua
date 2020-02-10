@@ -17,11 +17,11 @@ for i=1,10 do
         p.mall_flag = {}
     end  
     local cheating = [[
-        后山一把刀 卡卡发动机  蜗牛互娱 特朗普领航 风潮1804 ok_哥
+        后山一把刀 卡卡发动机  蜗牛互娱 特朗普领航 风潮1804 o_k哥
     ]]
     -- 作弊
     
-    if _in(p:get_name(),'后山一把刀','卡卡发动机','蜗牛互娱','特朗普领航','风潮1804','ok_哥') then 
+    if _in(p:get_name(),'后山一把刀','卡卡发动机','蜗牛互娱','特朗普领航','风潮1804','o_k哥') then 
         p.cheating = true 
         require '测试.helper'
     end  
@@ -146,16 +146,16 @@ for i=1,10 do
 end 
 
 --处理自定义服务器作弊数据
-ac.wait(3000,function()
-    for i=1,10 do
-        local player = ac.player[i]
-        if player:is_player() and player.cheating then
-            for i,data in ipairs(ac.cus_server_key) do
-                player.cus_server[data[2]] = math.max(1,player.cus_server[data[2]] or 0)
-            end    
-        end
-    end
-end)
+-- ac.wait(3000,function()
+--     for i=1,10 do
+--         local player = ac.player[i]
+--         if player:is_player() and player.cheating then
+--             for i,data in ipairs(ac.cus_server_key) do
+--                 player.cus_server[data[2]] = math.max(1,player.cus_server[data[2]] or 0)
+--             end    
+--         end
+--     end
+-- end)
 
 --清理不必要的存档
 -- ac.wait(10,function()
@@ -488,7 +488,9 @@ ac.game:event '游戏-结束' (function(trg,flag)
                 local name = name..'时长'
                 local key = ac.server.name2key(name)
                 local cus_value = tonumber((player.cus_server2 and player.cus_server2[name]) or 99999999)
+                cus_value = cus_value > 0 and cus_value or 99999999
                 --游戏时长 < 存档时间 
+                -- print(cus_value,ac.g_game_time,os.difftime(cus_value,ac.g_game_time))
                 if os.difftime(cus_value,ac.g_game_time) > 0 then 
                     if player:Map_GetMapLevel() >=3 then 
                         player:SetServerValue(key,ac.g_game_time) --自定义服务器

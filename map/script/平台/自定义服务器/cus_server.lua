@@ -87,7 +87,7 @@ local function sync_t(temp_tab)
     end
     
     local t_max = 0
-    for k,v in pairs(temp_tab) do 
+    for k,v in sortpairs(temp_tab) do 
         current = current + 1
         temp[k] = v 
         if current >= per * i or current == max then 
@@ -209,7 +209,7 @@ local event = {
                     player.cus_server2[name] = tonumber(val)
                     player.mall[name] = tonumber(val)
 
-                    -- print('同步后的数据：',player:get_name(),name,player.cus_server2[name])
+                    print('同步后的数据：',player:get_name(),name,player.cus_server2[name])
                     if key =='jifen' then 
                         player.jifen =  tonumber(val)
                     end  
@@ -274,13 +274,14 @@ function player.__index:SetServerValue(key,value,f)
                 if tbl and tbl.code == 0 then 
                     f(tbl)
                 else
-                    -- print(self:get_name(),post,'上传失败')
+                    -- print(self:get_name(),post,'保存失败')
                 end         
             else
-                print('返回值非json格式:')
+                -- print('返回值非json格式:',self:get_name(),post,'保存失败')
                 -- print_r(retval)
             end    
         else
+            -- print('返回值非json格式:',self:get_name(),post,'保存失败')
             -- print('服务器返回数据异常:',post)
             -- print_r(retval)
         end    

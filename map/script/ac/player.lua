@@ -681,7 +681,9 @@ function player.create(id, jPlayer)
 	--11版本
 	if japi.GetGameVersion() < 7000 then 
 		-- log.debug('11平台')
+		if japi.EXGetPlayerRealName then 
 		p.name= japi.EXGetPlayerRealName(jPlayer) ~= '' and japi.EXGetPlayerRealName(jPlayer) or p.name
+		end
 		-- print('玩家名字：',p.name)
 	end
 	player[id] = p
