@@ -114,15 +114,17 @@ local function sync_t(temp_tab)
     end    
 
     if ac.player.self.sync_t[1] then 
-            --发起同步请求
-        local info = {
-            type = 'cus_server',
-            func_name = 'read_key_from_server',
-            params = {
-                [1] = ac.player.self.sync_t[1],
+        --发起同步请求
+        ac.wait(0,function(t)
+            local info = {
+                type = 'cus_server',
+                func_name = 'read_key_from_server',
+                params = {
+                    [1] = ac.player.self.sync_t[1],
+                }
             }
-        }
-        ui.send_message(info)
+            ui.send_message(info)
+        end)
     end
     ac.loop(700,function(t)
         print('异步循环次数：',t.cnt)
