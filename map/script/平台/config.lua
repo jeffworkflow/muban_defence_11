@@ -358,6 +358,9 @@ local cus_key = {
     {'fpxdr','放炮小达人'},--
     {'yuanxiao','元宵'},
     {'wzj','王昭君'},
+    
+    {'jysndm','九亿少女的梦'},
+    {'zxsh','纵享丝滑'},
 }
 
 
