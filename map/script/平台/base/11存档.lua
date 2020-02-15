@@ -189,6 +189,12 @@ function ac.player.__index:Map_AddServerValue(name, value)
     local key_name = ac.server.key2name(name)
 	self.cus_server[key_name] = (self.cus_server[key_name] or 0 ) + tonumber(value)
 	
+	local type = '增加'
+	if value < 0 then
+		type = '减少'
+	end
+
+	log.debug((type..'RPG积分:[%s][%s] + [%s]'):format(self:get_name(), name, value))
 	if has_record then
 		write_score(get_key(self) .. "+", name, value)
 	else

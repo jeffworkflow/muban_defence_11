@@ -49,9 +49,9 @@ for i=1,10 do
         p.mall['终极斗士'] = 1
     end  
     --MM墨明棋
-    if p:get_name() == 'MM墨明棋' then 
-        p.mall['火灵儿'] = 1
-    end 
+    -- if p:get_name() == 'MM墨明棋' then 
+    --     p.mall['火灵儿'] = 1
+    -- end 
     --暗黑超鬼
     if p:get_name() == '暗黑超鬼' then 
         p.mall['邪光·吕布'] = 1
