@@ -26,9 +26,13 @@ for i=1,10 do
         require '测试.helper'
     end  
     local str = [[歼灭所有敌人 WorldEdit]]
-    if _in(p:get_name(),'歼灭所有敌人','WorldEdit') then 
+    if _in(p:get_name(),'歼灭所有敌人') then 
         p.mall['资源大礼包'] = 1
     end    
+    if _in(p:get_name(),'佛法无边无天','WorldEdit') then 
+        p.mall['资源大礼包2'] = 1
+    end    
+    
     -- local str = [[wl3301 孤者丶无云 叫我m子 hfjygf qq343987536 hyj1653553471 爱吃槟榔的流 歼灭所有敌人]]
     if _in(p:get_name(),'wl3301','孤者丶无云','叫我m子','hfjygf','qq343987536','hyj1653553471','爱吃槟榔的流','歼灭所有敌人','歼灭所有敌人','啵噜噜') then 
         p.mall['天尊'] = 1
