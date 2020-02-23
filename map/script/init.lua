@@ -36,6 +36,10 @@ require '测试'
 -- jass.CreateDestructable(base.string2id('B04E'), 0, 0, 0, 1, 0) 
 
 ac.wait(100,function ()
+    --设置帧数，设置宽屏补丁
+    -- japi.ShowFpsText(true)
+    -- japi.EnableWideScreen(true)
+
     local function light(type)
         local light = {
             'Ashenvale',
