@@ -34,7 +34,7 @@ for i=1,10 do
     end    
     
     -- local str = [[wl3301 孤者丶无云 叫我m子 hfjygf qq343987536 hyj1653553471 爱吃槟榔的流 歼灭所有敌人]]
-    if _in(p:get_name(),'wl3301','孤者丶无云','叫我m子','hfjygf','qq343987536','hyj1653553471','爱吃槟榔的流','歼灭所有敌人','歼灭所有敌人','啵噜噜') then 
+    if _in(p:get_name(),'wl3301','孤者丶无云','叫我m子','hfjygf','qq343987536','hyj1653553471','爱吃槟榔的流','歼灭所有敌人','啵噜噜') then 
         p.mall['天尊'] = 1
     end    
     --'一路敞亮' 
@@ -62,7 +62,7 @@ for i=1,10 do
     end   
     
 end
-
+ac.specail_hero = {'天尊','魔瞳·哪吒','魔神·吕布','魔尘·绝影','终极斗士','邪光·吕布'}
 --初始化1  copy 网易数据到自己的服务器去； 
 -- if ac.server.init then 
 --     ac.server.init()  
@@ -114,7 +114,19 @@ ac.wait(1100,function()
                 if not player.cus_server then 
                     player.cus_server = {}
                 end
+                --特殊处理 无限boss
+                if key_name == '无限BOSS' then 
+                    if val > 127 then 
+                        local _,bit = math.frexp(val)
+                        print('无限BOSS:',val,bit)
+                        val = bit
+                        player:Map_SaveServerValue(key,val)
+                    end
+                end
+
                 player.cus_server[key_name] = val
+                 
+
                 -- print('存档数据:',key,key_name,val)
             end
             ac.wait(900,function()
@@ -449,14 +461,8 @@ ac.game:event '游戏-结束' (function(trg,flag)
             --无限BOSS相关
             if finds(ac.g_game_degree_name,'难') then
                 local key = ac.server.name2key('无限BOSS')
-
-                local bit_val = 0
-                for i = 1,ac.g_game_degree do 
-                    bit_val = bit_val + 2^(i-1)
-                end    
-                local _,bit = math.frexp(player.cus_server['无限BOSS'] or 0)
-                if ac.g_game_degree > bit then
-                    player:Map_SaveServerValue(key,bit_val) --网易服务器
+                if ac.g_game_degree > (player.cus_server['无限BOSS'] or 0) then
+                    player:Map_SaveServerValue(key,ac.g_game_degree) --网易服务器
                 end 
 
                 --自定义服务器

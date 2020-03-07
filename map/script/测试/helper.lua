@@ -995,6 +995,15 @@ function helper:gsp()
 end
 
 --测试 
+function helper:test_tz() 
+	local point = ac.map.rects['出生点']:get_point()
+    local p = ac.player(1)
+    local hero = p:createHero('天尊',point,270);
+    p.hero = hero
+    p:event_notify('玩家-注册英雄', p, p.hero)
+	
+end	
+--测试 
 function helper:test_uu()
 	print('当前怪物数量：',ac.unit_cnt)
 	for i=1,3 do 

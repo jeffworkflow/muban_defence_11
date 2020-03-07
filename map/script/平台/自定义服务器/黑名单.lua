@@ -1,21 +1,40 @@
 local player = require("ac.player")
 --是否黑名单
-function player.__index:sp_is_black(f)
+function player.__index:sp_black_list(f)
+    if not self:is_self() and self.id < 11 then 
+        return 
+    end  
+    local ok 
+    for i,name in ipairs(ac.specail_hero) do 
+        if self.mall and self.mall[name] == 1 then 
+            ok = true
+            break 
+        end
+        if self.hero and self.hero:get_name() == name then 
+            ok = true
+            break 
+        end
+    end    
+    if not ok then 
+        return 
+    end
+
     local player_name = self:get_name()
     local map_name = ac.server_config.map_name
     local url = ac.server_config.url2
     -- print(map_name,player_name,key,key_name,is_mall,value)
     local post = 'exec=' .. json.encode({
-        sp_name = 'sp_is_black',
+        sp_name = 'sp_black_list',
         para1 = map_name,
         para2 = player_name
     })
     -- print(url,post)
     local f = f or function (retval)  end
     post_message(url,post,function (retval) 
+        -- print_r(retval)
         local tbl = json.decode(retval)
         if tbl.code == 0 then 
-            if not next(tbl.data[1]) then 
+            if not tbl.data[1] then 
                 f(false)
             else
                 f(true)
@@ -30,16 +49,13 @@ local function punish_black()
     for i = 1, 6 do 
         local player = ac.player(i)
         if player:is_player() then 
-            --先同步服务器数据
-            player:CopyServerValue('jifen')
             --判断是否黑名单
-            player:sp_is_black(function(flag)
+            player:sp_black_list(function(flag)
                 -- true 在黑名单内
                 ac.wait(10,function()
                     -- print(player:get_name(),'是否黑名单',flag)
                     if flag then 
-                        -- EndGame(true) 处理掉线,会由寄存器报错问题
-                        player:clear_server()
+                        EndGame(true) --处理掉线,会由寄存器报错问题
                         -- 清空网易服务器存档数据
                         player:sendMsg('【系统消息】 检测到可能作弊，清空数据')
                     end    
@@ -53,7 +69,7 @@ end
 ac.punish_black = punish_black
 
 --处理黑名单数据 每5分钟执行一次判断
-local time = 5*60
+local time = 1*60
 if global_test == true then 
     time = 10
 end    

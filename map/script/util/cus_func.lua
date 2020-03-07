@@ -1,7 +1,10 @@
 
 --循环打印 table
 function print_r (lua_table, indent)
-
+	if type(lua_table) == "string" then 
+		print(lua_table)
+		return
+	end
     indent = indent or 0
     for k, v in pairs(lua_table) do
         if type(k) == "string" then

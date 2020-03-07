@@ -271,7 +271,9 @@ local event = {
         --移除循环  
         if player:is_self() then 
             print('同步里删除异步的数据：')
-            table.remove(player.sync_t,1)
+            if player.sync_t then
+                table.remove(player.sync_t,1)
+            end
         end
     end,
 }
