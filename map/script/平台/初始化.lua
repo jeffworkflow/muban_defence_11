@@ -123,7 +123,9 @@ ac.wait(1100,function()
                         player:Map_SaveServerValue(key,val)
                     end
                 end
-
+                if val < 0 then 
+                    val = 0
+                end
                 player.cus_server[key_name] = val
                  
 
