@@ -1008,7 +1008,9 @@ function mt:on_add()
     local server_value = player.cus_server and player.cus_server[ac.server.key2name(key)] or 0
     if server_value > 0 then 
         local name = yuanxiao_str[server_value]
-        ac.game:event_notify('技能-插入魔法书',hero,'精彩活动',name)
+        if name then 
+            ac.game:event_notify('技能-插入魔法书',hero,'精彩活动',name)
+        end
     end
 
     

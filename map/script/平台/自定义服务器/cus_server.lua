@@ -190,6 +190,8 @@ function player.__index:sp_get_map_test(f)
                 end    
                 sync_t(temp_tab)
             end  
+        else
+            log.debug('读取出错',retval)
         end            
     end)
 end    

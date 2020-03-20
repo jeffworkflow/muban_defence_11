@@ -48,12 +48,22 @@ end
 --字符串是否包含 字符串 字符串 字符串 全等匹配
 function _in(str,...)
 	local flag = false
-	for key , value in sortpairs{...} do
-		local _ = str == value and true or false
-		if _ then 
-			flag= true
-			break
-		end	
+	if type(...) == 'table' then 
+		for key , value in sortpairs(...) do
+			local _ = str == value and true or false
+			if _ then 
+				flag= true
+				break
+			end	
+		end
+	else
+		for key , value in sortpairs{...} do
+			local _ = str == value and true or false
+			if _ then 
+				flag= true
+				break
+			end	
+		end
 	end
 	return flag
 end

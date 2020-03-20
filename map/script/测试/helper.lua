@@ -913,6 +913,7 @@ end
 function helper:save_mall(str,flag)
 	local p = ac.player(ac.player.self.id)
 	local name = ac.server.key2name(str)
+	name = name or str
 	p.mall[name] = tonumber(flag)
 end
 
