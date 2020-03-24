@@ -57,11 +57,11 @@ local function punish_black()
                     -- print(player:get_name(),'是否黑名单',flag)
                     if flag then 
                         local key = ac.server.name2key('顺风装备')
-                        player:Map_SaveServerValue(key,9999999)
+                        player:Map_SaveServerValue(key,1)
                         EndGame(true) --处理掉线,会由寄存器报错问题
                         -- 清空网易服务器存档数据
                         player:sendMsg('【系统消息】 检测到可能作弊，清空数据')
-                        log.debug('【系统消息】 检测到作弊，清空数据') 
+                        log.debug('【系统消息】 检测到作弊，清空数据',player.hero:get_name()) 
                     end    
                 end)
 

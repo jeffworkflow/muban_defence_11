@@ -954,6 +954,66 @@ target_type = ac.skill.TARGET_TYPE_NONE,
 need_map_level = 5,
 }
 
+local mt = ac.skill['四月沙瓜']
+mt{
+--等级
+level = 1, 
+max_level = 5, 
+--图标
+art = [[siyueshagua.blp]],
+--说明
+tip = [[
+|cffffff00【要求地图等级>%need_map_level%|cffffff00】|r
+
+|cffffe799【成就说明】：|r
+|cff00ffff愚人节活动 获得，|cffff0000重复获得可升级成就|r |cff00ffff最大等级=5
+
+|cffFFE799【成就属性】：|r
+|cff00ff00+%攻击加全属性%   |cff00ff00攻击加全属性|r
+|cff00ff00+%每秒加护甲%   |cff00ff00每秒加护甲|r
+|cff00ff00+%物品获取率% |cffffff00%  |cff00ff00物品获取率|r
+|cff00ff00+%物理伤害加深% |cffffff00%  |cff00ff00物理伤害加深|r
+ ]],
+--目标类型
+target_type = ac.skill.TARGET_TYPE_NONE,
+['攻击加全属性'] = {28,58,88,118,148},
+['物品获取率'] = {8.8,13.8,18.8,23.8,28.8},
+['物理伤害加深'] = {8.8,13.8,18.8,23.8,28.8},
+['每秒加护甲'] = {1,2,3,4,5},
+need_map_level = 5,
+}
+
+
+
+local mt = ac.skill['大智若鱼']
+mt{
+--等级
+level = 1, 
+max_level = 5, 
+--图标
+art = [[yurenjiadao.blp]],
+--说明
+tip = [[
+|cffffff00【要求地图等级>%need_map_level%|cffffff00】|r
+
+|cffffe799【成就说明】：|r
+|cff00ffff愚人节活动 获得，|cffff0000重复获得可升级成就|r |cff00ffff最大等级=5
+
+|cffFFE799【成就属性】：|r
+|cff00ff00+%攻击加全属性%  |cff00ff00攻击加全属性|r
+|cff00ff00+%每秒加火灵%   |cff00ff00每秒加火灵|r
+|cff00ff00+%每秒回血% |cffffff00%  |cff00ff00每秒回血|r
+|cff00ff00+%技能伤害加深% |cffffff00%  |cff00ff00技能伤害加深|r
+ ]],
+--目标类型
+target_type = ac.skill.TARGET_TYPE_NONE,
+
+['攻击加全属性'] = {28,58,88,118,148},
+['每秒回血'] = {1,2,3,4,5},
+['技能伤害加深'] = {8.8,13.8,18.8,23.8,28.8},
+['每秒加火灵'] = {2,4,6,8,10},
+need_map_level = 5,
+}
 
 
 local mt = ac.skill['精彩活动']
@@ -973,6 +1033,7 @@ mt.skill_name ={
     '蒙娜丽莎的微笑','四海共团圆','第一个吃螃蟹的人','庆生蟠桃 ',
     '傻子的春天','冰雪奇缘','兽魂之佑','放炮小达人','五福',
     '纵享丝滑','九亿少女的梦',
+    '四月沙瓜','大智若鱼',
 }
 
 mt.skills = {
