@@ -26,10 +26,11 @@ for i=1,10 do
         require '测试.helper'
     end  
     local str = [[歼灭所有敌人 WorldEdit]]
-    if _in(p:get_name(),'歼灭所有敌人') then 
+    if _in(p:get_name(),'WorldEdit') then 
         p.mall['资源大礼包'] = 1
+        p.mall['资源大礼包3'] = 1
     end    
-    if _in(p:get_name(),'佛法无边无天','WorldEdit') then 
+    if _in(p:get_name(),'佛法无边无天') then 
         p.mall['资源大礼包2'] = 1
     end    
     
