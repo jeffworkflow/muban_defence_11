@@ -7,7 +7,7 @@ level = 1,
 art = [[zyj.blp]],
 --说明
 tip = [[ 
-|cffffe799【活动时间】|r|cff00ff009月3日-9月7日
+|cffffe799【活动时间】|r|cff00ff005月27日-6月27日
 |cffffe799【活动说明】|r
 |cff00ff001.这几天举办祭祀活动，以慰在基地游玩的众家鬼魂，并祈求大家全年的平安顺利。|cff00ff00还请少侠帮忙|cffff0000贡献一些食物|r
 
@@ -244,7 +244,7 @@ end
 ac.game:event '游戏-开始'(function()
     -- 注册材料获得事件
     local time = 60 * 6 
-    local rate = 55
+    local rate = 50
     -- local time = 10
     ac.loop(time*1000,function()
         local online_cnt = get_player_count()
