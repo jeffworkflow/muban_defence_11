@@ -242,7 +242,7 @@ ac.wait(1200,function()
                 { name = "修罗模式(无尽)" },
                 -- { name = "斗破苍穹(无尽)" },
                 -- { name = "无上之境(无尽)" },
-                -- { name = "无限乱斗(快速)" },
+                { name = "无限乱斗(快速)" },
                 -- { name = "深渊乱斗(快速)" },
                 { name = "武林大会(可PK)" },
             }
@@ -313,10 +313,10 @@ ac.wait(1200,function()
                     --     ac.g_game_degree = 13
                     --     ac.g_game_degree_attr = 13 
                     --     ac.g_game_degree_name = "无上之境"  
-                    -- elseif index == 5 then 
-                    --     ac.g_game_degree = 14
-                    --     ac.g_game_degree_attr = 14  
-                    --     ac.g_game_degree_name = "无限乱斗"  
+                    elseif index == 4 then 
+                        ac.g_game_degree = 14
+                        ac.g_game_degree_attr = 14  
+                        ac.g_game_degree_name = "无限乱斗"  
                     -- elseif index == 6 then 
                     --     ac.g_game_degree = 15
                     --     ac.g_game_degree_attr = 15  

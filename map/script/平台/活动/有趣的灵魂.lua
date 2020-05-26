@@ -269,7 +269,7 @@ ac.game:event '游戏-开始'(function()
                 if math.random(100) <= rate then 
                     local key = ac.server.name2key(save_name)
                     --激活成就（存档） 
-                    p:Map_AddServerValue(key,1) --网易服务器
+                    p:AddServerValue(key,1) --网易服务器
                     --动态插入魔法书
                     local skl = hero:find_skill(save_name,nil,true) 
                     if not skl  then 

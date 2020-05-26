@@ -115,6 +115,7 @@ ac.wait(1100,function()
                 if not player.cus_server then 
                     player.cus_server = {}
                 end
+                -- print(11111,key_name,val)
                 --特殊处理 无限boss
                 if key_name == '无限BOSS' then 
                     if val > 512 then 
@@ -371,6 +372,7 @@ ac.game:event '游戏-无尽开始'(function(trg)
                 local name = name..'时长'
                 local key = ac.server.name2key(name)
                 local cus_value = tonumber((player.cus_server2 and player.cus_server2[name]) or 99999999)
+                cus_value = cus_value > 0 and cus_value or 99999999
                 --游戏时长 < 存档时间 
                 if os.difftime(cus_value,ac.g_game_time) > 0 then 
                     if player:Map_GetMapLevel() >=3 then 

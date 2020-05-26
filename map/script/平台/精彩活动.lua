@@ -1111,7 +1111,7 @@ function mt:on_add()
         if  name == '庆生蟠桃 ' then 
             has_mall = player.mall['庆生蟠桃'] or (player.cus_server and player.cus_server['庆生蟠桃'])
         else 
-            has_mall = player.mall[name] or (player.cus_server and player.cus_server[name])
+            has_mall = player.mall[name] or (player.cus_server and player.cus_server[name]) or (player.cus_server2 and player.cus_server2[name]) 
         end
         if has_mall and has_mall > 0 then 
             ac.game:event_notify('技能-插入魔法书',hero,'精彩活动',name)
