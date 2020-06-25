@@ -74,7 +74,7 @@ local new_ui = class.panel:builder
                     on_button_mouse_enter = function (self)
                         local title = self.parent.name
                         local tip = [[
-|cff00ffff【粽叶】+【糯米】+【棕馅】=|cffdf19d0【美味的粽子】|cff00ff00（可在“活动大使”处，进行兑换）
+|cff00ffff【粽叶】+【糯米】+【棕馅】=|cffdf19d0【美味的粽子】|cff00ff00（可在“活动使者”（基地右下角）处，进行兑换）
 
 |cffcccccc端午节活动物品|r]]
                         self:tooltip('|cffffe799'..title..'|r',tip,0,300,94)
@@ -131,25 +131,22 @@ print('加载了端午节活动')
 --奖品
 local award_list = { 
     ['赤灵精品粽'] =  {
-        { rand = 4, name = '金'},
-        { rand = 4, name = '红'},
-        { rand = 4, name = '地阶'},
-        { rand = 4, name = '天阶'},
-        { rand = 4, name = '天谕*1'},
-        { rand = 4, name = '天谕*5'},
-        { rand = 4, name = '功法连升书*1'},
-        { rand = 4, name = '无谓因果*1'},
-        { rand = 4, name = '龙之血珠*1'},
-        { rand = 4, name = '吞噬丹*1'},
-        { rand = 4, name = '三眼赤痕*1'},
-        { rand = 4, name = '火龙气息*1'},
-        { rand = 4, name = '天魂融血丹*1'},
-        { rand = 4, name = '地魂融血丹*1'},
-        { rand = 4, name = '随机卡片'},
-        { rand = 4, name = '神奇的令牌*1'},
-        { rand = 54, name = '赤灵精品粽'},
-        
-        { rand = 32, name = '无'},
+        { rand = 5, name = '金'},
+        { rand = 5, name = '红'},
+        { rand = 35, name = '随机技能书'},
+        { rand = 5, name = '点金石*1'},
+        { rand = 5, name = '点金石*5'},
+        { rand = 5, name = '点金石*10'},
+        { rand = 5, name = '恶魔果实*1'},
+        { rand = 5, name = '吞噬丹*1'},
+        { rand = 5, name = '格里芬*1'},
+        { rand = 5, name = '黑暗项链*1'},
+        { rand = 5, name = '最强生物心脏*1'},
+        { rand = 5, name = '白胡子的大刀*1'},
+        { rand = 5, name = '赤灵精品粽'},
+        { rand = 5, name = '无'},
+
+
     },
 }
 
@@ -166,7 +163,7 @@ local function give_award(hero)
     end
     if rand_name == '无' then
         p:sendMsg('|cffffe799【系统消息】|r |cff00ffff美味的粽子|cff00ff00果真名不虚传阿',3) 
-    elseif  finds(rand_name,'天谕','功法连升书','无谓因果','龙之血珠','吞噬丹','三眼赤痕','火龙气息','天魂融血丹','地魂融血丹','神奇的令牌') then
+    elseif  finds(rand_name,'点金石','恶魔果实','格里芬','黑暗项链','吞噬丹','最强生物心脏','白胡子的大刀') then
         local it
         --处理掉落物品相关
         for k,v in rand_name:gmatch '(%S+)%*(%d+%s-)' do
@@ -181,6 +178,19 @@ local function give_award(hero)
         --满时，掉在地上
         local it = hero:add_item(name)
         p:sendMsg('|cffffe799【系统消息】|r|cff00ff00这个粽子里面怎么有东西硬硬的，获得|cffff0000'..(it.color_name or rand_name)..'|r',4)
+
+    elseif finds(rand_name,'随机技能书')  then    
+        local rand_list = ac.unit_reward['商店随机技能']
+        local rand_name = ac.get_reward_name(rand_list)
+        if not rand_name then 
+            return
+        end    
+        local list = ac.skill_list2
+        --添加给购买者
+        local name = list[math.random(#list)]
+        ac.item.create_skill_item(name,unit:get_point())
+        p:sendMsg('|cffffe799【系统消息】|r |cff00ff00这个粽子里面怎么有东西硬硬的，获得|cffff0000'..name..'|r',4)
+        
     elseif  finds('地阶 天阶',rand_name) then   
         local list = ac.quality_skill[rand_name]
         local name = list[math.random(#list)]
@@ -277,7 +287,7 @@ local unit_reward = {
     },
 }
 ac.game:event '单位-死亡' (function (_,unit,killer)
-    if not finds(unit:get_name(),'经验怪','金币','木头','魔丸','藏宝阁','藏经阁','剑冢小弟','剑魔','百花宫宫女','苏若颜','龙宫守卫','哪吒','城堡守卫','牛头马面') then 
+    if not finds(unit:get_name(),'经验怪','金币','木头','火灵','强盗','藏经阁','剑冢小弟','剑魔','百花宫宫女','苏若颜','龙宫守卫','哪吒','城堡守卫','牛头马面') then 
         return
     end    
     local p = killer:get_owner()
@@ -294,7 +304,7 @@ ac.game:event '单位-死亡' (function (_,unit,killer)
     end
     p.max_fall_cnt[rand_name] = (p.max_fall_cnt[rand_name] or 0) +1
     --获得最多次数
-    local max_fall_cnt = 12   
+    local max_fall_cnt = 10   
     if p.max_fall_cnt[rand_name] <= max_fall_cnt then 
         --当前个数+1
         p.cnt[rand_name] = (p.cnt[rand_name] or 0) +1
