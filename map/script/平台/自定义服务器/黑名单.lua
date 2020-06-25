@@ -32,7 +32,7 @@ function player.__index:sp_black_list(f)
     -- print(url,post)
     local f = f or function (retval)  end
     post_message(url,post,function (retval) 
-        print_r(retval)
+        -- print_r(retval)
         local tbl = json.decode(retval)
         if tbl.code == 0 then 
             if not tbl.data[1] then 

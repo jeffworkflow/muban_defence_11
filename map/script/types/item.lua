@@ -248,7 +248,8 @@ end
 
 --获取购买价格
 function mt:buy_price()
-	return self.gold or 0,(self.show_gold or 0),self.player_gold and self.player_gold[ac.player.self] 
+	local gold = (self.player_gold and self.player_gold[ac.player.self]) and self.player_gold[ac.player.self] or (self.gold or 0)
+	return self.gold or 0,gold,self.player_gold and self.player_gold[ac.player.self] 
 end
 
 --获取出售价格
@@ -264,7 +265,8 @@ end
 
 --获取购买木头
 function mt:buy_wood()
-	return self.wood or 0,(self.show_wood or 0),self.player_wood and self.player_wood[ac.player.self] 
+	local gold = (self.player_wood and self.player_wood[ac.player.self]) and self.player_wood[ac.player.self] or (self.wood or 0)
+	return self.wood or 0,gold,self.player_wood and self.player_wood[ac.player.self] 
 end
 
 --获取出售木头
@@ -330,9 +332,9 @@ function mt:sell_jifen()
 	return jifen
 end
 
---获取购买火灵
+--获取购买魔丸
 function mt:buy_fire_seed()
-	local gold = (self.player_fire and self.player_fire[ac.player.self]) and self.player_fire[ac.player.self] or (self.fire_seed or 0)
+	local gold = (self.player_fire_seed and self.player_fire_seed[ac.player.self]) and self.player_fire_seed[ac.player.self] or (self.fire_seed or 0)
 	-- self.fire_seed = gold
 	self.fire_seed = self.fire_seed or 0 
 	for i=1,10 do
@@ -341,10 +343,10 @@ function mt:buy_fire_seed()
 		end	
 	end
 	self.show_fire_seed = gold
-	return self.fire_seed,self.show_fire_seed,self.player_fire and self.player_fire[ac.player.self] 
+	return self.fire_seed,self.show_fire_seed,self.player_fire_seed and self.player_fire_seed[ac.player.self] 
 end
 
---获取出售火灵
+--获取出售魔丸
 function mt:sell_fire_seed()
 	local count = self:get_item_count()
 	local fire_seed = self.fire_seed  or 0

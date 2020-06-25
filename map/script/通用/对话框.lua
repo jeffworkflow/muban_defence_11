@@ -7,7 +7,9 @@ function create_dialog(player,title,list,callback,time)
         local button = DialogAddButton(dialog,info.name,info.key)
         map[button] = index 
     end 
-    DialogDisplay(player.handle, dialog, true)
+    ac.wait(100,function()
+        DialogDisplay(player.handle, dialog, true)
+    end)
     TriggerRegisterDialogEvent(trg,dialog)
 
     local function remove()

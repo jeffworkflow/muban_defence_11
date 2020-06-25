@@ -79,6 +79,7 @@ local function sync_t(temp_tab)
                 func_name = 'read_key_from_server',
                 params = {
                     [1] = tab_str,
+                    [2] = 1,
                 }
             }
             ui.send_message(info)
@@ -95,50 +96,53 @@ local function sync_t(temp_tab)
                 temp['读取成功'] = true
             end    
             -- print(t_max)    
-            local tab_str = ui.encode(temp)
-            table.insert(ac.player.self.sync_t,tab_str)
-            -- ac.wait(500*(i-1),function()
-            --     --发起同步请求
-            --     local info = {
-            --         type = 'cus_server',
-            --         func_name = 'read_key_from_server',
-            --         params = {
-            --             [1] = tab_str,
-            --         }
-            --     }
-            --     ui.send_message(info)
-            -- end)
+            table.insert(ac.player.self.sync_t,temp)
             i = i + 1
             temp = {}
         end    
     end    
-
     if ac.player.self.sync_t[1] then 
         --发起同步请求
         ac.wait(0,function(t)
+            
+            local tab_str = ui.encode(ac.player.self.sync_t[1])
             local info = {
                 type = 'cus_server',
                 func_name = 'read_key_from_server',
                 params = {
-                    [1] = ac.player.self.sync_t[1],
+                    [1] = tab_str,
+                    [2] = 1,
                 }
             }
             ui.send_message(info)
         end)
     end
     ac.loop(700,function(t)
-        print('异步循环次数：',t.cnt)
-        if ac.player.self.sync_t[1] then 
+        -- print_r(ac.player.self.sync_t)
+        --取同步列表中，未同步成功的数据
+        local sync_tab
+        local sync_index
+        for i,data in ipairs(ac.player.self.sync_t) do 
+            if not data.is_succ then 
+                sync_tab = data
+                sync_index = i
+                break
+            end
+        end
+        if sync_tab then 
             --发起同步请求
             local info = {
                 type = 'cus_server',
                 func_name = 'read_key_from_server',
                 params = {
-                    [1] = ac.player.self.sync_t[1],
+                    [1] = ui.encode(sync_tab),
+                    [2] = sync_index,
                 }
             }
             ui.send_message(info)
         else
+            print('移除了异步循环：',ac.player.self)
+            ac.player.self.sync_t = nil
             t:remove()
         end
     end)
@@ -221,7 +225,7 @@ local event = {
         end    
     end,
     --从自定义服务器读取数据
-    read_key_from_server = function (tab_str)
+    read_key_from_server = function (tab_str,sync_index)
         local player = ui.player 
         if not player.cus_server2 then 
             player.cus_server2 = {}
@@ -263,7 +267,7 @@ local event = {
             end 
             player.flag_read_server = true
             if ac.clock() > 2000 then 
-                print('又发布了一次读档回调')
+                print(player,'又发布了一次读档回调')
                 player:event_notify('读取存档数据')   
             end    
             player:sendMsg('|cff00ff00读取成功|r')
@@ -272,9 +276,9 @@ local event = {
         end  
         --移除循环  
         if player:is_self() then 
-            print('同步里删除异步的数据：')
-            if player.sync_t then
-                table.remove(player.sync_t,1)
+            if player.sync_t and sync_index then
+                print('同步里删除异步的数据：')
+                player.sync_t[sync_index].is_succ = true
             end
         end
     end,
@@ -477,22 +481,27 @@ function player.__index:sp_save_player()
     local player_name = self:get_name()
     local map_name = config.map_name
     local url = config.url2
+    local map_level = self.cus_server and self.cus_server['地图等级'] or 1
     -- print(map_name,player_name,key,key_name,is_mall,value)
     local post = 'exec=' .. json.encode({
         sp_name = 'sp_save_player',
-        para1 = player_name,
+        para1 = map_name,
+        para2 = player_name,
+        para3 = map_level
     })
-    -- print(url,post)
+    print(url,post)
     local f = f or function (retval)  end
     post_message(url,post,f)
 end
 
-for i=1,10 do
-    local p = ac.player(i)
-    if p:is_player() then 
-        p:sp_save_player()
-    end
-end      
+ac.wait(30*1000,function()
+    for i=1,10 do
+        local p = ac.player(i)
+        if p:is_player() then 
+            p:sp_save_player()
+        end
+    end  
+end)    
 
 --读取全局开关，是否读服务器存档
 local ui = require 'ui.client.util'

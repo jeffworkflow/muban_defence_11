@@ -1,5 +1,308 @@
+local panel = ac.ui.client.panel
+local message = require 'jass.message'
+--把魔兽自带的提示框移出屏幕外
+-- japi.FrameSetPoint(japi.FrameGetTooltip(),8,game_ui,8,0.3,0.16)
+--还原魔兽自带的位置 
+-- japi.FrameSetPoint(japi.FrameGetTooltip(),8,game_ui,8,0,0.16)  
+--当前指向的按钮
+local MouseButton = nil
+local shop_icon ={
+    ['金币'] = [[UI\Widgets\ToolTips\Human\ToolTipGoldIcon.blp]],
+    ['木头'] = [[UI\Widgets\ToolTips\Human\ToolTipLumberIcon.blp]],
+    ['杀敌数'] = [[UI\small_kill.blp]],
+    ['魔丸'] = [[UI\small_fire_seed.blp]],
+    ['积分'] = [[UI\small_jifen.blp]],
+}
+
+local tool = class.panel:builder
+{
+    _type = 'tooltip_backdrop',
+    x = 1390,
+    y = 350,
+    w = 530,
+    h = 400,
+    level = 5,
+    is_show = false,
+    alpha = 0.8 ,
+    title = {type = 'text',x = 16,y = 16,font_size = 15,},
+
+    icon = {
+        type = 'texture',x = 16,y = 35+16,w = 22,h = 22,normal_image = '',
+        text = {
+            type = 'text',
+            x = 30,
+            y = 0,
+            w = 100,
+            h = 22,
+            font_size = 11,
+            align = 'left',
+            text = ''
+        },
+    },
+    -- off_tip_x = 
+    tip = {type = 'text',x = 16,y = 65+22,align = 'auto_height',font_size = 11},
+}
+
+function tool:hide()
+    class.panel.hide(self)
+    --还原魔兽自带的位置 
+    japi.FrameSetPoint(japi.FrameGetTooltip(),8,game_ui,8,0,0.16)
+end 
 
 
+local function tooltip(title, tip)
+    tool.title:set_text(title)
+    tool.tip:set_text(tip)
+    tool:set_position(1390, 800 - tool.h )
+    tool:show()
+end
+
+local function skill_tooltip(skill,unit)
+    local title = skill:get_title()
+    local tip = skill:get_tip()
+    tool.tip:set_position(16,65+22)
+    
+    if unit.unit_type == '商店' then
+        title = skill.store_name or title
+        local item =  skill
+        local gold,show_gold,player_gold = item:buy_price()
+        local wood,show_wood,player_wood = item:buy_wood()
+        local kill_count,show_kill_count,player_kill = item:buy_kill_count()  
+        local jifen,show_jifen,player_jifen = item:buy_jifen()
+        local rec_ex,show_fire_seed,player_fire_seed = item:buy_fire_seed()
+        gold = player_gold or gold
+        wood = player_wood or wood
+        kill_count = player_kill or kill_count
+        jifen = player_jifen or jifen
+        rec_ex = player_fire_seed or rec_ex
+        if gold >0 then 
+            skill.coin = '金币'
+            gold = gold
+            show_gold = show_gold
+        end
+        if wood >0 then 
+            skill.coin = '木头'
+            gold = wood
+            show_gold = show_wood
+        end
+        if kill_count >0 then 
+            skill.coin = '杀敌数'
+            gold = kill_count
+            show_gold = show_kill_count
+        end
+        if rec_ex >0 then 
+            skill.coin = '魔丸'
+            gold = rec_ex
+            show_gold = show_fire_seed
+        end
+
+        if jifen >0 then 
+            skill.coin = '积分'
+            gold = jifen
+            show_gold = show_jifen
+        end
+        -- show_gold = math.tointeger(show_gold) or ('%.2f'):format(show_gold)
+        -- print('是否含有拥有多少',wood,show_wood, wood)
+        local icon = shop_icon[skill.coin]
+        if  icon and gold>0 then   
+            tool.icon.text:set_text(show_gold)
+            tool.icon:show()
+            tool.icon:set_normal_image(icon)
+        else
+            tool.icon:hide()
+            tool.tip:set_position(16,35+22)
+        end      
+    elseif skill:get_cost() > 0 then
+        tool.icon:show()
+        tool.icon:set_normal_image([[image\ManaIcon.blp]])
+        tool.icon.text:set_text(jass.R2I(skill:get_cost()))
+    else
+        tool.icon:hide()
+        tool.tip:set_position(16,35+22)
+    end
+
+    tooltip(title, tip)
+end
+
+local function sttr_tooltip()
+    local attr_tip = [[|cfff4d135力量：|r|cffff5722|n|r - 每点增加 |cff41c9565|r 点生命上限|n|n|cfff4d135敏捷：|r|n - 每点增加 |cff41c9561|r 点基础攻击|n|n|cfff4d135智力：|r|n - 每 |cff41c95650|r 点增加 |cff41c9561|r 点部分技能的|cffec2453真实伤害|n|n|n【属性介绍】|n|r|cfff4d135 - 穿透：|r|cffec2453|n|r造成|cff41c956非真实伤害|r时无视目标百分比护甲。|cffec2453|n|n|r|cfff4d135 - 破甲：|r|cffec2453|n|r造成|cff41c956非真实伤害|r时无视目标固定护甲。|cffec2453|n|n|r|cfff4d135 - 真伤：|r|cffec2453|n|r无视目标护甲及减伤和免伤，真伤|cfff18f24不享受除技伤加深外|r的其他伤害增幅。|cffec2453|n|n|r|cfff4d135 - 分裂：|r|cffec2453|n|r分裂伤害不享受其他攻击特效(|cff41c956被动技能|r也属攻击特效的一种)。|cffec2453|n|n|r|cfff4d135 - 护甲：|r|cffec2453|n|r除真伤外的所有伤害类型都会计算护甲。|n]]
+    tooltip('属性介绍', attr_tip)
+end
+
+local function item_tooltip(item,unit)
+    local title = item.color_name
+    local tip = item:get_tip()..(item.suit_tip or '')
+    -- print('物品tip',item.name,item.suit_tip)
+    tool.tip:set_position(16,65+22)
+
+    local gold,show_gold,player_gold = item:sell_price()
+    local wood,show_wood,player_wood = item:sell_wood()
+    local kill_count,show_kill_count,player_kill = item:sell_kill_count()  
+    local jifen,show_jifen,player_jifen = item:sell_jifen()
+    local rec_ex,show_fire_seed,player_fire_seed = item:sell_fire_seed()
+    gold = player_gold or gold
+    wood = player_wood or wood
+    kill_count = player_kill or kill_count
+    jifen = player_jifen or jifen
+    rec_ex = player_fire_seed or rec_ex
+    
+    if gold >0 then 
+        item.coin = '金币'
+        gold = gold
+    end
+    if wood >0 then 
+        item.coin = '木头'
+        gold = wood
+    end
+    if kill_count >0 then 
+        item.coin = '杀敌数'
+        gold = kill_count
+    end
+    if rec_ex >0 then 
+        item.coin = '魔丸'
+        gold = rec_ex
+    end
+
+    if jifen >0 then 
+        item.coin = '积分'
+        gold = jifen
+    end
+
+    local icon = shop_icon[item.coin]
+    if not icon then   
+        tool.icon:hide()
+        tool.tip:set_position(16,35+22)
+    else
+        tool.icon:show()
+        tool.icon:set_normal_image(icon)
+    end    
+    tool.icon.text:set_text(gold)
+    
+    tooltip(title, tip)
+end
+
+function panel.updateToolTip()
+    button = MouseButton
+    if button == nil then
+        tool:hide()
+        return
+    end
+
+    local unit = ac.unit.j_unit(japi.GetRealSelectUnit())
+    if unit == nil then
+        tool:hide()
+        return
+    end
+
+    if button.type_name == '技能栏' then 
+        local skill
+        if unit.unit_type == '商店' and unit.sell_item_list then 
+            --把魔兽自带的提示框移出屏幕外
+            japi.FrameSetPoint(japi.FrameGetTooltip(),8,game_ui,8,0.3,0.16)
+            -- unit:print_item()
+            local item = unit.sell_item_list[button.old_slot_id]
+            skill = ac.item.shop_item_map[item and item.name] --再根据名字取shop_item_map的物品
+        end   
+
+        local skl = unit:find_skill( button.slot_id, unit.skill_page or '英雄')
+        if skl and skl.is_ui_text then 
+            --把魔兽自带的提示框移出屏幕外
+            japi.FrameSetPoint(japi.FrameGetTooltip(),8,game_ui,8,0.3,0.16)
+            skill = skl
+        end 
+        
+        if skill == nil then
+            tool:hide()
+            return 
+        end 
+        skill_tooltip(skill,unit)
+    elseif button.type_name == '物品栏' then
+        local item = unit:get_slot_item(button.slot_id)
+        --把魔兽自带的提示框移出屏幕外
+        japi.FrameSetPoint(japi.FrameGetTooltip(),8,game_ui,8,0.3,0.16)
+        if item  == nil then 
+            tool:hide()
+            return
+        end
+        item_tooltip(item,unit)
+    -- elseif button.type_name == '属性栏' then
+    --     sttr_tooltip()
+    end
+end
+
+--鼠标进入事件
+function panel:on_button_mouse_enter(button)
+    MouseButton = button
+    panel.updateToolTip(button)
+end
+--鼠标离开事件
+function panel:on_button_mouse_leave(button)
+    MouseButton = nil
+    tool:hide()
+end
+
+--画按钮
+local function init()
+    local slots = {9,10,11,12,5,6,7,8,1,2,3,4}
+    
+    local function create_button(p,x,y,w,h)
+        local button = p:add_button('',x,y,w,h)
+        return button
+    end
+
+    local slot_id = 0
+    --整个技能栏的面板
+    local skillPanel = panel:add_panel('',1480,841,417,230)
+    local buttonList = {}
+    --画12个技能栏按钮
+    for row = 0, 2 do
+        local y = 3 + row * 68 + row * 9
+        for column = 0, 3 do 
+            slot_id = slot_id + 1
+            local x = 4 + column * 90 + column * 15
+            local button = create_button(skillPanel,x, y, 90, 68)
+            button.old_slot_id = slot_id
+            button.slot_id = slots[slot_id]
+            button.type_name = '技能栏'
+            buttonList[slot_id] = button
+        end 
+    end
+
+    skillPanel.buttonList = buttonList
+    panel.skillPanel = skillPanel
+
+    slot_id = 0
+    --整个物品栏的面板
+    local itemPanel = panel:add_panel('',1235,875,179,201)
+    local buttonList = {}
+    for row = 0,2 do
+        local y = 4 + row * 56 + row * 13
+        for column = 0,1 do 
+            slot_id = slot_id + 1
+            local x = 4 + column * 75 + column * 21
+            local button = create_button(itemPanel,x, y, 75, 56)
+            button.slot_id = slot_id
+            button.type_name = '物品栏'
+            buttonList[slot_id] = button
+        end 
+    end
+    itemPanel.buttonList = buttonList
+    panel.itemPanel = itemPanel
+
+    local button = create_button(panel,989,908,65,49)
+    button.type_name = '属性栏'
+end
+init()
+
+--每秒刷新
+ac.loop(1000,function()
+    if ac.player.self then
+        ac.ui.client.panel.updateToolTip()
+        -- ac.ui.client.panel.updateAttr()
+    end
+end)
+
+------------==开始复制通用 tooltip-------------------
 function get_str_line(str,count)
     local a = 1
     local b = 1
@@ -32,228 +335,24 @@ function get_str_line(str,count)
     end
     return line
 end
+local tool2 = class.panel:builder
+{
+    _type = 'tooltip_backdrop',
+    x = 0,--假的
+    y = 0,--假的
+    w = 350,
+    h = 200,
+    level = 5,
+    is_show = false,
+    alpha = 0.8,
 
-local tool = {
-    item_tooltip = function (self,...)
-        local arg = {...}
-        if #arg == 0 then 
-            return 
-        end
-        local path = 'image\\提示框\\Item_Prompt.tga'
-        local x,y,width,height,font_size = 0,0,360,80,15
-        class.ui_base.remove_tooltip()
-
-        offset = offset or 1
-        local ox,oy
-        if self ~= nil then 
-            ox,oy = self:get_real_position()
-            ox = ox + self.w / 2
-        else
-            ox,oy = game.get_mouse_pos()
-        end
-       
-        x = ox + x - width / 2 
-
- 
-        local offset = -1
-        local tbl = {}
-        if type(arg[#arg]) == 'number' then 
-            offset = arg[#arg]
-        end 
-        for i=1,#arg do
-            local item          = arg[i]
-            if type(item) == 'table' then 
-                local title         = item:get_title() or ''
-                local tip           = item:get_tip() or ''
-                local background    = item:get_type_icon() or ''
-                local image          = item:get_icon() or ''
-                local price         = item:get_sell_price() or 0
-
-                local line = get_str_line(tip,13*3-1)
-                local max_height = (line + 3) * 27
-                local ox = x + (i - 1) * (width + 50 ) * offset
-                local y = oy + y - max_height
-                if y < 0 then 
-                    max_height = max_height + math.abs(y)
-                end
-                local panel = class.panel.create(path,ox,y,width,max_height)
-                panel:set_alpha(0.8)
-
-                local text = panel:add_text(title,0,font_size,width,64,font_size,'top') 
-                local icon_background = panel:add_texture(background,40,5,48,48)
-                local icon = panel:add_texture(image,40,5,48,48)
-                local y = 64
-                --如果物品价格大于0 则显示金钱图标 + 物品价格
-                if price > 0 then 
-                    local gold_icon = panel:add_texture('image\\背包\\jinbi.tga',220,58,32,32)
-                    local gold_text = panel:add_text(tostring(price),260,58,200,32,12,'auto_newline')
-                end 
-                local text2 = panel:add_text(tip,32,y,width,max_height,font_size,'auto_newline')
-                text2:set_control_size(width-64,max_height)
-                table.insert(class.ui_base.tooltip_list,panel)
-            end
-        end
-    end,
-
-
-    skill_tooltip = function (self,skill,level,pos)
-        local art = skill:get_art()
-
-        local title = skill:get_name()
-        local item = skill.item 
-
-        local type 
-        local keyboard = ''
-        if item then 
-            type = '物品'
-        else 
-            type = '技能'
-            
-            if skill:get_spell_type() == '主动' and skill.owner:get_owner() == ac.player.self then 
-                if skill.owner.handle == japi.GetRealSelectUnit() then 
-                    keyboard = skill:get_hotkey_tip()
-                end 
-            end
-        end 
-
-        --回收掉已经在显示的tip
-        --class.ui_base.remove_tooltip()
-
-        local x,y = 0,0 --self:get_real_position()
-        local width,height = 350 ,400
-        
-        local panel = class.panel.create('image\\提示框\\bj2.tga',x,y,width,height)
-        local panel_texture = panel:add_texture('image\\提示框\\BJ.tga',5,5,panel.w-10,panel.h-10)
-        --标题面板
-        local title_panel = panel:add_panel('image\\提示框\\BT.tga',5,5,width-10,70)
-        --图标
-        local title_art = title_panel:add_texture(art,10,10,50,50)
-
-        --标题
-        local title_text = title_panel:add_text('|cffdde7f1'..title..'|r ' .. keyboard,title_art.w + title_art.x + 20,13,150,15,12,0)
-
-        local is_h = title_panel.y + title_panel.h + 10
-
-
-        if item then 
-            local gold = item:get_sell_price()
-            local gold_texture = panel:add_texture('image\\提示框\\glod.tga',title_art.w + title_art.x + 20,42,25,25)
-            local txt = panel:add_text('|cffd58b2c'..gold..'|r',gold_texture.x + 35,gold_texture.y + ((gold_texture.h-10)/2),200,10,10,'auto_newline')
-
-            local attr = skill.data.attr 
-            if attr then 
-                local list = {}
-                for name,value in pairs(attr) do 
-                    table.insert(list,{name = name,value = value})
-                end 
-                table.sort(list,function (a,b) return a.name < b.name end)
-                local s = {}
-                for index,value in ipairs(list) do 
-                    s[#s + 1] =  '|cffa0a0a0+ |r' .. value.value .. ' |cffa0a0a0' .. value.name .. '|r\n'
-                end 
-
-                local state = panel:add_text(table.concat(s),20,is_h,200,#s * 20,10,'auto_newline')
-                is_h = is_h + state.h
-            end 
-            
-   
-
-            is_h = is_h + 10
-        else 
-            local level_str = '等级 : ' .. (level or skill:get_level())
-            local level_text = panel:add_text(level_str,10,20,panel.w-30,10,10,'right')
-            local s = {
-                
-                skill:get_target_type_tip() .. '\n',
-                skill.target_tip or '影响：敌方单位',
-                '\n'
-            }
-            local type_tip = '|cffa0a0a0' .. table.concat(s) .. '|r'
-            local type_text = panel:add_text(type_tip,10,is_h,200,#s * 20,10,'auto_newline')
-            is_h = is_h + type_text.h
-
-        end 
-
-
-
-        local art_bj = 'image\\提示框\\lsBJ.tga'
-        local art_bt = 'image\\提示框\\lsBT.tga'
-        local color_ti='|cff69ae64'
-        local color_text= '|cff59636d'
-        local target_type = skill:get_spell_type()
-        if target_type == '被动' then
-            art_bj = 'image\\提示框\\hsBJ.tga'
-            art_bt = 'image\\提示框\\hsBT.tga'
-            color_ti='|cffa0abbb'
-            color_text= '|cff59636d'
-        end
-
-        local tip_str = skill:get_tip() 
-        if type == '物品' then 
-            tip_str = tip_str .. '\n' ..  get_item_compound_str(item:get_name())
-        end 
-
-        local skl_height = get_str_line(tip_str,13*3-1) * 12 + 10
-        --背景
-        local skl_panel = panel:add_panel(art_bj,10,is_h,width-20,skl_height + 50)
-        --标题
-        local skl_ti_panel = skl_panel:add_panel(art_bt,0,0,skl_panel.w,33)
-        local skl_title = skl_ti_panel:add_text(color_ti..target_type..'：'..(skill.title or skill:get_name())..'|r',5,6,150,33,11,'auto_newline')
-        --耗蓝
-        if skill.cost > 0 then
-            local cost_tex = skl_ti_panel:add_texture('image\\提示框\\cost.tga',skl_ti_panel.w - 150,6.5,20,20)
-            local cost_text= skl_ti_panel:add_text(color_text..skill.cost..'|r',skl_ti_panel.w-125,10,25,skl_ti_panel.h,8,'auto_newline')
-        end
-
-        --cd
-        if skill.cool > 0 then
-            local cost_tex = skl_ti_panel:add_texture('image\\提示框\\cool.tga',skl_ti_panel.w - 50,6.5,20,20)
-            local cost_text= skl_ti_panel:add_text(color_text..skill.cool..'|r',skl_ti_panel.w-25,10,25,skl_ti_panel.h,8,'auto_newline')
-        end  
-
-        local tip = '|cffa0a0a0' .. tip_str:gsub('|[rR]','|cffa0a0a0') ..'|r'
-
-       
-        --内容
-        local skl_tip = skl_panel:add_text(tip,10,40,skl_panel.w - 10,skl_panel.h - 40,9,'auto_newline')
-        skl_tip:set_control_size(skl_tip.w - 10,skl_tip.h)
-
-        is_h = skl_panel.y + skl_panel.h
-
-        panel:set_control_size(panel.w,is_h + 10)
-        panel_texture:set_control_size(panel.w-10,panel.h - 10)
-
-        local x,oy = self:get_real_position()
-        local width,max_height = 400,400
-
-
-        y = oy - panel.h / 2 + self.h / 2 
-
-        if pos == nil or pos == 0 then 
-            x = x + self.w + 5 
-        elseif pos == 1 or pos == -1 then 
-            x = x - panel.w - 5 
-        elseif pos == 2 then 
-            x = x - panel.w / 2  + self.w / 2
-            y = oy - panel.h
-        end 
-        x = math.min(math.max(10,x),1900 - panel.w)
-        y = math.min(math.max(10,y),1080 - panel.h)
-
-        panel:set_position(x,y)
-
-        --local title_type = title_panel:add_text('|cff9ea8a7类型：'..type..'|r',title_art.w + title_art.x + 20,42,150,15,9,3)
-
-        table.insert(class.ui_base.tooltip_list,panel)
-        return panel
-    end,
-
-
+    title = {type = 'text',x = 16,y = 16,font_size = 15,},
+    -- off_tip_x = 
+    tip = {type = 'text',x = 16,y = 65,old_x=16,old_y=65,align = 'auto_height',font_size = 11,},
+}
+local tools ={
     tooltip = function (self,title,tip,pos,pWidth,pHeight,font_size)
-
-        --回收掉已经在显示的tip
-        class.ui_base.remove_tooltip()
-
+        
         local width,height = pWidth or 350 ,pHeight or 200
         local x,oy = self:get_real_position() 
 
@@ -282,86 +381,28 @@ local tool = {
             title_align = title[2]
         end 
 
-        local panel = class.panel.create('image\\提示框\\bj2.tga',x,y,width,max_height)
-
-
-        local texture = panel:add_texture('image\\提示框\\BJ.tga',5,5,panel.w-10,panel.h-10)
-        local texture = panel:add_panel('image\\提示框\\BT.tga',5,5,panel.w-10,panel.h-10)
-        local th = 0
-        if title_str then 
-            local title_text = texture:add_text(title_str,0,0,texture.w,32,font_size or 12,title_align)
-            title_text:set_color(0xffe0e0e0)
-            th = 30
+        tool2.tip:set_width(width or 530)
+        tool2.title:set_text(title)
+        tool2.tip:set_text(tip)
+        if title == '' or not title then 
+            tool2.tip:set_position(tool2.tip.x,tool2.title.y)
+        else 
+            tool2.tip:set_position(tool2.tip.old_x,tool2.tip.old_y)
         end    
-
-        local tip_text = texture:add_text(tip,0,th,texture.w-20,texture.h,font_size or 12,'auto_newline')
-        tip_text:set_color(0xffa0a0a0)
-        tip_text:set_control_size(texture.w - 20,texture.h)
-
-       
-
-
-        table.insert(class.ui_base.tooltip_list,panel)
-        return panel
+        if anchor then 
+            self:set_tooltip_follow(tool2, anchor)
+        else 
+            tool2:set_position(x, y)
+        end 
+        tool2:show()
     end,
-
-
-
-
-    chess_tooltip = function (self,chess)
-         --回收掉已经在显示的tip
-         class.ui_base.remove_tooltip()
-
-         local name = chess.name
- 
-         local x,y = self:get_real_position() 
- 
-         local width,height = 250,420
-         y = y - height / 2 + self.h / 2 
- 
-         x = x - width - 5
- 
- 
-         x = math.min(math.max(10,x),1920 - width)
-         y = math.min(math.max(10,y),1080 - height)
-
-        local panel = class.panel.create('image\\提示框\\bj2.tga',x,y,width,height)
-
-        local texture = panel:add_panel('image\\提示框\\BT.tga',5,5,width - 10,height-10)
-
-        local actor = panel:add_actor(name,width / 2, height / 2 - 20)
-        actor:set_size(0.8)
-
-        width = width - 10
-        
-        local text = texture:add_text(actor:get_title(),0,0,width,50,16,'center')
-        text:set_color(0xffa0a0a0)
-
-
-        local icon = texture:add_texture('image\\操作栏\\icon_gold.blp',25,48,24,24)
-
-        local gold = texture:add_text(actor:get_gold_tip(),55,48,200,30,12,'auto_newline')
-
-        local type_list = actor:get_type_list()
-
-        local ax,ay = 32,230
-        for index,name in ipairs(type_list) do 
-            local skill = ac.table.skill[name]
-            if skill then 
-                texture:add_texture(skill.art or '',ax,ay,32,32)
-                ax = ax + 40
-            end
-        end
-
-        local attr_panel = panel:add(class.attr_panel,20,270)
-        attr_panel:set_hero(actor)
-        attr_panel:set_text_size(1.3)
-
-        table.insert(class.ui_base.tooltip_list,panel)
-        return panel
+    remove_tooltip = function(self)
+        tool2:hide()
     end,
 }
 
-
-
-setmetatable(class.ui_base,{__index = tool})
+local real_remove = class.ui_base.remove_tooltip
+for name, func in pairs(tools) do 
+    class.ui_base[name] = func
+end 
+tools.old_remove_tooltip =  real_remove

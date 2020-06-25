@@ -3,8 +3,7 @@ local slk = require 'jass.slk'
 class.actor = extends(class.model){
 
     new = function (parent,name,x,y)
-        local data = nil
-        --ac.table.model[name]
+        local data = ac.table.model[name]
         local path = ''
         if data then 
             path = data.screen

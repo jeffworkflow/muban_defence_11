@@ -2,25 +2,43 @@
 
 local ui = {}
 
+local queue = {}
 
-
-ui.event = {}
+local event = {}
 
 ui.hashtable = {}
 
-ui.init = function () --预存数据表里的物的名字
+ui.init = function () 
+    
+    --队列发送消息
+    game.loop(150, function ()
+        if #queue == 0 then 
+            return 
+        end 
+
+        local first = queue[1] 
+
+        table.remove(queue, 1)
+
+        japi.SendCustomMessage(first)
+    end)
+    
+    --预存数据表里的物的名字
     for file_type,file_data in pairs(ac.table) do
         for name,value in pairs(file_data) do
-            local hash = ui.get_hash(name)
-            local value = ui.hashtable[hash]   
-            if value ~= nil and value ~= name then 
-                print('哈希值发生碰撞了',name,value)
-            else 
-                ui.hashtable[hash] = name
-            end
+            ui.add_str(name)
         end
     end
 end
+ui.add_str = function (str)
+    local hash = ui.get_hash(str)
+    local value = ui.hashtable[hash]   
+    if value ~= nil and value ~= str then 
+        print('哈希值发生碰撞了',str,value)
+    else 
+        ui.hashtable[hash] = str
+    end
+end 
 
 ui.get_str = function (hash)
     return ui.hashtable[hash]
@@ -46,17 +64,17 @@ end
 
 
 ui.register_event = function (name,event_table)
-    ui.event[name]=event_table
+    event[name]=event_table
 end
 
 
-ui.send_message = function (info)
+ui.send_message = function (info, is_queue)
     if info == nil and type(info) ~= 'table' then 
         return
     end
     local data = {
-        t = ui.get_hash(info.type),
-        f = ui.get_hash(info.func_name),
+        t = info.type,
+        f = info.func_name,
         p = info.params
     }
     local msg = string.format("%s",ui.encode(data))
@@ -64,7 +82,12 @@ ui.send_message = function (info)
         print("字符串太长了",msg,debug.traceback())
         return
     end 
-    japi.SendCustomMessage(msg)
+    if is_queue then 
+        table.insert(queue, msg)
+    else 
+        japi.SendCustomMessage(msg)
+    end
+    
 end
 
 ui.on_custom_ui_event = function (message)
@@ -76,7 +99,7 @@ ui.on_custom_ui_event = function (message)
     local func_name = info_table.func_name
     local params = info_table.params
     if event_type and func_name then
-        local event_table = ui.event[event_type]
+        local event_table = event[event_type]
         if event_table ~= nil then
             local func = event_table[func_name]
             if func ~= nil then
@@ -133,7 +156,7 @@ ui.encode = function (tbl)
                     buf[#buf+1] = format('[%s]=', k)
                 end 
             elseif tp == 'string' then
-                if find(k, '[^%w_]') or find(k,'[%d*]')  then
+                if find(k, '[^%w_]') then
                     buf[#buf+1] = format('[%q]=', k)
                 else
                     buf[#buf+1] = k..'='
