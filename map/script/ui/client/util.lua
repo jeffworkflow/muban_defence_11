@@ -156,7 +156,7 @@ ui.encode = function (tbl)
                     buf[#buf+1] = format('[%s]=', k)
                 end 
             elseif tp == 'string' then
-                if find(k, '[^%w_]') then
+                if find(k, '[^%w_]' or find(k,'[%d*]') ) then
                     buf[#buf+1] = format('[%q]=', k)
                 else
                     buf[#buf+1] = k..'='

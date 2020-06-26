@@ -201,9 +201,7 @@ function mt:set_name(name)
 	if not self.store_name then 
 		self.store_name = str
 	end	
-	if not self.color_name then 
-		self.color_name = str
-	end	
+	self.color_name = str
 	japi.EXSetItemDataString(base.string2id(id),4,str)
 end
 --获取商店物品显示名字

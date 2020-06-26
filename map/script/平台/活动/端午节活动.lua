@@ -133,7 +133,7 @@ local award_list = {
     ['赤灵精品粽'] =  {
         { rand = 5, name = '金'},
         { rand = 5, name = '红'},
-        { rand = 35, name = '随机技能书'},
+        { rand = 5, name = '随机技能书'},
         { rand = 5, name = '点金石*1'},
         { rand = 5, name = '点金石*5'},
         { rand = 5, name = '点金石*10'},
@@ -144,7 +144,7 @@ local award_list = {
         { rand = 5, name = '最强生物心脏*1'},
         { rand = 5, name = '白胡子的大刀*1'},
         { rand = 5, name = '赤灵精品粽'},
-        { rand = 5, name = '无'},
+        { rand = 35, name = '无'},
 
 
     },
@@ -188,8 +188,8 @@ local function give_award(hero)
         local list = ac.skill_list2
         --添加给购买者
         local name = list[math.random(#list)]
-        ac.item.create_skill_item(name,unit:get_point())
-        p:sendMsg('|cffffe799【系统消息】|r |cff00ff00这个粽子里面怎么有东西硬硬的，获得|cffff0000'..name..'|r',4)
+        local it = ac.item.add_skill_item(name,hero)
+        p:sendMsg('|cffffe799【系统消息】|r |cff00ff00这个粽子里面怎么有东西硬硬的，获得 技能： '..(it.color_name or name)..'|r',4)
         
     elseif  finds('地阶 天阶',rand_name) then   
         local list = ac.quality_skill[rand_name]
@@ -281,9 +281,9 @@ end
 --获得事件
 local unit_reward = { 
     ['端午怪'] =  {
-        { rand = 30.04,     name = '粽叶'},
-        { rand = 30.04,     name = '糯米'},
-        { rand = 30.04,     name = '棕馅'},
+        { rand = 0.04,     name = '粽叶'},
+        { rand = 0.04,     name = '糯米'},
+        { rand = 0.04,     name = '棕馅'},
     },
 }
 ac.game:event '单位-死亡' (function (_,unit,killer)
