@@ -363,6 +363,50 @@ function helper:get_server(key)
 	end	
 end	
 
+function helper:add_server(key,val)
+	local p = self and self:get_owner() or ac.player(ac.player.self.id)
+	if key == 'all' then 
+		for name,val in pairs(p.cus_server) do
+			local key = ac.server.name2key(name)
+			print('服务器存档:'..key,p:Map_AddServerValue(key,val))
+			print('自定义服务器存档:'..key,p.cus_server2[name])
+			print('游戏中存档:',key,val)
+		end
+	else		
+		local name = ac.server.key2name(key)	
+		print('服务器存档:'..key,p:Map_AddServerValue(key,val))
+		print('自定义服务器存档:'..key,p.cus_server2[name])
+		print('游戏中存档:'..key,p.cus_server[name])
+	end	
+end	
+
+--创建特效
+local temp ={}
+function helper:eff(ix,cnt)
+	local cnt = tonumber(cnt) or 1
+	local ix = tonumber(ix) or 1
+	if ac.effect_file[ix] then
+		for i=1,cnt do 
+			local eff = ac.effect_ex{
+				model = ac.effect_file[ix],
+				point = ac.map.rects['主城']:get_point() or ac.point(0,0)
+			}
+			table.insert(temp,eff)
+		end
+		print('创建模型:',ix,ac.effect_file[ix])
+	else
+		print('输入的序号没有对应的值')
+	end
+end
+
+function helper:ceff()
+	for i,eff in ipairs(temp) do 
+		eff:remove()
+	end
+	temp = {}
+end
+
+
 --动画
 function helper:ani(name)
 	self:set_animation(name)

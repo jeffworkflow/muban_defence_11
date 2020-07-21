@@ -40,11 +40,16 @@ native  GetStoredReal					takes gamecache cache, string missionKey, string key r
 native  GetStoredBoolean				takes gamecache cache, string missionKey, string key returns boolean
 native  GetStoredString					takes gamecache cache, string missionKey, string key returns string
 native  RestoreUnit						takes gamecache cache, string missionKey, string key, player forWhichPlayer, real x, real y, real facing returns unit
+native EXNetSaveRemoteData  takes integer player_id, string Key ,string value returns boolean
+native EXNetLoadRemoteData  takes integer player_id, string Key returns string
 ]])
 ac.flag_use_mall = true --默认使用商城数据
-
 local has_record = not not japi.InitGameCache
 log.debug('积分环境', has_record)
+-- japi.EXNetSaveRemoteData = japi.EXNetSaveRemoteData or function() print('没有japi.EXNetSaveRemoteData') end
+-- japi.EXNetLoadRemoteData = japi.EXNetLoadRemoteData or function() print('没有japi.EXNetLoadRemoteData') end
+-- GetStoredString( ctable,EXGetPlayerRealName(p), rKey )
+print('检测函数环境：',japi.EXNetLoadRemoteData)
 
 local names = {
 	'FlushGameCache',
@@ -52,6 +57,7 @@ local names = {
 	'StoreInteger',
 	'GetStoredInteger',
 	'StoreString',
+	'GetStoredString',
 	'SaveGameCache',
     'SyncStoredInteger',
     'HaveStoredInteger',
@@ -105,6 +111,14 @@ local function get_score()
 	end
 	return score_gc
 end
+local ctable
+local function get_ctable()
+	if not ctable then
+		japi.FlushGameCache(japi.InitGameCache("11.s"))
+		ctable = japi.InitGameCache("11.s")
+	end
+	return ctable
+end
 
 local current_player
 local function get_player()
@@ -130,6 +144,9 @@ end
 local function read_score(table, key)
 	return japi.GetStoredInteger(get_score(), table, key)
 end
+local function read_score_string(table, key)
+	return japi.GetStoredString(get_ctable(), table, key)
+end
 
 local score = {}
 
@@ -138,10 +155,17 @@ function ac.player.__index:Map_GetServerValue(name)
 		score[name] = {}
 	end
 	if not score[name][self.id] then
-		score[name][self.id] = read_score(get_key(self), name)
+		--先载入
+		-- local str_score = japi.EXNetLoadRemoteData and japi.EXNetLoadRemoteData((self.id-1),name)
+		-- if str_score then 
+		-- 	print('sdfsdf:',name,str_score)
+		-- end
+		score[name][self.id] = read_score_string(self:get_name(), name) or read_score(get_key(self), name) 
+		-- score[name][self.id] = score[name][self.id] == 0 and 
 	end
+	-- print('测试读取数据：',tonumber(score[name][self.id]),score[name][self.id],read_score(get_key(self), name),read_score_string(self:get_name(), name) )
 	local value = tonumber(score[name][self.id]) or 0
-	log.debug(('获取RPG积分:[%s][%s] --> [%s]'):format(self:get_name(), name, score[name][self.id]))
+	log.debug(('获取RPG积分:[%s][%s] --> [%s][%s]'):format(self:get_name(), name, score[name][self.id],read_score_string(self:get_name(), name) ))
 	return value
 end
 
@@ -156,6 +180,10 @@ function ac.player.__index:Map_SaveServerValue(name, value)
 		write_score(get_key(self) .. "=", name, value)
 	else
 		write_score(get_key(self), name, value)
+	end
+	--保存一份存档
+	if japi.EXNetSaveRemoteData then 
+		japi.EXNetSaveRemoteData((self.id-1),name,tostring(value))
 	end
 
     --保存本局数据
@@ -199,6 +227,13 @@ function ac.player.__index:Map_AddServerValue(name, value)
 		write_score(get_key(self) .. "+", name, value)
 	else
 		write_score(get_key(self), name, r)
+	end
+	--保存一份存档
+	local v = math.max(self.cus_server[key_name],r) --避免造成回档
+	
+	if japi.EXNetSaveRemoteData then 
+		-- print('增加后的数值：',tostring(v),self.cus_server[key_name],r)
+		japi.EXNetSaveRemoteData((self.id-1),name,tostring(v))
 	end
 end
 

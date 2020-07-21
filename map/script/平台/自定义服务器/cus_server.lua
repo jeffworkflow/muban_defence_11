@@ -489,7 +489,7 @@ function player.__index:sp_save_player()
         para2 = player_name,
         para3 = map_level
     })
-    print(url,post)
+    -- print(url,post)
     local f = f or function (retval)  end
     post_message(url,post,f)
 end
