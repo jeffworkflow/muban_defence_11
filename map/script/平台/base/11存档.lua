@@ -269,8 +269,8 @@ end
 --获取玩家地图等级
 function ac.player.__index:Map_GetMapLevel()
 	local handle = self.handle
-	local level =self.cus_server and self.cus_server['地图等级'] > 0 and self.cus_server['地图等级'] or 1 
-	level = level + (self['局内地图等级'] or 0)
+	local level = self.cus_server and (self.cus_server['地图等级'] or 0) > 0 and self.cus_server['地图等级'] or 1 
+	level = (level or 1) + (self['局内地图等级'] or 0)
 	if not ac.flag_use_mall then 
 		level = 1
 	end       

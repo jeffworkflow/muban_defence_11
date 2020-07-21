@@ -343,7 +343,7 @@ function mt:add_wood(wood, where, flag)
 	if not wood or tonumber(wood) == 0 then 
 		return 
 	end	
-	local wood = tonumber(string.format( "%.2f",wood))
+	local wood = tonumber(math.tointeger(wood) or ('%.2f'):format(wood))
 	-- print(wood)
 	local data = {player = self, wood = wood}
 	if wood > 0 and not flag then
@@ -351,6 +351,7 @@ function mt:add_wood(wood, where, flag)
 		wood = data.wood
 	end
 	self.wood = self.wood + wood
+	self.wood = tonumber(math.tointeger(self.wood) or ('%.2f'):format(self.wood))
 	if self.wood < 0 then 
 		self.wood = 0
 	end	
@@ -397,9 +398,10 @@ function mt:add_kill_count(num)
 		return 
 	end	
 
-	local num = tonumber(string.format( "%.2f",num))
+	local num = tonumber(math.tointeger(num) or ('%.2f'):format(num))
 	--当前杀敌数
 	self.kill_count = (self.kill_count or 0.00 ) + num
+	self.kill_count = tonumber(math.tointeger(self.kill_count) or ('%.2f'):format(self.kill_count))
 	-- print('1',self.kill_count)
 	-- self.kill_count = jass.I2R(self.kill_count)
 	-- print('2',self.kill_count)

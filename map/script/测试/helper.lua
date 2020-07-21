@@ -300,7 +300,25 @@ function helper:reload_mall(flag)
 	if skl then skl:remove() end
 	peon:add_skill('宠物天赋','英雄',8)
 
-
+	--宠物重载身上技能
+	if p:Map_GetMapLevel() >= 3 then 
+		local skl = peon:find_skill('一键合成')
+		if skl then skl:remove() end
+		peon:add_skill('一键合成','英雄')
+		
+		local skl = peon:find_skill('一键丢弃')
+		if skl then skl:remove() end
+		peon:add_skill('一键丢弃','英雄')
+		
+		-- local skl = peon:find_skill('一键分类')
+		-- if skl then skl:remove() end
+		-- peon:add_skill('一键分类','英雄',10)
+		if ac.mgdjy_unit then 
+			local skl = ac.mgdjy_unit:find_skill('一键修炼')
+			if skl then skl:remove() end
+			ac.mgdjy_unit:add_skill('一键修炼','英雄',4)
+		end
+	end
 
 end	
 
@@ -792,6 +810,59 @@ function helper:add_item(str,cnt)
 		self:add_item(str,true)
 	end	
 end
+
+--模糊添加物品
+function helper:ai(str,cnt)
+	if not str or str =='' then 
+		return 
+	end	
+	--优先添加品质物品
+	if ac.quality_item and ac.quality_item[str] then 
+		local name = ac.quality_item[str][math.random(#ac.quality_item[str])]
+		for i=1,tonumber(cnt) or 1 do 
+			self:add_item(name)
+		end	
+		return 
+	end
+
+	local ok 
+	for name,data in pairs(ac.table.ItemData) do 
+		if finds(name,str) and data.category ~='商品' then 
+			ok = true
+			for i=1,tonumber(cnt) or 1 do 
+				self:add_item(name,true)
+			end	
+		end	
+	end	
+	if not ok then 
+		for i,data in pairs(ac.skill) do 
+			if type(data) == 'table' then 
+				if finds(data.name,str) then 
+					for i=1,tonumber(cnt) or 1 do 
+						self:add_item(data.name,true)
+					end	
+				end	
+			end	
+		end	
+	end
+end
+
+
+--模糊添加技能
+function helper:as(str,cnt)
+	if not str or str =='' then 
+		return 
+	end	
+	for i,data in pairs(ac.skill) do 
+		if type(data) == 'table' then 
+			if finds(data.name,str) then 
+				for i=1,tonumber(cnt) or 1 do 
+					ac.item.add_skill_item(data.name,self)
+				end	
+			end	
+		end	
+	end	
+end
 --增加套装 可能掉线
 function helper:add_suit(str)
 	local cnt = 5 
@@ -883,34 +954,52 @@ function helper:wldh()
 	ac.game.start_wldh()
 end	
 
---进入地狱，7个光环
-function helper:tt()
-	ac.item.add_skill_item('战鼓光环',self)
+function helper:tt(flag)
+	local function strong(hero)
+		local self = hero
+		self:add('杀怪加全属性',3000)
+		-- self:add('攻击距离',2000)
+		self:add('暴击几率',90)
+		self:add('会心几率',90)
+		self:add('多重射',10)
+		self:add('分裂伤害',100)
+		self:add('全属性',10000000000)
+		self:add('护甲',1000000000)
+		self:add('会心伤害',10000000000)
+		-- self.flag_dodge = true --突破极限
+		self:add('全伤加深',10030000000)
+		self:add('暴击伤害',1003000)
+		self:add('攻击速度',500)
+		self:add('攻击间隔',-1)
+		self:add_restriction '免死'
+		self:addGold(300000)
+		self:add_kill_count(10000000)
+		self:add_wood(10000000)
+		self:add_fire_seed(10000000)
+		helper.dtdj(self,60)
+		helper.reload_mall(self)
+	end
 
-	self:add('杀怪加全属性',3000)
-	-- self:add('攻击距离',2000)
-	self:add('暴击几率',90)
-	self:add('会心几率',90)
-	self:add('多重射',10)
-	self:add('分裂伤害',100)
-	self:add('全属性',10000000000)
-	self:add('护甲',1000000000)
-	self:add('会心伤害',10000000000)
-	-- self.flag_dodge = true --突破极限
-	self:add('闪避极限',5)
-	self:add('闪避',100)
-	self:add('免伤',90)
-	self:add('免伤几率',90)
-	self:add('全伤加深',10030000000)
-	self:add('暴击加深',1003000)
-	self:add('攻击速度',500)
-	self:add('攻击间隔',-1)
-	self:add_wood(10000000)
-	self:add_fire_seed(10000000)
-	-- if not ac.wtf then
-	-- 	helper.wtf(self)
-	-- end
-	-- self:add_restriction '免死'
+	if flag then 
+		self:remove_restriction '免死'
+		self:add('杀怪加全属性',-3000)
+		-- self:add('攻击距离',2000)
+		self:add('暴击几率',-90)
+		self:add('会心几率',-90)
+		self:add('多重射',-10)
+		self:add('分裂伤害',-100)
+		self:add('全属性',-10000000000)
+		self:add('护甲',-1000000000)
+		self:add('会心伤害',-10000000000)
+		-- self.flag_dodge = true --突破极限
+		self:add('全伤加深',-10030000000)
+		self:add('暴击伤害',-1003000)
+		self:add('攻击速度',-500)
+		self:add('攻击间隔',1)
+	else
+		strong(self)
+	end
+	
 end
 
 function helper:tt2()

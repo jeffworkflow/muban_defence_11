@@ -53,14 +53,14 @@ function player.__index:add_fire_seed(fire_seed, where, flag)
 	if not fire_seed or tonumber(fire_seed) == 0  then 
 		return 
 	end	
-	local fire_seed = tonumber(string.format( "%.2f",fire_seed))
+	local fire_seed = tonumber(math.tointeger(fire_seed) or ('%.2f'):format(fire_seed))
 	local data = {player = self, fire_seed = fire_seed}
 	if fire_seed > 0 and not flag then
 		self:event_notify('玩家-即将获得火灵', data)
 		fire_seed = data.fire_seed
 	end
-	local fire_seed = tonumber(string.format( "%.2f",fire_seed))
 	self.fire_seed = (self.fire_seed or 0) + fire_seed
+	self.fire_seed = tonumber(math.tointeger(self.fire_seed) or ('%.2f'):format(self.fire_seed))
 	-- self.fire_seed = jass.I2R(self.fire_seed)
 	if self.fire_seed < 0 then 
 		self.fire_seed = 0

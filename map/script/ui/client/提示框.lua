@@ -10,7 +10,7 @@ local shop_icon ={
     ['金币'] = [[UI\Widgets\ToolTips\Human\ToolTipGoldIcon.blp]],
     ['木头'] = [[UI\Widgets\ToolTips\Human\ToolTipLumberIcon.blp]],
     ['杀敌数'] = [[UI\small_kill.blp]],
-    ['魔丸'] = [[UI\small_fire_seed.blp]],
+    ['火灵'] = [[UI\small_fire_seed.blp]],
     ['积分'] = [[UI\small_jifen.blp]],
 }
 
@@ -91,7 +91,7 @@ local function skill_tooltip(skill,unit)
             show_gold = show_kill_count
         end
         if rec_ex >0 then 
-            skill.coin = '魔丸'
+            skill.coin = '火灵'
             gold = rec_ex
             show_gold = show_fire_seed
         end
@@ -159,7 +159,7 @@ local function item_tooltip(item,unit)
         gold = kill_count
     end
     if rec_ex >0 then 
-        item.coin = '魔丸'
+        item.coin = '火灵'
         gold = rec_ex
     end
 

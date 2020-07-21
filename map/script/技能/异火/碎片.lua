@@ -27,8 +27,6 @@ for key,val in pairs(fire) do
     item_type = '消耗品',
     --目标类型
     target_type = ac.skill.TARGET_TYPE_NONE,
-    --冷却
-    cool = 1,
     --购买价格
     gold = 0,
     --物品数量
