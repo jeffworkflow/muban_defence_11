@@ -101,16 +101,19 @@ function player.__index:sp_black_list2(f)
     -- print(url,post)
     local f = f or function (retval)  end
     post_message(url,post,function (retval) 
-        local tbl = json.decode(retval)
-        if tbl.code == 0 then 
-            if not tbl.data[1] then 
-                f(false)
+        local is_json = json.is_json(retval)
+        if is_json then 
+            local tbl = json.decode(retval)
+            if tbl.code == 0 then 
+                if not tbl.data[1] then 
+                    f(false)
+                else
+                    f(true)
+                end
             else
-                f(true)
-            end
-        else
-            f(false) --不是黑名单数据
-        end        
+                f(false) --不是黑名单数据
+            end      
+        end
     end)
 end
 

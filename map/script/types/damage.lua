@@ -344,7 +344,7 @@ local function on_splash(self)
 		}
 	end
 	--在地上创建特效
-	target:get_point():add_effect([[ModelDEKAN\Weapon\Dekan_Weapon_Sputtering.mdl]]):remove()
+	target:get_point():add_effect([[Dekan_Weapon_Sputtering.mdl]]):remove()
 end
 
 --攻击分裂伤害(直接加深AOE伤害)

@@ -1108,6 +1108,68 @@ need_map_level = 5,
 }
 
 
+local mt = ac.skill['真正的学霸']
+mt{
+--等级
+level = 1, --要动态插入
+max_level = 5, --要动态插入
+--图标
+art = [[xueba.blp]],
+--说明
+tip = [[
+|cffffff00【要求地图等级>%need_map_level%|cffffff00】|r
+
+|cffffe799【获得方式】：|r
+|cff00ffff暑假活动获得 |cffff0000重复完成可升级成就|r |cff00ffff最大等级=5
+
+|cffFFE799【成就属性】：|r
+|cff00ff00+%全属性%   |cff00ff00全属性|r
+|cff00ff00+%攻击减甲%   |cff00ff00攻击减甲|r
+|cff00ff00+%每秒加护甲%   |cff00ff00每秒加护甲|r
+|cff00ff00+%技能伤害加深% |cffffff00%  |cff00ff00技能伤害加深|r
+
+]],
+--目标类型
+target_type = ac.skill.TARGET_TYPE_NONE,
+['全属性'] = {200000,250000,300000,350000,500000},
+['攻击减甲'] = {20,25,30,35,50},
+['每秒加护甲'] = {2,3,4,5,6},
+['技能伤害加深'] = {20,25,30,35,50},
+need_map_level = 5,
+}
+
+local mt = ac.skill['赤灵麒麟瓜']
+mt{
+--等级
+level = 1, --要动态插入
+max_level = 5, --要动态插入
+--图标
+art = [[xigua.blp]],
+--说明
+
+tip = [[
+|cffffff00【要求地图等级>%need_map_level%|cffffff00】|r
+
+|cffffe799【获得方式】：|r
+|cff00ffff暑假活动获得 |cffff0000重复完成可升级成就|r |cff00ffff最大等级=5
+
+|cffFFE799【成就属性】：|r
+|cff00ff00+%全属性%   |cff00ff00全属性|r
+|cff00ff00+%攻击减甲%   |cff00ff00攻击减甲|r
+|cff00ff00+%每秒加护甲%   |cff00ff00每秒加护甲|r
+|cff00ff00+%物理伤害加深% |cffffff00%  |cff00ff00物理伤害加深|r
+
+]],
+--目标类型
+target_type = ac.skill.TARGET_TYPE_NONE,
+['全属性'] = {200000,250000,300000,350000,500000},
+['攻击减甲'] = {20,25,30,35,50},
+['每秒加护甲'] = {2,3,4,5,6},
+['物理伤害加深'] = {40,50,60,70,100},
+need_map_level = 5,
+}
+
+
 local mt = ac.skill['精彩活动']
 mt{
     is_spellbook = 1,
@@ -1127,7 +1189,8 @@ mt.skill_name ={
     '纵享丝滑','九亿少女的梦',
     '四月沙瓜','大智若鱼',
     '归梦五行图','放了那只猪',
-    '赤灵精品粽'
+    '赤灵精品粽',
+    '真正的学霸','赤灵麒麟瓜',
 }
 
 mt.skills = {
