@@ -8,8 +8,8 @@ is_order = 1,
 art = [[zuoyeben.blp]],
 --说明
 tip = [[ 
-|cffffe799【活动时间】|r|cff00ff007月20日-8月5日
-|cffffe799【活动说明】|r|cff00ff00炎炎夏日，火似骄阳。暑期来临，魔神班主任担心大家荒废学业，往|cff00ffff藏经阁|cff00ff00投放了一些|cffffff00【暑假作业本】|cff00ff00，热爱学习的少侠赶紧去寻找吧！
+|cffffe799【活动时间】|r|cff00ff007月22日-8月5日
+|cffffe799【活动说明】|r|cff00ff00炎炎夏日，火似骄阳。暑期来临，魔神班主任担心大家荒废学业，往三界|cff00ff00投放了一些|cffffff00【暑假作业本】|cff00ff00，热爱学习的少侠赶紧去寻找吧！
 ]],
 --物品类型
 item_type = '神符',
@@ -40,7 +40,7 @@ local award_list = {
         { rand = 5, name = '黑暗项链*1'},
         { rand = 5, name = '最强生物心脏*1'},
         { rand = 5, name = '白胡子的大刀*1'},
-        { rand = 50, name = '真正的学霸'},
+        { rand = 5, name = '真正的学霸'},
         { rand = 35, name = '无'},
 
 
@@ -113,10 +113,10 @@ local function give_award(hero)
             local skl = hero:find_skill(rand_name,nil,true) 
             if not skl  then 
                 ac.game:event_notify('技能-插入魔法书',hero,'精彩活动',rand_name)
-                ac.player.self:sendMsg('|cffebb608【系统】|r |cff00ffff'..player:get_name()..'|r 完美地完成了暑假作业，惊喜获得|cffff0000【可存档成就】'..rand_name..'|r，成就属性可在“最强魔灵-活动成就”中查看',6) 
+                ac.player.self:sendMsg('|cffebb608【系统】|r |cff00ffff'..player:get_name()..'|r 完美地完成了暑假作业，惊喜获得|cffff0000【可存档成就】'..rand_name..'|r，成就属性可在“巅峰神域-精彩活动”中查看',6) 
             else
                 skl:upgrade(1)
-                ac.player.self:sendMsg('|cffebb608【系统】|r |cff00ffff'..player:get_name()..'|r 不断完成暑假作业，使|cffff0000【可存档成就】'..rand_name..'|r得到了升级，升级后的属性可在“最强魔灵-活动成就”中查看',6) 
+                ac.player.self:sendMsg('|cffebb608【系统】|r |cff00ffff'..player:get_name()..'|r 不断完成暑假作业，使|cffff0000【可存档成就】'..rand_name..'|r得到了升级，升级后的属性可在“巅峰神域-精彩活动”中查看',6) 
             end   
         else   
             --重新来一次
@@ -195,7 +195,7 @@ is_order = 1,
 --说明
 tip = [[ 
 |cffffe799【活动时间】|r|cff00ff007月20日-8月5日
-|cffffe799【活动说明】|r|cff00ff00夏日炎炎，骄阳似火。行人于役，饥渴难耐。此时望见|cff00ffff百花宫|cff00ff00中那一片青翠的瓜田，一个个又大又圆的|cffffff00西瓜|cff00ff00都已成熟。
+|cffffe799【活动说明】|r|cff00ff00夏日炎炎，骄阳似火。行人于役，饥渴难耐。此时望见|cff00ffff新手花园|cff00ff00中那一片青翠的瓜田，一个个又大又圆的|cffffff00西瓜|cff00ff00都已成熟。
  ]],
 --物品类型
 item_type = '神符',
@@ -230,7 +230,7 @@ owner_ship = true,
 --物品类型
 item_type = '消耗品',
 specail_model = [[xigua.mdx]],
-model_size = 2,
+model_size = 0.8,
 --目标类型
 target_type = ac.skill.TARGET_TYPE_POINT,
 --施法距离
@@ -315,7 +315,7 @@ end
 --奖品
 local award_list = { 
     ['赤灵麒麟瓜'] =  {
-        {    rand = 5, name = '多重暴击+1',},
+        -- {    rand = 5, name = '多重暴击+1',},
         {    rand = 5, name = '暴击伤害+800%',},
         {    rand = 5, name = '技暴伤害+400%',},
         {    rand = 5, name = '会心伤害+200%',},
@@ -328,9 +328,9 @@ local award_list = {
         {    rand = 5, name = '闪避+5%',},
         {    rand = 5, name = '每秒回血+5%',},
 
-        {    rand = 70, name = '赤灵麒麟瓜',},
+        {    rand = 10, name = '赤灵麒麟瓜',},
 
-        {    rand = 30, name = '无',},
+        {    rand = 35, name = '无',},
     },
 }
 
@@ -364,10 +364,10 @@ function mt:add_content()
             local skl = hero:find_skill(rand_name,nil,true) 
             if not skl  then 
                 ac.game:event_notify('技能-插入魔法书',hero,'精彩活动',rand_name)
-                ac.player.self:sendMsg('|cffebb608【系统】|r |cff00ffff'..player:get_name()..'|r 不断食用美味的西瓜，惊喜获得|cffff0000【可存档成就】'..rand_name..'|r，成就属性可在“最强魔灵-活动成就”中查看',6) 
+                ac.player.self:sendMsg('|cffebb608【系统】|r |cff00ffff'..player:get_name()..'|r 不断食用美味的西瓜，惊喜获得|cffff0000【可存档成就】'..rand_name..'|r，成就属性可在“巅峰神域-精彩活动”中查看',6) 
             else
                 skl:upgrade(1)
-                ac.player.self:sendMsg('|cffebb608【系统】|r |cff00ffff'..player:get_name()..'|r 不断食用美味的西瓜，使|cffff0000【可存档成就】'..rand_name..'|r得到了升级，升级后的属性可在“最强魔灵-活动成就”中查看',6) 
+                ac.player.self:sendMsg('|cffebb608【系统】|r |cff00ffff'..player:get_name()..'|r 不断食用美味的西瓜，使|cffff0000【可存档成就】'..rand_name..'|r得到了升级，升级后的属性可在“巅峰神域-精彩活动”中查看',6) 
             end   
         else   
             --重新来一次
@@ -388,7 +388,7 @@ ac.game:event '挖图成功'(function(trg,hero)
     if math.random(100000)/1000 <= rate and  (p.max_sqzyb_cnt or 0) < max_cnt then 
         hero:add_item('暑假作业本')
         p.max_sqzyb_cnt = (p.max_sqzyb_cnt or 0) +1
-        p:sendMsg('|cffebb608【系统】|r|cff00ff00您在解开封印的过程中，惊喜获得|cff00ff00【暑假作业本】',5)
+        p:sendMsg('|cffebb608【系统】|r|cff00ff00您在使用藏宝图的过程中，惊喜获得|cff00ff00【暑假作业本】',5)
     end
 end)
 
@@ -405,7 +405,7 @@ ac.game:event '单位-死亡' (function (_,unit,killer)
     p.max_fall_cnt[rand_name] = (p.max_fall_cnt[rand_name] or 0)
     --获得最多次数
     local max_fall_cnt = 10   
-    local rate = 10.12
+    local rate = 0.12
     if math.random(100000)/1000 <= rate and p.max_fall_cnt[rand_name] < max_fall_cnt then 
         --当前个数+1
         p.max_fall_cnt[rand_name] = (p.max_fall_cnt[rand_name] or 0) +1

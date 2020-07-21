@@ -216,10 +216,10 @@ local function give_award(hero)
             local skl = hero:find_skill(rand_name,nil,true) 
             if not skl  then 
                 ac.game:event_notify('技能-插入魔法书',hero,'精彩活动',rand_name)
-                ac.player.self:sendMsg('|cffffe799【系统消息】|r |cff00ffff'..player:get_name()..'|r 不断食用美味的粽子，惊喜获得|cffff0000【可存档成就】'..rand_name..'|r，成就属性可在“最强魔灵-活动成就”中查看',6) 
+                ac.player.self:sendMsg('|cffffe799【系统消息】|r |cff00ffff'..player:get_name()..'|r 不断食用美味的粽子，惊喜获得|cffff0000【可存档成就】'..rand_name..'|r，成就属性可在“巅峰神域-精彩活动”中查看',6) 
             else
                 skl:upgrade(1)
-                ac.player.self:sendMsg('|cffffe799【系统消息】|r |cff00ffff'..player:get_name()..'|r 不断食用美味的粽子，使|cffff0000【可存档成就】'..rand_name..'|r得到了升级，升级后的属性可在“最强魔灵-活动成就”中查看',6) 
+                ac.player.self:sendMsg('|cffffe799【系统消息】|r |cff00ffff'..player:get_name()..'|r 不断食用美味的粽子，使|cffff0000【可存档成就】'..rand_name..'|r得到了升级，升级后的属性可在“巅峰神域-精彩活动”中查看',6) 
             end   
         else   
             --重新来一次
