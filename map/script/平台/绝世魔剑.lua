@@ -363,7 +363,7 @@ for i=1,11 do
             
             
             ['暴击几率'] = function() return hero:get('暴击几率') end,
-            ['暴击伤害'] = function() return hero:get('暴击伤害') end,
+            ['暴击加深'] = function() return hero:get('暴击加深') end,
             ['会心几率'] = function() return hero:get('会心几率') end,
             ['会心伤害'] = function() return hero:get('会心伤害') end,
             ['物理伤害加深'] = function() return hero:get('物理伤害加深') end,
