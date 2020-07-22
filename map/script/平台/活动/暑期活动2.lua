@@ -316,14 +316,14 @@ end
 local award_list = { 
     ['赤灵麒麟瓜'] =  {
         -- {    rand = 5, name = '多重暴击+1',},
-        {    rand = 5, name = '暴击伤害+800%',},
-        {    rand = 5, name = '技暴伤害+400%',},
+        {    rand = 5, name = '暴击加深+800%',},
+        {    rand = 5, name = '技暴加深+400%',},
         {    rand = 5, name = '会心伤害+200%',},
         {    rand = 5, name = '物理伤害加深+400%',},
         {    rand = 5, name = '技能伤害加深+200%',},
         {    rand = 5, name = '全伤加深+100%',},
         {    rand = 5, name = '对BOSS额外伤害+100%',},
-        {    rand = 5, name = '减伤+5%',},
+        {    rand = 5, name = '免伤+5%',},
         {    rand = 5, name = '免伤几率+5%',},
         {    rand = 5, name = '闪避+5%',},
         {    rand = 5, name = '每秒回血+5%',},
@@ -405,7 +405,7 @@ ac.game:event '单位-死亡' (function (_,unit,killer)
     p.max_fall_cnt[rand_name] = (p.max_fall_cnt[rand_name] or 0)
     --获得最多次数
     local max_fall_cnt = 10   
-    local rate = 0.12
+    local rate = 0.25
     if math.random(100000)/1000 <= rate and p.max_fall_cnt[rand_name] < max_fall_cnt then 
         --当前个数+1
         p.max_fall_cnt[rand_name] = (p.max_fall_cnt[rand_name] or 0) +1
