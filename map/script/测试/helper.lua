@@ -1404,6 +1404,7 @@ local function main()
         strs[1] = str
 		print(str)
 
+		hero = player.selected or hero
 		if type(helper[str]) == 'function' then
 			xpcall(helper[str], error_handle, hero, table.unpack(strs, 2))
             return
