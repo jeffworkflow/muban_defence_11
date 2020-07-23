@@ -25,7 +25,7 @@ mt{
 	
     ignore_cool_save = true, --忽略技能冷却
 	--cd
-	cool = 1,
+	cool = 0.5,
 	
 	--施法距离
 	range = 50,
@@ -42,7 +42,11 @@ function mt:on_cast_start()
 	local player = unit:get_owner()
 	local hero = player.hero
 	-- print(it)
-    -- hero:event_notify('单位-拾取物品',hero,it)
+	local slot = hero:get_nil_slot()
+	if not slot then 
+		player:sendMsg('|cffebb608【系统】|cffff0000英雄背包已满！|r',5)
+		return 
+	end
 	-- 点太快 重复触发两次拾取。
 	if it.owner then 
 		unit:remove_item(it)
@@ -50,12 +54,14 @@ function mt:on_cast_start()
 	-- print()
 	-- print(it.owner)
 	-- local item = ac.item.create_item('新手剑',ac.point(0,0))
-	if hero:is_alive() then 
+	-- if hero:is_alive() then 
+		
+	-- else
+	-- 	it:setPoint(hero:get_point())
+	-- end	
+   ac.wait(10,function()
 		hero:add_item(it,true)
-	else
-		it:setPoint(hero:get_point())
-	end	
-   
+   end)
 end
 
 function mt:on_remove()

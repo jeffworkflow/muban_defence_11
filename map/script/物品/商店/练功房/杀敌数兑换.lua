@@ -62,11 +62,11 @@ for key,value in pairs(ac.exchange_kill) do
             shop_item.player_kill ={}
         end
         --限定购买次数
-        if not shop_item.player_buy_cnt then 
-            shop_item.player_buy_cnt = {}
-        end
-        shop_item.player_buy_cnt[player] = (shop_item.player_buy_cnt[player] or 1) + 1
-        -- print(shop_item.player_buy_cnt[player])
+        -- if not shop_item.player_buy_cnt then 
+        --     shop_item.player_buy_cnt = {}
+        -- end
+        -- shop_item.player_buy_cnt[player] = (shop_item.player_buy_cnt[player] or 1) + 1
+        -- print(shop_item.player_buy_cnt[player]) 
         --改变价格
         if shop_item.player_buy_cnt[player] >20 then
             shop_item.player_kill[player] = (shop_item.player_kill[player] or self.kill_count ) + 50

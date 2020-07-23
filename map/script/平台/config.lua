@@ -353,8 +353,8 @@ local cus_key = {
     {'flnzz','放了那只猪'},
     {'cljpz','赤灵精品粽'},
     
-    {'zzdxb','真正的学霸'},
-    {'clqlg','赤灵麒麟瓜'},
+    {'zzdxb','真正的学霸',type = '存档'},
+    {'clqlg','赤灵麒麟瓜',type = '存档'},
 }
 
 
@@ -435,12 +435,12 @@ ac.mall = item
 --通过key取 name 和 是否商城道具
 function ac.server.key2name(key)
     local res
-    local is_mall
+    local type
     --取自定义key,value
     for i,v in ipairs(ac.cus_server_key) do 
         if v[1] == key then 
             res = v[2]
-            is_mall = v[4]
+            type = v.type
             break
         end
     end  
@@ -448,22 +448,21 @@ function ac.server.key2name(key)
     for i,v in ipairs(ac.mall) do 
         if v[1] == key then 
             res = v[2]
-            is_mall = 1
+            type = v.type
             break
         end
-    end  
-    is_mall = is_mall or 0   
-    return  res,is_mall
+    end   
+    return  res,type
 end  
 --通过 name 取 key
 function ac.server.name2key(name) 
     local res
-    local is_mall 
+    local type 
     --取自定义key,value
     for i,v in ipairs(ac.cus_server_key) do 
         if v[2] == name then 
             res = v[1]
-            is_mall = v[4]
+            type = v.type
             break
         end
     end  
@@ -471,12 +470,11 @@ function ac.server.name2key(name)
     for i,v in ipairs(ac.mall) do 
         if v[2] == name then 
             res = v[1]
-            is_mall = 1
+            type = v.type
             break
         end
     end  
-    is_mall = is_mall or 0   
-    return  res,is_mall
+    return  res,type
 end
 --加积分
 function player.__index:add_jifen(value)
@@ -487,13 +485,13 @@ end
 
 --网易服务器存档读取
 function ac.get_server(p,key)
-    local value,key_name,is_mall
-    key_name,is_mall = ac.server.key2name(key)
-    if tonumber(is_mall) == 1 and p:Map_HasMallItem(key) then 
+    local value,key_name,type
+    key_name,type = ac.server.key2name(key)
+    if tonumber(type) == 1 and p:Map_HasMallItem(key) then 
         value = 1
 	else	
 		value = p:Map_GetServerValue(key)
     end	
-    return value,key_name,is_mall
+    return value,key_name,type
 end	
 

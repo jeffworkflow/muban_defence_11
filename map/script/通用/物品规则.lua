@@ -264,7 +264,7 @@ ac.game:event '单位-点击商店物品'(function(_,seller,u,it)
     end
 
     if it.max_buy_cnt  then
-        if it.player_buy_cnt[player] and (it.player_buy_cnt[player] > (it.max_buy_cnt or 9999999)) then
+        if it.player_buy_cnt[player] and (it.player_buy_cnt[player] >= (it.max_buy_cnt or 9999999)) then
             u:get_owner():sendMsg('|cffebb608【系统】|r|cffff0000超出购买上限',3)
             return
         end
@@ -480,6 +480,7 @@ local function item_cast(hero,item)
     -- 设置cd
     item:cost_mana()
     item:start_cd_by_cast()
+    print('物品施法：',hero,item.name)
     if item:_call_event 'on_cast_start' then 
         item_on_finish(item)
         if item.item_type == '消耗品' and item._count < 1  then

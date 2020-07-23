@@ -160,7 +160,8 @@ function ac.player.__index:Map_GetServerValue(name)
 		-- if str_score then 
 		-- 	print('sdfsdf:',name,str_score)
 		-- end
-		score[name][self.id] = read_score_string(self:get_name(), name) or read_score(get_key(self), name) 
+		score[name][self.id] = read_score(get_key(self), name)  
+		score[name][self.id] = (score[name][self.id] == '' or score[name][self.id] == 0) and read_score_string(self:get_name(), name) or 0
 		-- score[name][self.id] = score[name][self.id] == 0 and 
 	end
 	-- print('测试读取数据：',tonumber(score[name][self.id]),score[name][self.id],read_score(get_key(self), name),read_score_string(self:get_name(), name) )
@@ -181,8 +182,10 @@ function ac.player.__index:Map_SaveServerValue(name, value)
 	else
 		write_score(get_key(self), name, value)
 	end
+    local key_name,type = ac.server.key2name(name)
 	--保存一份存档
-	if japi.EXNetSaveRemoteData then 
+	-- print('保存存档2',type,key_name,v)
+	if japi.EXNetSaveRemoteData and type and type =='存档' then 
 		japi.EXNetSaveRemoteData((self.id-1),name,tostring(value))
 	end
 
@@ -214,7 +217,7 @@ function ac.player.__index:Map_AddServerValue(name, value)
         self.cus_server ={}
     end    
     --保存
-    local key_name = ac.server.key2name(name)
+    local key_name,t_type = ac.server.key2name(name)
 	self.cus_server[key_name] = (self.cus_server[key_name] or 0 ) + tonumber(value)
 	
 	local type = '增加'
@@ -230,8 +233,8 @@ function ac.player.__index:Map_AddServerValue(name, value)
 	end
 	--保存一份存档
 	local v = math.max(self.cus_server[key_name],r) --避免造成回档
-	
-	if japi.EXNetSaveRemoteData then 
+	-- print('保存存档1',t_type,key_name,v)
+	if japi.EXNetSaveRemoteData and t_type and t_type =='存档' then 
 		-- print('增加后的数值：',tostring(v),self.cus_server[key_name],r)
 		japi.EXNetSaveRemoteData((self.id-1),name,tostring(v))
 	end

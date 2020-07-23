@@ -52,11 +52,11 @@ function mt:on_cast_start()
     --     return 
     -- end 
     --限定购买次数
-    local shop_item = ac.item.shop_item_map[self.name]
-    if not shop_item.player_buy_cnt then 
-        shop_item.player_buy_cnt = {}
-    end
-    shop_item.player_buy_cnt[player] = (shop_item.player_buy_cnt[player] or 1) + 1
+    -- local shop_item = ac.item.shop_item_map[self.name]
+    -- if not shop_item.player_buy_cnt then 
+    --     shop_item.player_buy_cnt = {}
+    -- end
+    -- shop_item.player_buy_cnt[player] = (shop_item.player_buy_cnt[player] or 1) + 1
     
     --删除物品
     for i,item in ipairs(temp_item) do 

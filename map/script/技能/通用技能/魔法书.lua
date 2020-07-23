@@ -298,9 +298,6 @@ mt{
     is_order = 1,
     key = 'Esc',
 }
-
-local mt = ac.skill['关闭']
-
 function mt:on_cast_start()
     local hero = self.owner
     local player = hero:get_owner()
@@ -349,7 +346,12 @@ function mt:close()
 end 
 
 local mt = ac.skill['下一页']
-mt.art =[[ReplaceableTextures\CommandButtons\BTNReplay-Play.blp]]
+mt{
+    art =[[ReplaceableTextures\CommandButtons\BTNReplay-Play.blp]],
+    instant = 1,
+    is_order = 1,
+    key = 'Esc',
+}
 
 function mt:on_cast_start()
     local hero = self.owner
@@ -367,11 +369,12 @@ function mt:on_cast_start()
     show_page(hero,page_type,current_page + 1)
     hero.skill_page = page_type .. '_0' .. current_page + 1
 end 
+mt.close = ac.skill['关闭'].close
 
 
 ac.game:event'单位-获得技能' (function (_,hero,skill)
     if skill and skill.slot_type == '英雄' then 
-        local skl = hero:find_skill('关闭',hero.skill_page or '英雄')
+        local skl = hero:find_skill('关闭',hero.skill_page or '英雄') or hero:find_skill('下一页',hero.skill_page or '英雄')
         if skl and not skl:is_hide() then 
             skl:close()
         end 
@@ -382,25 +385,17 @@ end)
 ac.game:event '玩家-选择单位' (function (_,player,unit)
     local hero = player:get_hero()
     local pet = player.peon
-    
-    if pet and pet ~= unit then
-        local skl = pet:find_skill('关闭',pet.skill_page or '英雄')
-        -- print(skl.name,pet.skill_page)
-        if skl and not skl:is_hide() then
-            skl:close()
-        end 
+    -- print('上次选择:',player.selected)
+    local last_selected_unit = player.selected
+    if not last_selected_unit or last_selected_unit == unit then 
+        return 
     end
 
-    
-    if hero == unit or hero == nil then 
-        return 
-    end 
-
-    local skl = hero:find_skill('关闭',hero.skill_page or '英雄')
-    if skl and not skl:is_hide() then 
+    local skl = last_selected_unit:find_skill('关闭',last_selected_unit.skill_page or '英雄') or last_selected_unit:find_skill('下一页',hero.skill_page or '英雄')
+    -- print(skl.name,pet.skill_page)
+    if skl and not skl:is_hide() then
         skl:close()
     end 
-    
 end)
 
 --临时测试
