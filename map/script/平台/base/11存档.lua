@@ -161,7 +161,7 @@ function ac.player.__index:Map_GetServerValue(name)
 		-- 	print('sdfsdf:',name,str_score)
 		-- end
 		score[name][self.id] = read_score(get_key(self), name)  
-		score[name][self.id] = (score[name][self.id] == '' or score[name][self.id] == 0) and read_score_string(self:get_name(), name) or 0
+		score[name][self.id] = (score[name][self.id] == '' or score[name][self.id] == 0) and read_score_string(self:get_name(), name) or score[name][self.id]
 		-- score[name][self.id] = score[name][self.id] == 0 and 
 	end
 	-- print('测试读取数据：',tonumber(score[name][self.id]),score[name][self.id],read_score(get_key(self), name),read_score_string(self:get_name(), name) )

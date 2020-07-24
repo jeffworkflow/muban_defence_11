@@ -304,8 +304,9 @@ function player.__index:SetServerValue(key,value,f)
         para3 = key,
         para4 = key_name,
         para5 = value,
-        para6 = is_mall,
+        para6 = is_mall or 0,
     })
+    -- print(url,post)
     local f = f or function (retval)  end
     post_message(url,post,function (retval)  
         if not finds(retval,'http','https','') or finds(retval,'成功')then 
@@ -441,7 +442,7 @@ function player.__index:CopyServerValue(key,f)
         para3 = key,
         para4 = key_name,
         para5 = value,
-        para6 = is_mall,
+        para6 = is_mall or 0,
     })
     -- print(url,post)
     -- print('上传数据：',key,value,key_name,is_mall)

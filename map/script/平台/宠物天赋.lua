@@ -230,7 +230,10 @@ function unit.__index:peon_add_xp(xp)
     self.peon_xp = (self.peon_xp or 0) + xp 
     --保存经验到服务器存档
     -- player:SetServerValue('cwtf',tonumber(self.peon_xp)) 自定义服务器
-    player:Map_SaveServerValue('cwtf',tonumber(self.peon_xp)) --网易服务器
+    if player.flag_peon_xp then 
+        player:Map_AddServerValue('cwtf',tonumber(xp) or 0) --网易服务器
+    end
+    player.flag_peon_xp = true
     --升级
     self.peon_lv = self.peon_lv or 1
     local flag = true 
