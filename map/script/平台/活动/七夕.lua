@@ -6,7 +6,7 @@ level = 1,
 art = [[xique.blp]],
 --说明
 tip = [[ 
-|cffffe799【活动时间】|r|cff00ff008月6日-8月8日
+|cffffe799【活动时间】|r|cff00ff008月25日-9月1日
 |cffffe799【活动说明】|r|cff00ff00金风玉露一相逢，便胜却人间无数。年年岁岁架鹊桥，牛郎织女偷相会。少侠既然也是有心之人，还请帮忙收集|cffffff00喜鹊翎毛|r|cffcccccc（挖宝掉落）
 ]],
 --物品类型
@@ -286,10 +286,10 @@ for i,name in ipairs({'兑换-格里芬','兑换-黑暗项链','兑换-最强生
                         local skl = hero:find_skill(real_name,nil,true) 
                         if not skl  then 
                             ac.game:event_notify('技能-插入魔法书',hero,'精彩活动',real_name)
-                            ac.player.self:sendMsg('|cffebb608【系统】|r |cff00ffff'..p:get_name()..'|r 不断食用美味的西瓜，惊喜获得|cffff0000【可存档成就】'..real_name..'|r，成就属性可在“巅峰神域-精彩活动”中查看',6) 
+                            -- ac.player.self:sendMsg('|cffebb608【系统】|r |cff00ffff'..p:get_name()..'|r 不断食用美味的西瓜，惊喜获得|cffff0000【可存档成就】'..real_name..'|r，成就属性可在“巅峰神域-精彩活动”中查看',6) 
                         else
                             skl:upgrade(1)
-                            ac.player.self:sendMsg('|cffebb608【系统】|r |cff00ffff'..p:get_name()..'|r 不断食用美味的西瓜，使|cffff0000【可存档成就】'..real_name..'|r得到了升级，升级后的属性可在“巅峰神域-精彩活动”中查看',6) 
+                            -- ac.player.self:sendMsg('|cffebb608【系统】|r |cff00ffff'..p:get_name()..'|r 不断食用美味的西瓜，使|cffff0000【可存档成就】'..real_name..'|r得到了升级，升级后的属性可在“巅峰神域-精彩活动”中查看',6) 
                         end   
                     end    
                 else    
