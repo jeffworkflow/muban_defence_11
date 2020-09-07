@@ -259,7 +259,6 @@ local cus_key = {
     {'hsslly','烈火天翔领域'},
     -- {'hsslly','烈火天翔领域'},
 
-    {'ydss','缘定三生'},
 
     {'jdzw','井底之蛙'},
     {'swldddr','食物链顶端的人'},
@@ -355,6 +354,7 @@ local cus_key = {
     
     {'zzdxb','真正的学霸',type = '存档'},
     {'clqlg','赤灵麒麟瓜',type = '存档'},
+    {'ydss','缘定三生',type = '存档'},
 }
 
 
