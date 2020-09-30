@@ -317,11 +317,7 @@ local cus_key = {
     {'hdshgty','四海共团圆',type = '存档'},
     {'hddygcpxdr','第一个吃螃蟹的人',type = '存档'},
     {'bobing','博饼',type = '存档'},
-    
-    {'hdshgty','四海共团圆',type = '存档'},
-    {'hddygcpxdr','第一个吃螃蟹的人',type = '存档'},
-    {'bobing','博饼',type = '存档'},
-    
+
     
     {'cdwq','存档武器',type = '存档'},
     {'cdyd','存档腰带',type = '存档'},
