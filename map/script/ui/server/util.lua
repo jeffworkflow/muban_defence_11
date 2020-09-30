@@ -9,13 +9,13 @@ ui.event = {}
 
 
 ui.register_event = function (name,event_table)
-    ui.event[name]=event_table
+    ui.event[ui.get_hash(name)]=event_table
     local list = {}
     for key,value in pairs(event_table) do 
         table.insert(list,key)
     end 
     for index,key in ipairs(list) do 
-        event_table[key] = event_table[key]
+        event_table[ui.get_hash(key)] = event_table[key]
     end 
 end
 

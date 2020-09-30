@@ -186,7 +186,7 @@ function bignum2string(value)
 end
 
 
---二进制开关，是否拥有***
+--二进制开关，是否拥有*** flag 最大值为 2^54-1 
 function has_flag(flag, bit)
 	return flag % (bit * 2) - flag % bit == bit
 end
@@ -317,4 +317,17 @@ function formatNumber( num )
 		end
 	end
 	return str
+end
+--table 乱序
+function table_rand(t)
+	if not t then return end
+	local tRet = {}
+	local Total = #t
+	while Total > 0 do
+		local i = math.random(1,Total)
+		table.insert(tRet,t[i])
+		t[i] = t[Total]
+		Total = Total -1
+	end
+	return tRet
 end

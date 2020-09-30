@@ -12,11 +12,16 @@ game_ui     = japi.GetGameUI()
 
 global_blp_map = {}
 
+
+
+
+
 function blp_rect(path,left,top,right,bottom)
     left = math.modf(left)
     top = math.modf(top)
     right = math.modf(right)
     bottom = math.modf(bottom)
+
 
     local key = string.format("%i_%i_%i_%i.blp",left,top,right,bottom)
     local newPath = path:gsub('%.blp',key .. '.blp')
@@ -33,14 +38,15 @@ function blp_sector(path,x,y,r,angle,section)
     angle = math.modf(angle)
     r = math.modf(r) 
     section = math.modf(section) 
-    local key = string.format("%i_%i_%i_%i_%i",x,y,r,angle,section)
+    local key = string.format("%i_%i_%i_%i_%i.blp",x,y,r,angle,section)
     local newPath = path:gsub('%.blp',key .. '.blp')
     if global_blp_map[newPath] == nil then 
         japi.EXBlpSector(path,newPath,x,y,r,angle,section)
         global_blp_map[newPath] = true 
     end 
     return newPath
-end
+
+end 
 
 storm.save('ui\\loaded.fdf','')
 function load_fdf(data)
@@ -187,12 +193,9 @@ class.handle_manager = {
 
 }
 
-local i = 0
-
 
 class.ui_base = {
-    parent_id = game_ui,
-    
+
 --static
     handle_manager = class.handle_manager.create(),
 
@@ -207,18 +210,8 @@ class.ui_base = {
 
     is_show = true, --当前是否显示状态 默认true
 
-    level = 0, --层级
-
-    alpha = 1, --透明度
-    
-
---private
-    _index = nil, --唯一整数识标
-
-    _name = nil, --唯一的字符串识标
-
     children = nil, --控件的 所有存活的子控件
-    
+
     bind_world = false, --是否绑定在世界坐标
 
     world_x = 0, --世界坐标x轴
@@ -229,11 +222,15 @@ class.ui_base = {
 
     world_unit = nil, --控件绑定头顶的单位对象
 
-    world_anchor = 'top', --当绑定世界坐标时 控件的锚点
+    level = 0, --层级
 
-    world_auto_remove = true,
-    
-    _controls = {},
+    alpha = 1, --透明度
+
+
+--private
+    _index = nil, --唯一整数识标
+
+    _name = nil, --唯一的字符串识标
 
     create = function (types,x,y,width,height)
         local index = class.ui_base.handle_manager:allocate()
@@ -247,8 +244,6 @@ class.ui_base = {
             _name = types .. '_object_' .. tostring(index),
         }
         setmetatable(ui,ui)
-
-        class.ui_base._controls[ui] = true 
         return ui
     end,
 
@@ -272,18 +267,14 @@ class.ui_base = {
                 self.parent:on_update_child(self)
             end 
         end 
-        class.ui_base._controls[self] = nil 
         japi.DestroyFrame(self._id)
         class.ui_base.handle_manager:free(self._index)
         self._id = nil
         
         local children = self.children
         self.children = nil
-        for i = #children, 1, -1 do 
-            local object = children[i]
-            if object then 
-                object:destroy()
-            end 
+        for index,object in ipairs(children) do
+            object:destroy()
         end
     end,
 
@@ -291,18 +282,12 @@ class.ui_base = {
         
         self:set_position(self.x, self.y)
         self:set_control_size(self.w, self.h)
-        if self.parent == nil and rawget(self, 'level') then 
-            self:set_level(self.level)
-        end
-        
+        self:set_level(self.level)
         self:set_alpha(self.alpha)
        
         if self.is_show == false then 
             japi.FrameShow(self._id,false)
         end
-
-        i = i + 1
-
         return self
     end,
 
@@ -390,9 +375,6 @@ class.ui_base = {
     end,
 
     set_width = function (self, width)
-        if width == 0 then
-            width = 0.1
-        end
         self.w = width
         japi.FrameSetWidth(self._id, width / 1920 * 0.8)
     end,
@@ -417,10 +399,10 @@ class.ui_base = {
         self:is_in_scroll_panel()
     end,
 
-    set_level = function (self, level,bool)
-        self.level = level
+    set_level = function (self, level)
         japi.FrameSetLevel(self._id, level)
     end,
+      
 
     --一次性设置所有控件相对原本的大小
     set_relative_size = function (self, size, not_scale_font)
@@ -463,21 +445,6 @@ class.ui_base = {
         japi.FrameSetTexture(self._id,image_path,flag or 0)
     end,
 
-    set_texture = function(self,image_path,flag)
-        if self._id == nil or self._id == 0 then 
-            return 
-        end 
-        
-        if image_path == '' then 
-            image_path = 'Transparent.tga'
-        end 
-        if image_path == self.normal_image then 
-            return 
-        end 
-        
-        self.normal_image = image_path
-        japi.FrameSetTexture(self._id,image_path,flag or 0)
-    end,
 
     update_normal_image = function (self)
         if self._id == nil or self._id == 0 then 
@@ -491,6 +458,7 @@ class.ui_base = {
     set_tooltip = function(self,tip,x,y,width,height,font_size,offset)
 
     end,
+
 
     remove_tooltip = function ()
        
@@ -539,12 +507,7 @@ class.ui_base = {
     end,
 
     --设置实际坐标位置 坐标 - 父控件坐标 = 子控件偏移
-    set_real_position = function (self, x, y, anchor)
-        if anchor then 
-            local offect_x, offect_y = self:get_anchor_offset(anchor)
-            x = x + offect_x
-            y = y + offect_y
-        end 
+    set_real_position = function (self, x, y)
         local rx, ry = self:get_real_position()
         x = x - (rx - self.x) 
         y = y - (ry - self.y)
@@ -561,6 +524,7 @@ class.ui_base = {
         end
         return true
     end,
+    
     
     get_child_max_y = function (self)
         local y = 0 
@@ -592,17 +556,17 @@ class.ui_base = {
  
         if self == scroll then 
             return false 
-        end
-
+        end 
         local max_y = parent:get_child_max_y() 
         local y = self.y - (parent.scroll_y or 0)
         if (self.x < 0 or y < 0 or y + self.h > parent.h) and self ~= scroll then 
+
             self.scroll_hide = true 
             --隐藏超过面板的控件
             japi.FrameShow(self._id,false)
             --显示滚动条 并设置滚动条尺寸
             scroll:show()
-            local size = parent.h / max_y
+            local size = parent.h / max_y 
             scroll:set_control_size(scroll.w,size * parent.h )
             return true
         end 
@@ -612,7 +576,8 @@ class.ui_base = {
             scroll:hide()
         end 
         
-        if self.is_show then
+        
+        if self.is_show then 
             --显示滚动到面板中的控件
             self.scroll_hide = nil
             japi.FrameShow(self._id,true)
@@ -623,19 +588,15 @@ class.ui_base = {
     end,
 
     --绑定在单位头顶 血条位置
-    bind_unit_overhead = function (self, unit, anchor)
+    bind_unit_overhead = function (self, unit)
 
         self.world_unit = unit
         self.bind_world = true 
-        if anchor then 
-            self.world_anchor = anchor
-        end
-        
         game.bind_world(self, true)
     end,
 
     --绑定世界坐标
-    set_world_position = function (self, x, y, z, anchor)
+    set_world_position = function (self, x, y, z)
         if self.parent then 
             print('必须是底层控件才可以绑定到世界坐标', debug.traceback())
             return 
@@ -646,16 +607,13 @@ class.ui_base = {
         self.world_z = z or 0
 
         self.bind_world = true 
-        if anchor then 
-            self.world_anchor = anchor
-        end
+
         game.bind_world(self, true)
     end,
 
     unbind_world = function (self)
         self.bind_world = false 
         self.world_unit = nil
-        self.world_anchor = 'top'
         game.bind_world(self, false)
     end,
 
@@ -690,7 +648,7 @@ class.ui_base = {
         if retval == nil then 
             retval = true
         end
-        --将消息转发到父控件里
+        --将消息转发到父类对象里
         local object = self.parent
         while object ~= nil and retval ~= false do
             local method = object[event_name]
@@ -761,11 +719,11 @@ class.ui_base = {
     --x 相对偏移x轴
     --y 相对偏移y轴
     set_anchor_position = function (self, self_anchor, target, target_anchor, x, y)
-        local self_x, self_y = self:get_anchor_offset(self_anchor)
+        local self_x, self_y = self:get_anchor_offset_position(self_anchor)
 
-        local target_x, target_y = target:get_anchor_offset_position(target_anchor)
+        local target_x, target_y = target_anchor:get_anchor_offset_position(target_anchor)
 
-        self:set_real_position(target_x - self_x + x,target_y - self_y + y)
+        self:set_real_position(target_x + x, target_y + y)
     end,
     
     set_tooltip_follow = function (self, tooltip, anchor, offset_x, offset_y)

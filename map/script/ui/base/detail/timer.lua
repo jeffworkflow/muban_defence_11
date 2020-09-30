@@ -98,15 +98,8 @@ mt.__index = api
 mt.type = 'timera'
 
 function api:remove()
-	if self.removed then 
-		return 
-	end 
-	if self.on_remove then 
-		self:on_remove()
-	end 
 	self.removed = true
 end
-
 
 function api:get_remaining()
 	if self.removed then

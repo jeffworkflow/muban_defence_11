@@ -1,36 +1,5 @@
 require 'ui.base.controls.class'
 
-
-function level_sortpairs(t)
-    local mt
-    local func
-    local sort = {}
-    for k, v in pairs(t) do
-        sort[#sort+1] = {k, v}
-    end
-    table.sort(sort, function (a, b)
-        local a_level = 0
-        local b_level = 0
-        if type(a[2]) == 'table' then 
-            a_level = a[2].level or 0
-        end 
-
-        if type(b[2]) == 'table' then 
-            b_level = b[2].level or 0
-        end 
-        return a_level < b_level
-    end)
-    local n = 1
-    return function()
-        local v = sort[n]
-        if not v then
-            return
-        end
-        n = n + 1
-        return v[1], v[2]
-    end
-end
-
 class.panel = extends(class.ui_base){
 --static
     object_map = {}, --存放所有存活的panel 对象
@@ -59,7 +28,6 @@ class.panel = extends(class.ui_base){
                 control[name] = meta_method
             end 
         end 
-        
         --实例对象绑定控件类
         control.__index = control_class
 
@@ -71,7 +39,6 @@ class.panel = extends(class.ui_base){
             if param.w == nil then  control.w = parent.w  end 
             if param.h == nil then  control.h = parent.h  end 
         end 
-        
         local object = control:build()
 
         if object == nil then 
@@ -80,9 +47,7 @@ class.panel = extends(class.ui_base){
         if parent then 
             table.insert(parent.children, object)
         end 
-    
-        for name, value in level_sortpairs(param) do 
-         
+        for name, value in pairs(param) do 
             if name ~= 'parent' and type(value) == 'table' and value.type then 
                 local child_class = rawget(class, value.type)
                 if child_class then 
@@ -98,13 +63,12 @@ class.panel = extends(class.ui_base){
     build = function (self)
         self.scroll_y = 0
 
- 
         if self.parent then 
-            self.parent_id =  self.parent._id
+            self._id = japi.CreateFrameByTagName( self._base, self._name, self.parent._id, self._type,0)
+        else 
+            self._id = japi.CreateFrameByTagName( self._base, self._name, game_ui, self._type,0)
         end 
-
-        self._id = japi.CreateFrameByTagName( self._base, self._name, self.parent_id, self._type,0)
-
+     
         if self._id == nil or self._id == 0 then 
             class.ui_base.destroy(self)
             log.error('创建背景失败')
@@ -115,7 +79,7 @@ class.panel = extends(class.ui_base){
 
         self:init()
 
-        if rawget(self, 'normal_image') or self._type == class.panel._type then 
+        if rawget(self, 'normal_image') then 
             self:update_normal_image()
         end 
         if self.is_scroll then 
@@ -246,10 +210,10 @@ class.panel = extends(class.ui_base){
                 y = self.parent.h - self.h
             elseif y < 0 then
                 y = 0
-            end
-            
+            end 
             icon_button:set_control_size(1,1)
             self:set_position(self.x,y)
+
 
             local value = y / (self.parent.h - self.h)
             local sy = value * (self.parent:get_child_max_y() - self.h)

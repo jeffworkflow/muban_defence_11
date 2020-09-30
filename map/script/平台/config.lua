@@ -260,8 +260,6 @@ local cus_key = {
     -- {'hsslly','烈火天翔领域'},
 
 
-    {'jdzw','井底之蛙'},
-    {'swldddr','食物链顶端的人'},
     
     {'yqdlh','有趣的灵魂'},
 
@@ -273,48 +271,8 @@ local cus_key = {
     {'today_cntwl','今日比武'},
     {'today_cntwlrank','今日比武排名'},
 
-    {'hdgx','高兴'},
-    {'hdfn','愤怒'},
-    {'hdyw','厌恶'},
-    {'hdkj','恐惧'},
-    -- {'hdgx','高兴'},
-    -- {'hdfn','愤怒'},
-    -- {'hdyw','厌恶'},
-    -- {'hdkj','恐惧'},
 
-    {'hdmnlsdwx','蒙娜丽莎的微笑'},
-    {'hdshgty','四海共团圆'},
-    {'hddygcpxdr','第一个吃螃蟹的人'},
-    
-    {'S0succ','S0通关次数'},
-    {'S0ljwj','S0无尽累计'},
-    {'S0wbjf','S0挖宝积分'},
-    
-    {'S1succ','S1通关次数'},
-    {'S1ljwj','S1无尽累计'},
-    {'S1wbjf','S1挖宝积分'},
-    {'S1wljf','S1比武积分'},
 
-    {'S2succ','S2通关次数'},
-    {'S2ljwj','S2无尽累计'},
-    {'S2wbjf','S2挖宝积分'},
-    {'S2wljf','S2比武积分'},
-
-    {'S3succ','S3通关次数'},
-    {'S3ljwj','S3无尽累计'},
-    {'S3wbjf','S3挖宝积分'},
-    {'S3wljf','S3比武积分'},
-
-    {'S4succ','S4通关次数'},
-    {'S4ljwj','S4无尽累计'},
-    {'S4wbjf','S4挖宝积分'},
-    {'S4wljf','S4比武积分'},
-
-    {'bobing','博饼'},
-
-    {'hdyt','玉兔'},
-    {'jzdw','九洲帝王'},
-    {'qspt','庆生蟠桃'},
     {'ydn','雅典娜'},
 
     
@@ -355,6 +313,22 @@ local cus_key = {
     {'zzdxb','真正的学霸',type = '存档'},
     {'clqlg','赤灵麒麟瓜',type = '存档'},
     {'ydss','缘定三生',type = '存档'},
+
+    {'hdshgty','四海共团圆',type = '存档'},
+    {'hddygcpxdr','第一个吃螃蟹的人',type = '存档'},
+    {'bobing','博饼',type = '存档'},
+    
+    {'hdshgty','四海共团圆',type = '存档'},
+    {'hddygcpxdr','第一个吃螃蟹的人',type = '存档'},
+    {'bobing','博饼',type = '存档'},
+    
+    
+    {'cdwq','存档武器',type = '存档'},
+    {'cdyd','存档腰带',type = '存档'},
+    {'cdxz','存档鞋子',type = '存档'},
+    {'cdyf','存档衣服',type = '存档'},
+    {'cdtk','存档头盔',type = '存档'},
+    {'cdst','存档手套',type = '存档'},
 }
 
 

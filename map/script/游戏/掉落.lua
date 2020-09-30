@@ -51,11 +51,11 @@ end
 local function on_texttag(string,color,hero)
     local color = color or '白'
     --颜色代码
+    --颜色代码
     local color_rgb = {
         ['红'] = { r = 255, g = 0, b = 0,},
         ['绿'] = { r = 0, g = 255, b = 0,},
         ['蓝'] = { r = 0, g = 189, b = 236,},
-        ['黄'] = { r = 255, g = 255, b = 0,},
         ['青'] = { r = 0, g = 255, b = 255,},
         ['紫'] = { r = 223, g = 25, b = 208,},
         ['橙'] = { r = 255, g = 204, b = 0,},
@@ -63,9 +63,24 @@ local function on_texttag(string,color,hero)
         ['粉'] = { r = 188, g = 143, b = 143,},
         ['白'] = { r = 255, g = 255, b = 255,},
         ['黑'] = { r = 136, g = 58, b = 0,},
+        ['暗金'] = { r = 136, g = 58, b = 0,},
         ['金'] = { r = 255, g = 255, b = 0,},
+        ['黄'] = { r = 255, g = 255, b = 0,},
         ['灰'] = { r = 204, g = 204, b = 204,},
         ['神'] = { r = 223, g = 25, b = 208,},
+
+        ['真神阶'] = { r = 223, g = 25, b = 208,},
+        ['神阶'] = { r = 223, g = 25, b = 208,},
+        ['真天赋'] = { r = 223, g = 25, b = 208,},
+        ['天赋'] = { r = 223, g = 25, b = 208,},
+        ['真天阶'] = { r = 223, g = 25, b = 208,},
+        ['天阶'] = { r = 255, g = 0, b = 0,},
+        ['地阶'] = { r = 255, g = 255, b = 0,},
+        ['玄阶'] = { r = 0, g = 189, b = 236,},
+        ['黄阶'] = { r = 255, g = 255, b = 255,},
+
+        ['魔阶'] = { r = 223, g = 25, b = 208,},
+        ['半魔阶'] = { r = 223, g = 25, b = 208,},
     }
 
     local target = hero
@@ -227,11 +242,60 @@ local reward = {
             hero:add_item(name,true)    
         end 
     end,
+    ['级物品'] = function (player,hero,unit,is_on_hero,str)
+        local lv = tonumber(string.sub(str,1,1))
+        local color = ac.get_reward_name(ac.unit_reward['存档物品'])
+        if not color then 
+            return 
+        end    
+        local rand = math.random(#ac.save_item[lv][color])
+        local name = ac.save_item[lv][color][rand]
+        --掉落运动 
+        ac.fall_move{
+            name = name ,
+            source = unit:get_point() ,
+            model = ac.table.ItemData[name].specail_model ,
+        }
+    end,
 
 
 }
 ac.reward = reward
 
+local function fall_move(data)
+    local it_name = data.name
+    local where = data.source
+    local point = data.target or (where:get_point() - {math.random(360),math.random(200,500)})
+    local model = data.model
+    local is_skill = data.is_skill
+    local owner_ship = data.owner
+    --运动
+    local mvr = ac.mover.target
+    {
+        source = where:get_point(),
+        target = point,
+        model = model or [[Objects\InventoryItems\TreasureChest\treasurechest.mdl]],
+        height = 400,
+        speed = 300,
+        skill = '掉落运动'
+    }
+    if not mvr then
+        return
+    end
+    function mvr:on_finish()
+        local it 
+        if is_skill then 
+            it = ac.item.create_skill_item(it_name,point)
+        else
+            it = ac.item.create_item(it_name,point)
+        end
+        
+        if it.owner_ship then 
+            it.owner_ship = player
+        end  
+    end
+end    
+ac.fall_move = fall_move
 
 local unit_reward = {
     ['武器boss1'] = {{rand =100,name = '凝脂剑'}},
@@ -281,7 +345,24 @@ local unit_reward = {
         {rand =0.3,name = '高级扭蛋券(十连抽)'},
         {rand =0.3,name = '高级扭蛋券(百连抽)'},
     },
-
+    ['存档物品'] = {
+        { rand = 65,      name = '白'},
+        { rand = 25,      name = '蓝'},
+        { rand = 8,      name = '金'},
+        { rand = 2,      name = '暗金'},
+    },
+    ['难1'] =  {{ rand = 1.5, name = {{ rand = 95,   name = '1级物品'},{ rand = 5,   name = '2级物品'}}}},
+    ['难2'] =  {{ rand = 1.5, name = {{ rand = 90,   name = '1级物品'},{ rand = 10,   name = '2级物品'}}}},
+    ['难3'] =  {{ rand = 1.5, name = {{ rand = 85,   name = '1级物品'},{ rand = 15,   name = '2级物品'}}}},
+    ['难4'] =  {{ rand = 1.5, name = {{ rand = 75,   name = '1级物品'},{ rand = 20,   name = '2级物品'},{ rand = 5,   name = '3级物品'}}}},
+    ['难5'] =  {{ rand = 1.5, name = {{ rand = 65,   name = '1级物品'},{ rand = 25,   name = '2级物品'},{ rand = 10,   name = '3级物品'}}}},
+    ['难6'] =  {{ rand = 1.5, name = {{ rand = 55,   name = '1级物品'},{ rand = 30,   name = '2级物品'},{ rand = 15,   name = '3级物品'}}}},
+    ['难7'] =  {{ rand = 1.5, name = {{ rand = 45,   name = '1级物品'},{ rand = 35,   name = '2级物品'},{ rand = 20,   name = '3级物品'}}}},
+    ['难8'] =  {{ rand = 1.5, name = {{ rand = 30,   name = '1级物品'},{ rand = 40,   name = '2级物品'},{ rand = 25,   name = '3级物品'},{ rand = 5,   name = '4级物品'}}}},
+    ['难9'] =  {{ rand = 1.5, name = {{ rand = 20,   name = '1级物品'},{ rand = 40,   name = '2级物品'},{ rand = 30,   name = '3级物品'},{ rand = 10,   name = '4级物品'}}}},
+    ['难10'] =  {{ rand = 1.5, name = {{ rand = 10,   name = '1级物品'},{ rand = 40,   name = '2级物品'},{ rand = 35,   name = '3级物品'},{ rand = 15,   name = '4级物品'}}}},
+    ['难11'] =  {{ rand = 1.5, name = {{ rand = 0,   name = '1级物品'},{ rand = 40,   name = '2级物品'},{ rand = 40,   name = '3级物品'},{ rand = 20,   name = '4级物品'}}}},
+   
     
     ['进攻怪'] =  {
         -- { rand = 97.5,         name = '无'},
@@ -374,7 +455,6 @@ local unit_reward = {
         {    rand = 0.5, name = '黑暗项链',}, --lv2
         {    rand = 0.5, name = '最强生物心脏',}, --lv1
         {    rand = 0.5, name = '白胡子的大刀',}, --lv2
-        {    rand = 0, name = '碎片幼儿园',}, --lv2
         {    rand = 1, name = 'ONE_PIECE',}, --lv2
         {    rand = 1, name = '法老的遗产',}, --lv2
 
@@ -681,21 +761,23 @@ end
 ac.get_reward_name_list = get_reward_name_list
 
 
-local function hero_kill_unit(player,hero,unit,fall_rate,is_on_hero)
 
-    local change_unit_reward = unit_reward['进攻怪']
-    --吞噬丹几率过高
+local function hero_kill_unit(tab,player,hero,unit,fall_rate,is_on_hero)
+
+    local change_unit_reward = tab or unit_reward['进攻怪']
     change_unit_reward[1].rand = fall_rate
-    -- for index,info in ipairs(change_unit_reward) do 
-    --     change_unit_reward[1].rand = fall_rate
-    -- end    
     local name = get_reward_name(change_unit_reward)
     if name then 
-        -- print('掉落物品类型',name)
-        local func = reward[name]
+        local func
+        for key,val in pairs(reward) do 
+            if finds(name,key) then 
+                func = reward[key]
+                break
+            end  
+        end 
         if func then 
-            -- print('掉落',name)
-            func(player,hero,unit,is_on_hero)
+            print('掉落',name)
+            func(player,hero,unit,is_on_hero,name)
         end 
     end 
     return name 
@@ -717,7 +799,25 @@ ac.game:event '单位-死亡' (function (_,unit,killer)
     if unit.category and unit.category =='进攻怪' or unit.category =='boss'  then
         local fall_rate = unit.fall_rate *( 1 + dummy_unit:get('物品获取率')/100 )
         -- print('装备掉落概率：',fall_rate,unit.fall_rate)
-        hero_kill_unit(player,killer,unit,fall_rate)
+        hero_kill_unit(unit_reward['进攻怪'],player,killer,unit,fall_rate)
+        
+        --存档型装备处理
+        local str = ac.attack_boss and table.concat( ac.attack_boss, " ")
+        if finds(str,unit:get_name()) then
+            local fall_save_rate =unit.fall_save_rate and unit.fall_save_rate *( 1 + dummy_unit:get('物品获取率')/100 ) or 0
+            
+            -- fall_save_rate = 80 --测试存档物品
+            
+            --多次获得
+            local cnt = math.floor(3+get_player_count()/2)
+            ac.timer(200,cnt,function()
+                print('存档物品掉落：',fall_save_rate,unit.fall_save_rate)
+                local degree = ac.g_game_degree_attr 
+                if unit_reward['难'..degree] then 
+                    hero_kill_unit(unit_reward['难'..degree],player,killer,unit,fall_save_rate)
+                end
+            end)
+        end
     end
 
     --boss 额外掉落物品
@@ -745,26 +845,6 @@ ac.game:event '单位-死亡' (function (_,unit,killer)
 
 end)
 
---物品掉落，主动发起掉落而不是单位死亡时掉落 。
--- 应用：张全蛋技能 妙手空空
-ac.game:event '物品-偷窃' (function (_,unit,killer)
-    if unit.category ~='进攻怪' or (unit.data and unit.data.type =='boss' ) then
-		return
-    end
-    ac.game['偷窃'] = true
-    -- print('触发 物品-偷窃')
-    local player = killer:get_owner()
-    local dummy_unit = player.hero or ac.dummy
-    local fall_rate = unit.fall_rate *( 1 + dummy_unit:get('物品获取率')/100 )
-    -- print('装备掉落概率：',killer,fall_rate,unit.fall_rate)
-    -- 最后一个参数，直接掉人身上
-    local name = hero_kill_unit(player,killer,unit,fall_rate,true)
-    if not name  then 
-        on_texttag('未获得','红',killer)
-    end
-    ac.game['偷窃'] = false
-
-end)
 
 --物品掉落，直接获得随机装备
 -- 应用： 摔破罐子

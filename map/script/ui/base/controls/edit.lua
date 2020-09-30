@@ -114,18 +114,10 @@ class.edit = extends(class.panel){
         self._panel:set_control_size(width,height)
     end,
 
-
-    set_level = function (self, level)
-        class.panel.set_level(self,level)
-        self._panel:set_level(level)
-    end,
-
-
     __tostring = function (self)
         local str = string.format('文本框 %d',self._id or 0)
         return str
     end
-
 
     --[[
     on_edit_text_changed = function (self,new_str,old_str)

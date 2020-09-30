@@ -50,6 +50,7 @@ class.texture = extends(class.panel){
         end)
     end,
 
+
     __tostring = function (self)
         local str = string.format('图像 %d',self._id or 0)
         return str

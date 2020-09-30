@@ -1,10 +1,6 @@
 require 'ui.base.controls.class'
 require 'ui.base.controls.panel'
 
---local storm = require 'jass.storm'
---local model_data = [[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]]
---storm.save('ui\\sprite.mdx', base64.decode(model_data))
-
 class.model = extends(class.panel){
 --static
     model_map = {}, --存放所有存活的对象
@@ -17,19 +13,6 @@ class.model = extends(class.panel){
     texture_map = nil, -- 存放当前模型 所有已替换的id贴图
 
     size = 1, --缩放
-
-    animation = 0, -- 全局动画id
-
-    animation_loop = true, --动作循环
-
-    animation_index = 0, --动画索引
-
-    scale_x = 1, --缩放
-
-    scale_y = 1, --缩放
-
-    scale_z = 1, --缩放
-
 --private
     --模型 类型 和 基类
     _type   = 'model', --fdf 中的模板类型
@@ -40,10 +23,13 @@ class.model = extends(class.panel){
     build = function (self)
         local panel 
         if self.parent then 
-            self.parent_id = self.parent._id
+            panel = self.parent._id
+        else 
+            panel = game_ui
         end 
        
-        self._id = japi.CreateFrameByTagName( self._base, self._name, self.parent_id, self._type,0)
+        self._paernt_id = panel
+        self._id = japi.CreateFrameByTagName( self._base, self._name, panel, self._type,0)
         if self._id == nil or self._id == 0 then 
             class.ui_base.destroy(self)
             print('创建模型失败')
@@ -52,24 +38,19 @@ class.model = extends(class.panel){
         
         self.model_map[self._id] = self
         self.texture_map = {}
-     
+ 
         self:set_model(self.model)
-        self:set_animation(self.animation, self.animation_loop)
+        self:set_animation(0, true)
         self:set_progress(1)
         self:set_size(self.size)
         self:init()
-   
-        self:set_scale(self.scale_x, self.scale_y, self.scale_z)
-        if rawget(self, 'animation_index') then 
-            self:set_animation_by_index(self.animation_index)
-        end 
         return self
     end,
     new = function (parent,model_path,x,y,width,height)
         local control = class.model:builder
         {
             parent = parent,
-            model = model_path,
+            model = model,
             x = x,
             y = y,
             w = width,
@@ -99,6 +80,7 @@ class.model = extends(class.panel){
     set_animation = function (self,index,bool)
         japi.FrameSetAnimate(self._id,index,bool == true)
     end,
+
 
     --同单位一样的 按照索引播放指定动画  
     set_animation_by_index = function (self,index)
@@ -130,9 +112,6 @@ class.model = extends(class.panel){
 
     --设置模型按xyz轴缩放
     set_scale = function (self,x,y,z)
-        self.scale_x = x
-        self.scale_y = y
-        self.scale_z = z
         local size = (self.relative_size or 1)
         x = size * x
         y = size * y 
@@ -166,10 +145,10 @@ class.model = extends(class.panel){
     end,
 
     --设置模型与控件的偏移坐标
-    set_model_offset = function (self,x, y)
+    set_model_offset = function (self,x,y)
         x = x / 1920 * 0.8 
         y = (-y / 1080) * 0.6
-        japi.FrameSetModelXY(self._id,x, y)
+        japi.FrameSetModelXY(self._id,x,y)
     end,
 
     --获取偏移坐标

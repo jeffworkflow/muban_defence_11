@@ -585,6 +585,7 @@ function WindowEventCallBack(event_id)
     return false
 end
 
+
 local frame_event = {
     --文本框更新事件
     [9] = function (frame,id)
@@ -601,11 +602,12 @@ local frame_event = {
         end 
     end,
 }
-
 --魔兽自带的控件消息事件
 function FrameEventCallBack(frame,id)
     if frame_event[id] then 
         xpcall(frame_event[id],runtime.error_handle,frame,id)
     end 
 end 
+
+
 return game

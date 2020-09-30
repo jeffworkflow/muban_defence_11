@@ -2,25 +2,25 @@ require 'ui.base.controls.class'
 require 'ui.base.controls.panel'
 
 local font = [[
-    Frame "TEXT" "text%s" {
+    Frame "TEXT" "text%d" {
         LayerStyle "IGNORETRACKEVENTS",
-        FrameFont "resource\fonts\%s.ttf", %f, "", 
+        FrameFont "resource\fonts\fonts.TTF", %f, "", 
     }
 ]]
 
+
 local font_map = {}
 
-local function load_font(font,size,file)
-    size = math.modf(size)
-    name = file .. size
-
-    if font_map[name] ~= nil then
-        return
+local function load_font(font,size)
+    if font_map[size] ~= nil then 
+        return 
     end
-    font_map[name] = 1
-    local data = string.format(font,name,file,size/1000)
+    size = math.modf(size)
+    font_map[size] = 1
+    local data = string.format(font,size,size/1000)
     load_fdf(data)
 end
+
 
 class.text = extends(class.panel){
 --private
@@ -36,8 +36,6 @@ class.text = extends(class.panel){
     align = 0, --对齐方式
 
     font_size = 16, --字体大小
-
-    font_file = 'fonts', --字体文件
 
     normal_image = '', --文本背景
 
@@ -66,6 +64,7 @@ class.text = extends(class.panel){
         bottomright     = 8,
     },
 
+
     --构建
     build = function (self)
         self.align = class.text.align_map[self.align or ''] or self.align or 0
@@ -83,18 +82,13 @@ class.text = extends(class.panel){
             self.font_size = 16
         end 
         
-        if self.font_file == nil then
-            self.font_file = 'fonts'
-        end
-
         if type(self.font_size) == 'boolean' then 
             self._type = 'old_text'
         else
-            self._type = load_font(font,self.font_size,self.font_file)
-            local size = math.modf(self.font_size)
-            self._type = 'text' .. self.font_file .. size
+            load_font(font,self.font_size)
+            self._type = string.format('%s%d',self._type,self.font_size)
         end
-        
+ 
         self._id = japi.CreateFrameByTagName( self._base, self._name, panel._id, self._type,math.max(0,self.align))
         if self._id == nil or self._id == 0 then 
             panel:destroy()
@@ -116,8 +110,8 @@ class.text = extends(class.panel){
     -- text 字符串 文本值_addr
     -- x,y,w,h 坐标位置
     -- font_size 字体大小
-    -- align 对齐方式
-    new = function (parent,text,x,y,width,height,font_size,align,font_file)
+    -- align 
+    new = function (parent,text,x,y,width,height,font_size,align)
         local control = class.text:builder
         {
             parent = parent,
@@ -128,7 +122,6 @@ class.text = extends(class.panel){
             h = height,
             font_size = font_size,
             align = align,
-            font_file = font_file,
         }
         return control
     end,
@@ -163,33 +156,23 @@ class.text = extends(class.panel){
     end,
 
     set_text = function (self,text)
-        --if self.text_value == text then 
-        --    return 
-        --end 
-        --self.text_value = text 
-
-        -- if self._base ~= 'TEXTAREA' then
-        --     japi.FrameSetText(self._id,text)
-        -- end
+        if self:get_text() == text then 
+            return 
+        end
         japi.FrameSetText(self._id,text)
+
         if self.align < -1 then 
             local _id = self._panel._id 
+
             local width = self:get_width() + self.x + 8
             local height = self:get_height() + self.y + 6
             if self.align == -3 then 
                 height = self.h
-                if height > 0 then 
-                    self:set_height(height - self.font_size * 2) 
-                end
             elseif self.align == -4 then 
                 width = self.w 
-                if width > 0 then 
-                    self:set_width(width - self.font_size * 2) 
-                end
             end 
-            width = width + (self.ext_w or 0)
-            height = height + (self.ext_h or 0)
             if width > 0 and height > 0 then
+                self:set_width(width - self.font_size * 2) 
                 self:set_control_size(width,height)
                 if self.parent then 
                     self.parent:set_control_size(width,height)
@@ -222,7 +205,7 @@ class.text = extends(class.panel){
         local real_size = size * self.font_size * (self.relative_size or 1) * (self.default_size or 1)
         self.size = size 
 
-        path = path or 'resource\\Fonts\\text.ttf'
+        path = path or 'C:\\Windows\\Fonts\\simhei.ttf'
 
         if self._real_size == real_size and self.path == path then 
             return 
@@ -232,7 +215,7 @@ class.text = extends(class.panel){
         self.font_path = path 
         --path = path or 'resource\\Fonts\\FZHTJW.ttf'
   
-        --japi.FrameSetTextFont(self._id,path,real_size / 1000)
+        japi.FrameSetTextFont(self._id,path,real_size / 1000)
     end,
 
     set_color = function (self,...)
@@ -294,12 +277,6 @@ class.text = extends(class.panel){
 
     set_normal_image = function (self,path,flag)
         self._panel:set_normal_image(path,flag)
-    end,
-
-    set_level = function (self, level)
-        class.panel.set_level(self,level)
-        self._panel:set_level(level)
-        print(level)
     end,
 
     __tostring = function (self)

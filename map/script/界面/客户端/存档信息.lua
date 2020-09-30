@@ -31,7 +31,6 @@ class.player_info_panel = extends(class.panel){
         -- panel.close_button = panel:add_button('image\\操作栏\\cross.blp',panel.w - 32-5,5,32,32,true)
         panel.titles = {
             '地图等级',
-            -- '评论数',
             '宠物等级',
             '挖宝积分',
             '勇士徽章',
@@ -39,40 +38,45 @@ class.player_info_panel = extends(class.panel){
             '杀猴次数',
             '神奇的五分钟',
             '无限BOSS难度',
-            -- '深渊乱斗',
-            --'无上之境','斗破苍穹',
+            '梦境乱斗',
+            '深渊乱斗',
+            '无限乱斗','无上之境','斗破苍穹','修罗模式',
             '巅峰王者','荣耀王者','最强王者','王者','星耀','钻石','铂金','黄金','白银','青铜',
-            
-            '无限乱斗',
-            '乱斗(无尽-累计)',
-            '乱斗(无尽-最高)',
-            '修罗模式',
-            '修罗(无尽-最高)',
-            '修罗(无尽-累计)',
-            -- '深渊(无尽-最高)','乱斗(无尽-最高)','无上(无尽-最高)',
-            
+            '梦境(无尽-最高)',
+ 
             
 
         }
+        -- '评论数',
         
         panel.titles2 = {
-            -- '斗破(无尽-最高)','修罗(无尽-最高)',
-            -- '深渊(无尽-累计)','乱斗(无尽-累计)','无上(无尽-累计)','斗破(无尽-累计)','修罗(无尽-累计)',
+            '深渊(无尽-最高)',
+            '乱斗(无尽-最高)','无上(无尽-最高)','斗破(无尽-最高)','修罗(无尽-最高)',
+            '梦境(无尽-累计)','深渊(无尽-累计)','乱斗(无尽-累计)','无上(无尽-累计)','斗破(无尽-累计)','修罗(无尽-累计)',
+
+            '耐瑟龙碎片','Pa碎片','冰龙碎片','小龙女碎片','霸王莲龙锤碎片','梦蝶仙翼碎片','关羽碎片','精灵龙碎片', '奇美拉碎片',
+            '魅影碎片',
+            '紫霜幽幻龙鹰碎片',
+            -- '庆生蟠桃',
+            -- '高兴',
+            -- '愤怒',
+            -- '厌恶',
+            -- '恐惧',
             
     
         }
         panel.page = 1 
-        -- local next_button = panel:add_button('image\\right.blp',773,371,64,64)
-        -- function next_button:on_button_clicked()
-        --     if panel.page == 1  then 
-        --         panel.page = 2
-        --         self:set_normal_image('image\\left.blp')
-        --     else
-        --         panel.page = 1
-        --         self:set_normal_image('image\\right.blp')
-        --     end    
-        --     panel:fresh()
-        -- end 
+        local next_button = panel:add_button('image\\right.blp',773,371,64,64)
+        function next_button:on_button_clicked()
+            if panel.page == 1  then 
+                panel.page = 2
+                self:set_normal_image('image\\left.blp')
+            else
+                panel.page = 1
+                self:set_normal_image('image\\right.blp')
+            end    
+            panel:fresh()
+        end 
         --属性列数
         local col ={
             --x,y,w,h,字体大小，对齐方式
@@ -154,13 +158,13 @@ class.player_info_panel = extends(class.panel){
                     local new_value = 0
                     local show_name = name
                     if name =='地图等级' then 
-                        new_value = player:Map_GetMapLevel() .. ' |cffff0000(改名会清零)|r'
+                        new_value = player:Map_GetMapLevel()
                     elseif name =='宠物等级' then
                         new_value = peon.peon_lv
                     elseif name =='小龙女碎片' then
                         name = '手无寸铁的小龙女碎片' 
                         new_value = string.format("%.f",player.cus_server[name] or 0)  
-                    elseif finds(name,'深渊乱斗','无限乱斗','无上之境','斗破苍穹','修罗模式','最强王者','王者','星耀','钻石','铂金','黄金','白银','青铜') then
+                    elseif finds(name,'梦境乱斗','深渊乱斗','无限乱斗','无上之境','斗破苍穹','修罗模式','最强王者','王者','星耀','钻石','铂金','黄金','白银','青铜') then
                         new_value = string.format("%.f",player.cus_server[name] or 0)
                         new_value = new_value..' 星'
                     elseif name =='杀猴次数' then
@@ -211,6 +215,14 @@ class.player_info_panel = extends(class.panel){
                         new_value = new_value..' 波'
                     elseif name =='深渊(无尽-累计)' then
                         name = '深渊乱斗无尽累计' 
+                        new_value = string.format("%.f",player.cus_server[name] or 0)  
+                        new_value = new_value..' 波'
+                    elseif name =='梦境(无尽-最高)' then
+                        name = '梦境乱斗无尽' 
+                        new_value = string.format("%.f",player.cus_server[name] or 0)  
+                        new_value = new_value..' 波'
+                    elseif name =='梦境(无尽-累计)' then
+                        name = '梦境乱斗无尽累计' 
                         new_value = string.format("%.f",player.cus_server[name] or 0)  
                         new_value = new_value..' 波'
                     elseif name =='评论数' then
