@@ -315,7 +315,7 @@ local cus_key = {
     {'ydss','缘定三生',type = '存档'},
 
     {'hdshgty','四海共团圆',type = '存档'},
-    {'hddygcpxdr','第一个吃螃蟹的人',type = '存档'},
+    {'hddygcpx','第一个吃螃蟹的人',type = '存档'},
     {'bobing','博饼',type = '存档'},
 
     
