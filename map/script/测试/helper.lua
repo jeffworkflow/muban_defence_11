@@ -296,7 +296,7 @@ function helper:reload_mall(flag)
 	local p = self and self:get_owner() or ac.player(ac.player.self.id) 
 	local peon = p.peon
 	--先初始化地图等级
-	ac.init_map_level()
+	-- ac.init_map_level()
 	--挖宝熟练度在读取存档数据后就赋值。
 	p:event_notify '读取存档数据'
 

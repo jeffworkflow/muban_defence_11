@@ -292,12 +292,14 @@ ac.loop(time * 1000,function()
 		if p:is_player() then
 			p:AddServerValue('exp',time) --自定义服务器
 			-- p:Map_AddServerValue('exp',60) 
-			local exp = p.cus_server2 and p.cus_server2['地图经验'] or 0 
-			local new_level = math.floor(math.sqrt(exp/3600)+1)
-			local old_level = p.cus_server['地图等级'] or 1
-			if new_level >= old_level then 
-				p:Map_SaveServerValue('level',new_level) --当前地图等级=开方（经验值/3600）+1
-				p:Map_SaveServerValue('exp',math.floor(exp/3600)) --当前地图等级=开方（经验值/3600）+1
+			local exp = p.cus_server2 and p.cus_server2['地图经验']
+			if exp then 
+				local new_level = math.floor(math.sqrt(exp/3600)+1)
+				local old_level = p.cus_server['地图等级'] or 1
+				if new_level >= old_level then 
+					p:Map_SaveServerValue('level',new_level) --当前地图等级=开方（经验值/3600）+1
+					p:Map_SaveServerValue('exp',math.floor(exp/3600)) --当前地图等级=开方（经验值/3600）+1
+				end
 			end
         end
     end
@@ -314,6 +316,7 @@ ac.wait(900,function()
 						p:sendMsg('|cffff0000读取地图等级失败，请重启魔兽后再试或进群反馈（941405246）|r')
 						p:sendMsg('|cffff0000读取地图等级失败，请重启魔兽后再试或进群反馈（941405246）|r')
 						p:sendMsg('|cffff0000读取地图等级失败，请重启魔兽后再试或进群反馈（941405246）|r')
+						print('|cffff0000读取地图等级失败，请重启魔兽后再试或进群反馈（941405246）|r',p)
 					end	
 				end)
 				-- ac.wait(500,function()
